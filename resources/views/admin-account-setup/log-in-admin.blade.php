@@ -117,7 +117,7 @@
             <!-- Sign Up Link -->
             <div class="mt-4 text-center">
                 <p class="text-sm text-gray-700">
-                    Don't have an account yet? 
+                    Don't have an account yet?
                     <a href="#" class="text-brown font-medium hover:underline">Sign up</a>
                 </p>
             </div>
