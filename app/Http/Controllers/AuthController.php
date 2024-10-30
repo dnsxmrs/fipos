@@ -23,49 +23,66 @@ class AuthController extends Controller
         // create the user
         User::create($user);
 
-        // redirect the user back
-        return redirect()->back()->with('success', 'User added successfully');
+        // prompt success message
+        return redirect()->route('success.add.user');
     }
 
     // login the user
     public function login(Request $request) {
 
-        // validate the request
+        // Validate the request
         $credentials = $request->validate([
             'email' => ['required', 'email', 'max:255'],
             'password' => ['required', 'max:255']
         ]);
 
         try {
-            // attempt to login the user
-            Auth::attempt($credentials);
+            // Retrieve the user by email
+            $user = User::where('email', $credentials['email'])->first();
 
-            // retrieve the authenticated user
-            $user = Auth::user();
+            // Check if user exists and retrieve their status
+            if ($user && $user->status === 1) {
+                // Attempt to log in the user
+                if (Auth::attempt($credentials)) {
+                    // Retrieve the authenticated user
+                    $user = Auth::user();
 
-            // check the authenticated status
-            if ($user->status !== 1) {
-                // logout the user
-                Auth::logout();
-                $user->session()->invalidate();
-                $user->session()->regenerateToken();
+                    // Check if user is logging in for the first time
+                    if ($this->checkPassword($user->password)) {
+                        // Logout the user
+                        Auth::logout();
+                        $request->session()->invalidate();
+                        $request->session()->regenerateToken();
 
-                throw new \Exception;
+                        // Redirect to change password notice
+                        return redirect()->route('notice.change.password');
+                    }
+
+                    // Check user role and redirect accordingly
+                    return $user->role === 'admin'
+                        ? redirect()->route('dashboard')
+                        : redirect()->route('cashier.page');
+                }
             }
 
-            // check if user login for the first time
-            if ($this->checkPassword($user->password)) {
-                // force to change the password
-                return redirect()->route('notice.change.password');
-            }
-
-            // redirect to dashboard
-            return redirect()->intended('darboard');
+            // Redirect back with an error message for invalid credentials
+            return redirect()->back()->withErrors(['failed' => 'Invalid Credentials']);
 
         } catch (\Throwable $th) {
-           // return redirect()->back()->withErrors(['failed' => $th->getMessage()]);
-            return redirect()->back()->withErrors(['failed' => 'Invalid Credentials']);
+            // Log the error for debugging and show a generic error message
+            \Log::error('Login error: ' . $th->getMessage());
+            return redirect()->back()->withErrors(['failed' => 'An error occurred. Please try again.']);
         }
+    }
+
+    // method to logout the user
+    public function logout(Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // redirect to login page
+        return redirect()->route('login');
     }
 
     // method to check password
@@ -78,4 +95,5 @@ class AuthController extends Controller
         }
         return false; // Password does not match the default
     }
+
 }

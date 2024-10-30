@@ -40,11 +40,15 @@
             <div class="mb-6">
                 <label class="block mb-1 text-gray-700">Confirm Password <span class="text-red-500">*</span></label>
                 <input type="password" id="password_confirmation" name="password_confirmation" class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-200" placeholder="Confirm password"
-                @error('password_confirmation') style="border-color: red" @enderror>
+                @error('password') style="border-color: red" @enderror>
                 @error('password')
                     <p class="text-red-500 text-sm">{{ $message }}</p>
                 @enderror
             </div>
+
+            @error('error')
+                <p class="text-red-500 text-sm">{{ $message }}</p>
+            @enderror
 
             <div class="mt-8 flex justify-center">
                 <button type="submit" class="mt-5 w-64 py-2 bg-[#451a03] text-white font-semibold rounded hover:bg-[#78350f]">Login</button>

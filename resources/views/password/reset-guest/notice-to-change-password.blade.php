@@ -46,8 +46,8 @@
         </p>
 
         {{-- Continue button --}}
-        <a href="{{ route('reset.password') }}" class="mt-4 w-64 py-3 bg-brown hover:bg-brown-dark text-white font-bold rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brown">
-            Change Password
+        <a href="{{ route('password.request') }}" class="mt-4 w-64 py-3 bg-brown hover:bg-brown-dark text-white font-bold rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brown">
+            Continue
         </a>
 </body>
 

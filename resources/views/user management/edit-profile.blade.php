@@ -140,16 +140,32 @@
 
         <!-- Right Panel -->
         <div class="right-panel">
+            <a href="{{route('dashboard')}}">Back to Dashboard</a>
             <h3>Edit Profile</h3>
-            <form onsubmit="handleFormSubmission(event)" style="display: flex; flex-direction: column; gap: 15px;">
+            <form action="{{ route('update.profile') }}" method="POST" style="display: flex; flex-direction: column; gap: 15px;">
+                @csrf
+
                 <!-- Name Field -->
-                <label for="name">Name <span style="color: red;">*</span></label>
-                <input type="text" id="name" name="name" value="Shanella Cagulang" style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 5px;" required>
+                <label for="first_name">First Name <span style="color: red;">*</span></label>
+                <input type="text" id="first_name" name="first_name" value="{{ Auth::user()->first_name }}" style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 5px;" @error('first_name') style="border: 1px solid red;" @enderror>
+                @error('first_name')
+                <span style="color: red;">{{ $message }}</span>
+                @enderror
+
+                <label for="last_name">Last Name <span style="color: red;">*</span></label>
+                <input type="text" id="last_name" name="last_name" value="{{ Auth::user()->last_name }}" style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 5px;" @error('last_name') style="border: 1px solid red;" @enderror>
+                @error('last_name')
+                    <span style="color: red;">{{ $message }}</span>
+                @enderror
 
                 <!-- Email Field -->
                 <label for="email">Email <span style="color: red;">*</span></label>
-                <input type="email" id="email" name="email" value="asinero.shanella@gmail.com" style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 5px;" required>
+                <input type="text" id="email" name="email" value="{{ Auth::user()->email }}" style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 5px;" @error('email') style="border: 1px solid red;" @enderror>
+                @error('email')
+                    <span style="color: red;">{{ $message }}</span>
+                @enderror
 
+{{-- comment
                 <!-- Phone Field -->
                 <label for="phone">Phone Number <span style="color: red;">*</span></label>
                 <input type="tel" id="phone" name="phone" value="123-456-7890" style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 5px;" required>
@@ -157,19 +173,11 @@
                 <!-- Address Field -->
                 <label for="address">Address</label>
                 <input type="text" id="address" name="address" value="1234 Coffee Street, Brewtown" style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 5px;">
-
+--}}
                 <!-- Save Button -->
                 <button type="submit" class="button-add-user" style="width: fit-content;">Save Changes</button>
             </form>
         </div>
-    </div>
-</div>
-
-<!-- Confirmation Modal -->
-<div id="confirmation-modal" class="modal">
-    <div class="modal-content">
-        <h3>Details have been successfully updated!</h3>
-        <button onclick="closeModal()" class="close-button">Close</button>
     </div>
 </div>
 

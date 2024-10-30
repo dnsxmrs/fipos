@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Meta and Title -->
     <meta charset="UTF-8">
@@ -13,12 +14,15 @@
             box-sizing: border-box;
             font-family: 'Barlow', sans-serif;
         }
-        body, html {
+
+        body,
+        html {
             margin: 0;
             padding: 0;
             background-color: #f3f3f3;
             height: 100%;
         }
+
         .main-frame {
             display: flex;
             height: 100vh;
@@ -26,25 +30,30 @@
             margin: auto;
             background-color: #f3f3f3;
         }
+
         /* Content Layout */
         .content {
             padding: 20px;
             width: 100%;
         }
+
         .header {
             display: flex;
             justify-content: space-between;
             margin-bottom: 20px;
             align-items: center;
         }
+
         .header h1 {
             font-weight: 600;
             font-size: 24px;
         }
+
         .header p {
             font-size: 16px;
             color: #555;
         }
+
         /* Error Message */
         .error-message {
             color: #ff4d4f;
@@ -52,6 +61,7 @@
             margin-bottom: 15px;
             display: none;
         }
+
         /* Form Styles */
         .order-form {
             background-color: #fff;
@@ -60,26 +70,32 @@
             margin-bottom: 20px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
+
         .order-form h2 {
             font-size: 18px;
             font-weight: 600;
             margin-bottom: 15px;
         }
+
         .order-form .form-group {
             margin-bottom: 15px;
         }
+
         .order-form label {
             display: block;
             font-size: 14px;
             margin-bottom: 5px;
         }
-        .order-form input, .order-form select {
+
+        .order-form input,
+        .order-form select {
             width: 100%;
             padding: 8px 12px;
             font-size: 14px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
         .order-form button {
             background-color: #5a341a;
             color: #fff;
@@ -89,6 +105,7 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         /* Orders Table */
         .orders-table {
             background-color: #fff;
@@ -96,31 +113,39 @@
             border-radius: 8px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
+
         .orders-table h2 {
             font-size: 18px;
             font-weight: 600;
             margin-bottom: 15px;
         }
+
         .orders-table table {
             width: 100%;
             border-collapse: collapse;
         }
-        .orders-table th, .orders-table td {
+
+        .orders-table th,
+        .orders-table td {
             text-align: left;
             padding: 12px;
             border-bottom: 1px solid #ccc;
         }
+
         .orders-table th {
             background-color: #f9f9f9;
             font-weight: 600;
         }
+
         .orders-table td {
             font-size: 14px;
         }
+
         .orders-table .action-buttons {
             display: flex;
             gap: 10px;
         }
+
         .orders-table .action-buttons button {
             padding: 5px 10px;
             font-size: 14px;
@@ -128,22 +153,28 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         .orders-table .edit-button {
             background-color: #36A2EB;
             color: #fff;
         }
+
         .orders-table .delete-button {
             background-color: #FF6384;
             color: #fff;
         }
     </style>
 </head>
+
 <body>
     <div class="main-frame">
         <!-- Main Content -->
         <div class="content">
             <div class="header">
-                <h1>Order Management</h1>
+                <div>
+                    <a href="{{route('dashboard')}}">Back to Dashboard</a>
+                    <h1>Order Management</h1>
+                </div>
                 <p>Sunday, October 20, 2024</p>
             </div>
 
@@ -205,4 +236,5 @@
         </div>
     </div>
 </body>
+
 </html>
