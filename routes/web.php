@@ -1,12 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-<<<<<<< HEAD
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\MenuController;
 
 
 // only authenticated users can access these pages
@@ -43,16 +46,12 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/forgot-password', [ResetPasswordController::class, 'sendPasswordLink']);
     Route::get('/reset-password/{token}', [ResetPasswordController::class, 'resetPasswordView'])->name('password.reset');
     Route::post('/reset-password', [ResetPasswordController::class, 'passwordUpdate'])->name('password.update');
-=======
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\MenuController;
+});
+
 
 // Home Route -- Disable (comment out) to prevent redirecting
 Route::get('/', function () {
     return redirect()->route('admin.menu.categories'); // Redirect to the categories page
->>>>>>> 0137eb2101940e87be24abbf1d06a037ce8081c1
 });
 
 // Admin Routes

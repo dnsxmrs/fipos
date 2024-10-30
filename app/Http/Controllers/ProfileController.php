@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
 use Illuminate\Http\Request;
+use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
@@ -24,16 +28,8 @@ class ProfileController extends Controller
 
         // prompt the user that the profile has been updated
         return redirect()->route('success.update.profile');
-=======
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
+    }
 
-class ProfileController extends Controller
-{
     /**
      * Display the user's profile form.
      */
@@ -79,6 +75,5 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
->>>>>>> 0137eb2101940e87be24abbf1d06a037ce8081c1
     }
 }
