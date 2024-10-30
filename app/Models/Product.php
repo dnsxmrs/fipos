@@ -12,8 +12,9 @@ class Product extends Model
         , 'product_description'
         , 'product_price'
         , 'category_id'
-        , 'availability'
-        , 'image'];
+        , 'isAvailable'
+        , 'image'
+    ];
 
     // Define relationship with Category
     public function category()

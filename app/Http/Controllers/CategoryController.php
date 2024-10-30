@@ -4,72 +4,82 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+
 
 class CategoryController extends Controller
 {
-
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    // Store a new category in the database
+    public function store(Request $request)
     {
-        $categories = Category::all();
-        return view('categories.index', compact('categories'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('categories.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {
-        $request->validate(['name' => 'required|string|max:255']);
-        Category::create($request->only('name'));
-        return redirect()->route('categories.index')->with('success', 'Category added successfully.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
-    {
-        return view('categories.edit', compact('category'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Category $category)
-    {
-        $request->validate(['name' => 'required|string|max:255']);
-        $category->update($request->only('name'));
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Category $category)
-    {
-        if ($category->menus()->count() > 0) {
-            return redirect()->route('categories.index')->with('error', 'Cannot delete category with existing menu items.');
+        try {
+            $request->validate([
+                'category_name' => 'required|string|max:255',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation failed: ', $e->validator->errors()->toArray());
+            throw $e; // or handle the exception as needed
         }
+        // Initialize path as null
+        $path = null;
+        // Handle the file upload if an image is provided
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('images/products', 'public');
+        }
+        Category::create([
+            'category_name' => $request->input('category_name'),
+            'image' => $path,
+        ]);
+        return redirect()->back()->with('success', 'Product added successfully!');
+    }
+
+    // Update an existing category in the database
+    public function update(Request $request)
+    {
+        try {
+            $category_id = $request->input('editCategoryId');
+            // Validate the request
+            $request->validate([
+                'editCategoryId' => 'required|exists:categories,category_id',
+                'editCategoryName' => 'required|string|max:255',
+                'editImage' => 'nullable|image|mimes:jpg,png|max:2048',
+            ]);
+            $category = Category::findOrFail($category_id);
+            // Handle the image upload or retain existing image path
+            $path = $category->image;
+            if ($request->hasFile('editImage')) {
+                $path = $request->file('editImage')->store('images/products', 'public');
+            }
+            // Update the product
+            $category->update([
+                'category_name' => $request->input('editCategoryName'),
+                'image' => $path,
+            ]);
+            return redirect()->route('admin.menu.categories')->with('success', 'Product updated successfully!');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation failed: ', $e->validator->errors()->toArray());
+            throw $e; // or handle the exception as needed
+        }
+    }
+
+    // Delete a category from the database
+    public function delete($id)
+    {
+        $category = Category::findOrFail($id);
+        // Check if there are any products associated with this category
+        if ($category->products()->exists()) { // Assuming the relationship is defined as `products` in Category model
+            return response()->json([
+                'message' => 'Cannot delete category as it has associated products.'
+            ], 400);
+        }
+        // Optionally delete the category image from storage
+        if ($category->image) {
+            Storage::disk('public')->delete($category->image);
+        }
+        // Delete the category
         $category->delete();
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
+        return response()->json(['message' => 'Category deleted successfully!'], 200);
     }
 }

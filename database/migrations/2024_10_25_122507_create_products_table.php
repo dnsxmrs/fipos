@@ -11,11 +11,11 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id(); // Primary key column with unique, auto-incremented ID
-            $table->string('name')->unique(); // Unique name for each product
-            $table->text('description')->nullable(); // Nullable description
-            $table->decimal('price', 8, 2); // Price with 2 decimal places
+            $table->string('product_name'); // Unique name for each product
+            $table->text('product_description')->nullable(); // Nullable description
+            $table->decimal('product_price', 8, 2); // Price with 2 decimal places
             $table->unsignedBigInteger('category_id')->nullable(); // Nullable foreign key to category
-            $table->boolean('availability')->default(true); // Availability defaulting to true
+            $table->boolean('isAvailable')->default(true); // Availability defaulting to true
             $table->string('image')->nullable(); // Nullable path to image
             $table->timestamps();
 

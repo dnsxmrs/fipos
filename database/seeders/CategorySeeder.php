@@ -15,11 +15,26 @@ class CategorySeeder extends Seeder
     {
         //
         DB::table('categories')->insert([
-            ['category_name' => 'Beverages'],
-            ['category_name' => 'Snacks'],
-            ['category_name' => 'Desserts'],
-            ['category_name' => 'Meals'],
-            ['category_name' => 'Appetizers'],
+            [
+                'category_name' => 'Beverages',
+                'image' => 'images/products/beverages.jpg'
+            ],
+            [
+                'category_name' => 'Desserts',
+                'image' => 'images/products/desserts.jpg'
+            ],
+            [
+                'category_name' => 'Cakes',
+                'image' => 'images/products/cakes.jpg'
+            ],
+            [
+                'category_name' => 'Sandwiches',
+                'image' => 'images/products/sandwiches.jpg'
+            ],
+            [
+                'category_name' => 'Appetizers',
+                'image' => 'images/products/appetizers.jpg'
+            ],
         ]);
     }
 }

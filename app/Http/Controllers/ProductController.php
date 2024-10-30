@@ -5,112 +5,100 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
-    // Display form to create a new product\
-    // return view/page
-    public function create()
-    {
-        return view('products.create'); // Shows the create form view
-    }
-
     // Store a new product in the database
-    // Add item to database
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:500',
-            'price' => 'required|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpg,png|max:2048',
-        ]);
-
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('product_images', 'public');
+        try {
+            $request->validate([
+                'product_name' => 'required|string|max:255',
+                'product_description' => 'required|string',
+                'product_price' => 'required|numeric|min:0',
+                'category_id' => 'required|exists:categories,category_id',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation failed: ', $e->validator->errors()->toArray());
+            throw $e; // or handle the exception as needed
         }
-
+        // Initialize path as null
+        $path = null;
+        // Handle the file upload if an image is provided
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('images/products', 'public');
+        }
         Product::create([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'price' => $request->input('price'),
-            'image' => $imagePath,
+            'product_name' => $request->input('product_name'),
+            'product_description' => $request->input('product_description'),
+            'product_price' => $request->input('product_price'),
+            'category_id' => $request->input('category_id'),
+            'isAvailable' => true, // Set default value for isAvailable
+            'image' => $path,
         ]);
-
         return redirect()->back()->with('success', 'Product added successfully!');
     }
 
-    // Display a listing of the products
-    // Show all products
-    public function index()
-    {
-        $products = Product::all(); // Fetch all products from the database
-        return view('products.index', compact('products')); // Shows the product list
-    }
-
-    // Search for a product
-    // Single/multiple search
-    public function search(Request $request)
-    {
-        $query = Product::query();
-
-        if ($request->filled('search')) {
-            $search = $request->input('search');
-            $query->where('product_name', 'like', '%' . $search . '%')
-                ->orWhere('product_id', $search);
-        }
-
-        $products = $query->paginate(10);
-        return view('products.index', compact('products'));
-    }
-
-    // Show the details of a single product
-    public function show($id)
-    {
-        $product = Product::findOrFail($id); // Fetch the specific product
-        return view('products.show', compact('product')); // Shows the product details
-    }
-
-    // Show the form for editing an existing product
-    public function edit($id)
-    {
-        $product = Product::findOrFail($id); // Fetch the specific product
-        return view('products.edit', compact('product')); // Shows the edit form
-    }
-
     // Update an existing product in the database
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:500',
-            'price' => 'required|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpg,png|max:2048',
-        ]);
+        try {
+            $id = $request->input('editProductId');
 
-        $product = Product::findOrFail($id);
+            // Validate the request
+            $request->validate([
+                'editProductId' => 'required|exists:products,id',
+                'editProductName' => 'required|string|max:255',
+                'editProductDescription' => 'nullable|string|max:500',
+                'editProductPrice' => 'required|numeric|min:0',
+                'editCategoryId' => 'required|exists:categories,category_id',
+                'editImage' => 'nullable|image|mimes:jpg,png|max:2048',
+            ]);
 
-        $imagePath = $product->image; // Keep existing image if not replaced
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('product_images', 'public');
+            $product = Product::findOrFail($id);
+
+            // Handle the image upload or retain existing image path
+            $path = $product->image;
+            if ($request->hasFile('editImage')) {
+                $path = $request->file('editImage')->store('images/products', 'public');
+            }
+
+            // Determine the availability status; defaults to false if not present
+            $isAvailable = $request->has('editIsAvailable') ? true : false;
+
+            // Update the product
+            $product->update([
+                'product_name' => $request->input('editProductName'),
+                'product_description' => $request->input('editProductDescription'),
+                'product_price' => $request->input('editProductPrice'),
+                'category_id' => $request->input('editCategoryId'),
+                'isAvailable' => $isAvailable, // Explicitly set availability
+                'image' => $path,
+            ]);
+
+            return redirect()->route('admin.menu.products')->with('success', 'Product updated successfully!');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation failed: ', $e->validator->errors()->toArray());
+            throw $e; // or handle the exception as needed
         }
-
-        $product->update([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'price' => $request->input('price'),
-            'image' => $imagePath,
-        ]);
-
-        return redirect()->route('products.index')->with('success', 'Product updated successfully!');
     }
 
     // Delete a product from the database
-    public function destroy($id)
+    public function delete($id)
     {
+        // Get the product ID from the request body
         $product = Product::findOrFail($id);
-        $product->delete(); // Delete the product
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully!');
+        // Optionally delete the product image from storage
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
+        // Delete the product
+        $product->delete();
+        // Return a JSON response for AJAX requests
+        return response()->json(['message' => 'Product deleted successfully!'], 200);
     }
 }

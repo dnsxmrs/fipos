@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
-use Illuminate\Http\Request;
 
 class MenuController extends Controller
 {
     //
     public function categories()
     {
-        return view('admin.menu.categories');
+        $categories = Category::withCount('products')->get();
+        $products = Product::all();
+
+        return view('admin.menu.categories', compact('categories', 'products'));
     }
     public function products()
     {

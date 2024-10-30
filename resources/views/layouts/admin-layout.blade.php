@@ -28,6 +28,7 @@
         <main class="flex-1 p-8 overflow-y-auto">
             @yield('content')
         </main>
+
     </div>
 </body>
 

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id('category_id'); // Primary key with auto-increment
             $table->string('category_name')->unique(); // Unique category name
+            $table->string('image')->nullable(); // Nullable path to image
             $table->timestamps();
         });
     }
