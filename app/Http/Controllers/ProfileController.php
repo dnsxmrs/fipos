@@ -27,7 +27,7 @@ class ProfileController extends Controller
         $user->update($request->all());
 
         // prompt the user that the profile has been updated
-        return redirect()->route('success.update.profile');
+        return redirect()->route('admin.success.update.profile');
     }
 
     /**
