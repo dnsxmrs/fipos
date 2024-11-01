@@ -49,10 +49,10 @@
 
 
         // Initialize the toggle state
-        let isProductsActive = true; // Default to Products being active
+        let isCategoriesActive = true; // Default to Products being active
 
         function toggleCategoryButton() {
-            isProductsActive = false; // Set state to false for Products
+            isCategoriesActive   = true; // Set state to false for Products
             localStorage.setItem('activeButton', 'categories'); // Store state
             setButtonStates();
 
@@ -61,7 +61,7 @@
         }
 
         function toggleProductButton() {
-            isProductsActive = true; // Set state to true for Products
+            isCategoriesActive = false; // Set state to true for Products
             localStorage.setItem('activeButton', 'products'); // Store state
             setButtonStates();
 
@@ -71,7 +71,7 @@
 
         window.onload = function() {
             const activeButton = localStorage.getItem('activeButton');
-            isProductsActive = (activeButton === 'products');
+            isCategoriesActive = (activeButton === 'categories');
             setButtonStates();
         };
 
@@ -79,16 +79,18 @@
             const categoriesButton = document.getElementById('categoriesButton');
             const productsButton = document.getElementById('productsButton');
 
-            if (isProductsActive) {
-                productsButton.style.backgroundColor = '#E8C9B2'; // Active color
-                productsButton.style.color = 'black'; // Active text color
-                categoriesButton.style.backgroundColor = 'transparent'; // Inactive color
-                categoriesButton.style.color = 'black'; // Inactive text color
-            } else {
+            if (isCategoriesActive) {
                 categoriesButton.style.backgroundColor = '#E8C9B2'; // Active color
                 categoriesButton.style.color = 'black'; // Active text color
                 productsButton.style.backgroundColor = 'transparent'; // Inactive color
                 productsButton.style.color = 'black'; // Inactive text color
+
+            } else {
+
+                productsButton.style.backgroundColor = '#E8C9B2'; // Active color
+                productsButton.style.color = 'black'; // Active text color
+                categoriesButton.style.backgroundColor = 'transparent'; // Inactive color
+                categoriesButton.style.color = 'black'; // Inactive text color
             }
         }
     </script>

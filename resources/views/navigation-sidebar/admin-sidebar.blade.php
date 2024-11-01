@@ -6,7 +6,7 @@
         <img src="{{ asset('Assets/Caffeinated Logo 1.png') }}" alt="Caffeinated Logo" class="w-12 h-12">
     </div>
     <!-- Menu buttons -->
-    <button onclick="navigateTo('{{ route('admin.menu') }}')" aria-label="Menu" class="flex flex-col items-center">
+    <button onclick="navigateTo('{{ route('admin.menu.categories') }}')" aria-label="Menu" class="flex flex-col items-center">
         <div class="w-10 h-10 rounded-lg mb-2"></div>
         <img src="{{ asset('Assets/food menu icon 1.png') }}" alt="Menu Icon" class="w-6 h-6 mb-1">
         <span class="text-xs">Menu</span>

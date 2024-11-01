@@ -104,6 +104,6 @@ class ResetPasswordController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return redirect()->route('success.change.password');
+        return redirect()->route('admin.success.change.password');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class AdminController extends Controller
 {
@@ -23,7 +24,9 @@ class AdminController extends Controller
 
     public function staff()
     {
-        return view('admin.staff-management');
+        $users = User::all();
+
+        return view('admin.staff-management', compact('users'));
     }
 
     public function audit()
