@@ -24,7 +24,7 @@
                     <a class="big-button">Audit Trails</a>
                     <a href="{{ route('admin.reports') }}" class="big-button">Order Tracking</a>
                     {{-- add user button --}}
-                    <a href="{{ route('admin.users.index') }}" class="big-button">Staff Management</a>
+                    <a href="{{ route('admin.staff-management') }}" class="big-button">Staff Management</a>
                     {{-- edit profile --}}
                     <a href="{{ route('admin.update.profile') }}" class="big-button">Edit Profile</a>
                     {{-- change password --}}

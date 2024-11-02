@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\DashboardController;
 
 // only authenticated users can access these pages
 Route::middleware(['auth'])->group(function () {
@@ -22,7 +23,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     // Admin Routes
     Route::prefix('admin')->name('admin.')->group(function () {
         // Redirect to the admin categories page when url is localhost:8000/admin
-        Route::get('/', function () {
+        Route::get('/admin', function () {
             return redirect()->route('admin.menu.categories');
         })->name('landing');
 
@@ -57,6 +58,8 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
             Route::delete('/products/{id}', [ProductController::class, 'delete'])->name('products.delete');
         });
 
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
         Route::view('/add-user', 'user management.add-user')->name('add.user');
         Route::post('/add-user', [AuthController::class, 'add']);
 
@@ -67,7 +70,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
         Route::view('/success-update-profile', 'user management.success-edit')->name('success.update.profile');
 
         Route::get('/change-password', [ResetPasswordController::class, 'changePasswordView'])->name('change.password');
-        Route::post('/change-password', [ResetPasswordController::class, 'changePassword'])->name('change.password');
+        Route::post('/change-password', [ResetPasswordController::class, 'changePassword']);
         Route::view('/success-change-password', 'password.change-auth.success-change')->name('success.change.password');
 
         Route::view('/list-user', 'user management.list-user')->name('list.user');
@@ -79,7 +82,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 // only guests can access these pages
 Route::middleware(['guest'])->group(function () {
     Route::view('/', 'auth.login')->name('login');
-    Route::post('/', [AuthController::class, 'login'])->name('login');
+    Route::post('/', [AuthController::class, 'login']);
     // routes for password
     Route::get('/notice-reset-password', [ResetPasswordController::class, 'noticeToChangePassword'])->name('notice.change.password');
     Route::get('/forgot-password', [ResetPasswordController::class, 'forgotPassword'])->name('password.request');
@@ -87,6 +90,3 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/reset-password/{token}', [ResetPasswordController::class, 'resetPasswordView'])->name('password.reset');
     Route::post('/reset-password', [ResetPasswordController::class, 'passwordUpdate'])->name('password.update');
 });
-
-// Authentication Routes
-require __DIR__ . '/auth.php';

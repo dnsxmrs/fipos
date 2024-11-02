@@ -166,7 +166,7 @@
 
             <!-- Right Panel -->
             <div class="right-panel">
-                <a href="{{ route('admin.reports') }}">Back to Dashboard</a>
+                <a href="{{ route('admin.dashboard') }}">Back to Dashboard</a>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <h2>User Management</h2>
                     <a href="{{ route('admin.add.user') }}" class="button-add-user">+ Add User</a>

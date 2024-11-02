@@ -99,7 +99,7 @@
 
             <div class="modal-buttons">
                 <div>
-                    <a href="{{ route('admin.reports') }}" class="button" >
+                    <a href="{{ route('admin.dashboard') }}" class="button" >
                         Continue
                     </a>
                 </div>

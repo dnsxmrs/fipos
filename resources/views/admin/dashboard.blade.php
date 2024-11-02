@@ -22,13 +22,13 @@
             <div class="action-buttons">
                 <div>
                     <a class="big-button">Audit Trails</a>
-                    <a href="{{ route('order.management') }}" class="big-button">Order Management</a>
+                    <a href="#" class="big-button">Order Management</a>
                     {{-- add user button --}}
-                    <a href="{{ route('users.index') }}" class="big-button">User Management</a>
+                    <a href="{{ route('admin.users.index') }}" class="big-button">User Management</a>
                     {{-- edit profile --}}
-                    <a href="{{ route('update.profile') }}" class="big-button">Edit Profile</a>
+                    <a href="{{ route('admin.update.profile') }}" class="big-button">Edit Profile</a>
                     {{-- change password --}}
-                    <a href="{{ route('change.password') }}" class="big-button">Change Password</a>
+                    <a href="{{ route('admin.change.password') }}" class="big-button">Change Password</a>
 
                 </div>
                 <div>

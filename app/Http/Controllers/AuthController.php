@@ -25,7 +25,7 @@ class AuthController extends Controller
         User::create($user);
 
         // prompt success message
-        return redirect()->route('success.add.user');
+        return redirect()->route('admin.success.add.user');
     }
 
     // login the user
@@ -61,7 +61,7 @@ class AuthController extends Controller
 
                     // Check user role and redirect accordingly
                     return $user->role === 'admin'
-                        ? redirect()->route('dashboard')
+                        ? redirect()->route('admin.dashboard') // if admin
                         : redirect()->route('cashier.page');
                 }
             }
