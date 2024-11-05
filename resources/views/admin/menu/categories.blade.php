@@ -246,6 +246,10 @@
 
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            filterCategories();
+        });
+        
         // dynamic table for searching
         function filterCategories() {
             // Get the value of the search bar
