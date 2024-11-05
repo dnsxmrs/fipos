@@ -8,6 +8,10 @@
     <!-- Menu buttons -->
     <button onclick="navigateTo('{{ route('admin.menu.categories') }}')" aria-label="Menu" class="flex flex-col items-center">
         <div class="w-10 h-10 rounded-lg mb-2"></div>
+        <img src="{{ asset('Assets/dashboard-icon.png') }}" alt="Dashboard Icon" class="w-6 h-6 mb-1">
+        <span class="text-xs">Dashboard</span>
+    <button onclick="navigateTo('{{ route('admin.menu.categories') }}')" aria-label="Menu" class="flex flex-col items-center">
+        <div class="w-10 h-10 rounded-lg mb-2"></div>
         <img src="{{ asset('Assets/food menu icon 1.png') }}" alt="Menu Icon" class="w-6 h-6 mb-1">
         <span class="text-xs">Menu</span>
     </button>
