@@ -35,10 +35,10 @@
                         <input type="file" name="image" accept="image/*" class="hidden">
                         <div class="text-center">
                             <div class="text-2xl">+</div>
-                            <span class="block mt-2">Upload Image</span>
+                            <span class="block mt-2 mb-5">Upload Image</span>
                         </div>
                     </label>
-                    <select class="mt-4 w-[350px] h-[42px] border border-gray-300 rounded-md p-2" name="category_id"
+                    <select class="mt-4 w-[350px] h-[42px] border border-gray-300 rounded-md p-2 mb-2 mt-3" name="category_id"
                         required>
                         <option value="" disabled selected>Category</option>
                         <!-- Display categories from the model/db 'categories' -->
@@ -47,41 +47,43 @@
                         @endforeach
                     </select>
                     <div class="flex flex-col items-center mt-4">
+             <!--Item name for revision-->
                         <div class="relative w-[350px] mb-4">
                             <input id="itemName"
-                                class="mb-1 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent text-xs"
-                                type="text" placeholder=" " name="product_name" required>
+                            class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
+                                type="text" placeholder="Item name " name="product_name" required>
                             <label
-                                class="text-sm absolute left-2 top-2 transform transition-transform duration-300 ease-in-out scale-100 text-gray-500 origin-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-focus:-top-5 peer-focus:left-2 peer-focus:scale-75"
+                            class="text-sm absolute left-2 -top-4 scale-75 text-gray-500 origin-left"
                                 for="itemName">Item Name</label>
                             @error('product_name')
                                 <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                             @enderror
                         </div>
+                <!--Item price for revision-->
+                    <div class="relative w-[350px] mb-4">
+                        <input id="itemPrice"
+                            class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
+                            type="text" placeholder="Item price " name="product_price" required>
+                        <label
+                            class="text-sm absolute left-2 -top-4 scale-75 text-gray-500 origin-left"
+                            for="itemPrice">Item Price</label>
+                        @error('product_price')
+                            <div class="text-red-600 text-xs mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+                <!--end-->
+                    <div class="relative w-[350px] mb-4">
+                        <input id="itemDescription"
+                            class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
+                            type="text" placeholder=" " name="product_description" required>
+                        <label
+                            class="text-xs absolute left-2 -top-4 text-gray-500"
+                            for="itemDescription">Item Description</label>
+                        @error('product_description')
+                            <div class="text-red-600 text-xs mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                        <div class="relative w-[350px] mb-4">
-                            <input id="itemPrice"
-                                class="mb-1 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
-                                type="text" placeholder=" " name="product_price" required>
-                            <label
-                                class="text-sm absolute left-2 top-2 transform transition-transform duration-300 ease-in-out scale-100 text-gray-500 origin-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-focus:-top-5 peer-focus:left-2 peer-focus:scale-75"
-                                for="itemPrice">Item Price</label>
-                            @error('product_price')
-                                <div class="text-red-600 text-xs mt-1">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="relative w-[350px] mb-4">
-                            <input id="itemDescription"
-                                class="peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
-                                type="text" placeholder=" " name="product_description" required>
-                            <label
-                                class="text-sm absolute left-2 top-2 transform transition-transform duration-300 ease-in-out scale-100 text-gray-500 origin-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-focus:-top-5 peer-focus:left-2 peer-focus:scale-75"
-                                for="itemDescription">Item Description</label>
-                            @error('product_description')
-                                <div class="text-red-600 text-xs mt-1">{{ $message }}</div>
-                            @enderror
-                        </div>
 
                         <button type="submit" onclick="handleSaveChanges()"
                             class="bg-[#45A834] text-sm text-white rounded-lg h-[40px] w-[350px] hover:bg-amber-700 mt-8">
@@ -147,30 +149,31 @@
                     </select>
 
                     <div class="flex flex-col items-center mt-4">
+
                         <div class="relative w-[350px] mb-4">
                             <input id="editProductName"
-                                class="mb-1 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent text-xs"
+                            class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
                                 type="text" name="editProductName" required>
                             <label
-                                class="text-sm absolute left-2 top-2 transform transition-transform duration-300 ease-in-out scale-100 text-gray-500 origin-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-focus:-top-5 peer-focus:left-2 peer-focus:scale-75"
+                            class="text-sm absolute left-2 -top-4 scale-75 text-gray-500 origin-left"
                                 for="itemName">Item Name</label>
                         </div>
 
                         <div class="relative w-[350px] mb-4">
                             <input id="editProductPrice" name="editProductPrice"
-                                class="mb-1 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
+                            class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
                                 type="text" required>
                             <label
-                                class="text-sm absolute left-2 top-2 transform transition-transform duration-300 ease-in-out scale-100 text-gray-500 origin-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-focus:-top-5 peer-focus:left-2 peer-focus:scale-75"
+                            class="text-sm absolute left-2 -top-4 scale-75 text-gray-500 origin-left"
                                 for="itemPrice">Item Price</label>
                         </div>
 
                         <div class="relative w-[350px] mb-4">
                             <input id="editProductDescription"
-                                class="peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
+                            class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
                                 type="text" name="editProductDescription" required>
                             <label
-                                class="text-sm absolute left-2 top-2 transform transition-transform duration-300 ease-in-out scale-100 text-gray-500 origin-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-focus:-top-5 peer-focus:left-2 peer-focus:scale-75"
+                            class="text-xs absolute left-2 -top-4 text-gray-500"
                                 for="itemDescription">Item Description</label>
                         </div>
 
@@ -226,21 +229,23 @@
     <div id="delete-dialog"
         class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50"
         aria-hidden="true">
-        <div class="bg-white shadow-md p-8 flex flex-col items-center w-[500px] h-[350px] rounded-[20px] overflow-hidden">
-            <img src="{{ asset('Assets/icons-delete.png') }}" alt="deleteIcon" class="w-[150px] h-[150px]">
-            <h1 class="text-center text-xl font-bold mb-4">Delete Product</h1>
-            <p class="text-center">Are you sure you want to delete this product?</p>
-            <div class="flex space-x-4 mt-4">
-                <button onclick="showConfirmDeleteModal()"
-                    class="rounded-full flex items-center justify-center text-center text-white hover:text-red-700 bg-red-600 px-4 py-2 h-[40px] w-[140px]">
-                    Delete
-                </button>
-                <button onclick="hideDeleteDialog()"
-                    class="bg-gray-200 text-sm text-black rounded-full h-[40px] w-[140px] hover:bg-gray-300 font-bold">
-                    Cancel
-                </button>
-            </div>
+        <div
+        class="bg-white p-4 shadow-md text-center w-[500px] h-[420px] rounded-[20px] overflow-hidden flex flex-col items-center">
+        <img src="{{ asset('Assets/icons-password.png') }}" alt="Password Icon" class="w-[150px] h-[150px] mb-6">
+        <h2 class="text-lg font-semibold">Confirm Delete</h2>
+        <p class="mt-1 mb-5">Enter your password below:</p>
+        <!-- Password input section -->
+        <div class="relative mt-4">
+            <input type="password" id="password"
+            class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
+            type="text" placeholder="Item name " name="product_name" required>
+        <label
+        class="text-sm absolute left-2 -top-6 scale-75 text-gray-500 origin-left"
+            for="itemName">Password</label>
         </div>
+        <button id="confirmButton" onclick="hideConfirmDelete"
+            class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded-full hover:bg-gray-100 w-[200px]">Confirm</button>
+    </div>
     </div>
 
     <!--Confirm Delete-->

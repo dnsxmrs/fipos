@@ -62,12 +62,12 @@
     <div id="add-dialog"
         class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50"
         aria-hidden="true">
-        <div class="bg-white shadow-md p-8 flex flex-col items-center rounded-lg" style="width: 455px; height: 750px;">
+        <div class="bg-white shadow-md p-8 flex flex-col items-center rounded-lg" style="width: 455px; height: 600px;">
             <h1 class="text-center text-xl font-bold mb-4 text-black">Add New Category</h1>
             <form action="{{ route('admin.menu.categories.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="flex flex-col items-center justify-center">
-                    <label class="bg-white py-3 px-5 rounded text-black shadow-md text-center mt-4 ml-6 items-center"
+                    <label class="bg-white py-3 px-5 rounded text-black shadow-md text-center mt-4 ml-6 items-center mb-6"
                         style="width: 346px; height: 231px; border: 2px dashed black;">
                         <input type="file" name="image" accept="image/*" class="hidden">
                         <div class="text-center">
@@ -78,11 +78,11 @@
                     <div class="flex flex-col items-center mt-4">
                         <div class="relative w-[350px] mb-4">
                             <input id="itemName"
-                                class="mb-1 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent text-xs"
-                                type="text" placeholder=" " name="category_name" required>
-                            <label
-                                class="text-sm absolute left-2 top-2 transform transition-transform duration-300 ease-in-out scale-100 text-gray-500 origin-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-focus:-top-5 peer-focus:left-2 peer-focus:scale-75"
-                                for="itemName">Category Name</label>
+                            class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
+                            type="text" placeholder="Item name " name="product_name" required>
+                        <label
+                        class="text-sm absolute left-2 -top-5 scale-75 text-gray-500 origin-left"
+                            for="itemName">Category name</label>
                             @error('category_name')
                                 <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                             @enderror
@@ -122,7 +122,7 @@
     <div id="edit-dialog"
         class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50"
         aria-hidden="true">
-        <div class="bg-white shadow-md p-8 flex flex-col items-center rounded-lg" style="width: 455px; height: 750px;">
+        <div class="bg-white shadow-md p-8 flex flex-col items-center rounded-lg" style="width: 455px; height: 600px;">
             <h1 class="text-center text-xl font-bold mb-4 text-black">Edit Category</h1>
             <form action="{{ route('admin.menu.categories.update') }}" method="POST" enctype="multipart/form-data"
                 id="edit-category">
@@ -130,7 +130,7 @@
                 @method('PUT')
                 <input type="hidden" value="" name="editCategoryId" id="editCategoryId">
                 <div class="flex flex-col items-center justify-center">
-                    <label class="bg-white py-3 px-5 rounded text-black shadow-md text-center mt-4 ml-6 items-center"
+                    <label class="bg-white py-3 px-5 rounded text-black shadow-md text-center mt-4 ml-6 items-center mb-6"
                         style="width: 346px; height: 231px; border: 2px dashed black;" id="editImageLabel">
                         <input type="file" value='' id='editImage' name="editImage" accept="image/*"
                             class="hidden">
@@ -147,11 +147,11 @@
                     <div class="flex flex-col items-center mt-4">
                         <div class="relative w-[350px] mb-4">
                             <input id="editCategoryName"
-                                class="mb-1 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent text-xs"
-                                type="text" placeholder=" " name="editCategoryName" required>
-                            <label
-                                class="text-sm absolute left-2 top-2 transform transition-transform duration-300 ease-in-out scale-100 text-gray-500 origin-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-focus:-top-5 peer-focus:left-2 peer-focus:scale-75"
-                                for="editCategoryName">Category Name</label>
+                            class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
+                            type="text" placeholder="Item name " name="product_name" required>
+                        <label
+                        class="text-sm absolute left-2 -top-6 scale-75 text-gray-500 origin-left"
+                            for="itemName">Category name</label>
                             @error('category_name')
                                 <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                             @enderror
@@ -212,18 +212,18 @@
     <div id="confirm-delete-dialog"
         class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 hidden" aria-hidden="true">
         <div
-            class="bg-white p-4 shadow-md text-center w-[500px] h-[380px] rounded-[20px] overflow-hidden flex flex-col items-center">
-            <img src="{{ asset('Assets/icons-password.png') }}" alt="Password Icon" class="w-[150px] h-[150px] mb-4">
+            class="bg-white p-4 shadow-md text-center w-[500px] h-[420px] rounded-[20px] overflow-hidden flex flex-col items-center">
+            <img src="{{ asset('Assets/icons-password.png') }}" alt="Password Icon" class="w-[150px] h-[150px] mb-6">
             <h2 class="text-lg font-semibold">Confirm Delete</h2>
-            <p class="mt-1 mb-1">Enter your password below:</p>
+            <p class="mt-1 mb-5">Enter your password below:</p>
             <!-- Password input section -->
             <div class="relative mt-4">
                 <input type="password" id="password"
-                    class="peer w-[250px] h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
-                    placeholder=" ">
-                <label
-                    class="text-sm absolute left-2 top-2 transform transition-transform duration-300 ease-in-out scale-100 text-gray-500 origin-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-focus:-top-5 peer-focus:left-2 peer-focus:scale-75"
-                    for="password">Input Password</label>
+                class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
+                type="text" placeholder="Item name " name="product_name" required>
+            <label
+            class="text-sm absolute left-2 -top-6 scale-75 text-gray-500 origin-left"
+                for="itemName">Password</label>
             </div>
             <button id="confirmButton" onclick="hideConfirmDelete"
                 class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded-full hover:bg-gray-100 w-[200px]">Confirm</button>
@@ -249,7 +249,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             filterCategories();
         });
-        
+
         // dynamic table for searching
         function filterCategories() {
             // Get the value of the search bar

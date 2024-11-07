@@ -15,26 +15,36 @@
         <!--Sub-Sidebar Frame-->
         <!-- Sub-Sidebar Options -->
         <div class="bg-white border rounded-md shadow-md w-[285px]">
-            <button
-                id="categoriesButton"
-                {{-- if you will remove scripts below, make sure to replace toggleCategoryButton() with {{ route('admin.menu.categories') }} --}}
-                onclick="toggleCategoryButton()"
-                class="flex items-center text-left font-barlow text-xl mb-1 mt-9 w-[268px] h-[76px] text-black">
-                <img src="{{ asset('Assets/category-icon.png') }}" alt="Category Icon" class="w-6 h-6 mr-2 ml-3">
-                <span class="">Categories</span>
-            </button>
-            <button
-                id="productsButton"
-                {{-- if you will remove scripts below, make sure to replace toggleProductButton() with {{ route('admin.menu.products') }} --}}
-                onclick="toggleProductButton()"
-                class="flex items-center text-left rounded-lg font-barlow text-xl mb-4 ml-2 w-[268px] h-[76px] text-black"
-                style="background-color: #E8C9B2;">
-                <img src="{{ asset('Assets/product-icon.png') }}" alt="Product Icon" class="w-6 h-6 mr-2 ml-2">
-                <span class="">Products</span>
-            </button>
-            <div class="grid grid-cols-2 gap-4">
+
+            <div class="mt-12">
+                <button
+                    id="categoriesButton"
+                    onclick="toggleCategoryButton()"
+                    class="flex flex-col items-start text-left rounded-lg font-barlow text-xl mb-4 ml-2 w-[268px] h-auto p-4 text-black"
+                    style="background-color: #E8C9B2;">
+                    <div class="flex items-center">
+                        <img src="{{ asset('Assets/category-icon.png') }}" alt="Category Icon" class="w-6 h-6 mr-2 ml-3">
+                        <span>Categories</span>
+                    </div>
+                    <p class="text-sm text-gray-800 mt-1 ml-9">Management of categories</p>
+                </button>
             </div>
-        </div>
+
+
+        <button
+                id="productsButton"
+                onclick="toggleProductButton()"
+                class="flex flex-col items-start text-left rounded-lg font-barlow text-xl mb-4 ml-2 w-[268px] h-auto p-4 text-black"
+                style="background-color: #E8C9B2;">
+                <div class="flex items-center">
+                    <img src="{{ asset('Assets/product-icon.png') }}" alt="Product Icon" class="w-6 h-6 mr-2">
+                    <span>Products</span>
+                </div>
+                <p class="text-sm text-gray-800 mt-1 ml-8">Management of products</p>
+        </button>
+
+            </div>
+
 
         <!-- Sub-Sidebar Content -->
         <div class="bg-white border rounded-md shadow-md p-6 w-[1450px]">
