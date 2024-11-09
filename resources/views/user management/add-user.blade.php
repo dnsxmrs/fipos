@@ -10,7 +10,7 @@
         </p>
 
         <!-- Form -->
-        <form action="{{ route('add.user') }}" method="POST" id="login-form" class="space-y-6">
+        <form action="{{ route('admin.add.user') }}" method="POST" id="login-form" class="space-y-6">
             @csrf
             <div class="text-left">
                 <label for="first_name" class="block text-sm font-medium text-gray-700 mb-1">First Name <span

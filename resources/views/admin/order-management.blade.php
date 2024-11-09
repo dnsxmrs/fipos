@@ -54,6 +54,8 @@
             color: #555;
         }
 
+
+
         /* Error Message */
         .error-message {
             color: #ff4d4f;
@@ -172,7 +174,7 @@
         <div class="content">
             <div class="header">
                 <div>
-                    <a href="{{route('dashboard')}}">Back to Dashboard</a>
+                    <a href="{{route('admin.reports')}}">Back to Dashboard</a>
                     <h1>Order Management</h1>
                 </div>
                 <p>Sunday, October 20, 2024</p>
