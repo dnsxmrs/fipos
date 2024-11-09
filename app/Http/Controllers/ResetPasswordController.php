@@ -51,11 +51,10 @@ class ResetPasswordController extends Controller
             'password' => ['required',
                             'min:8',
                             'confirmed',
-                            PasswordRule::min(8)->numbers()->letters()->mixedCase()->symbols(),
-                            'regex:/^\S*$/', // Disallow spaces
+                            'regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])\S{8,}$/'
                         ],
                     ], [
-                        'password.regex' => 'The password cannot contain spaces.',
+                        'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, one number and one special character.',
         ]);
 
         $status = Password::reset(

@@ -13,36 +13,17 @@
                 </div>
             </div>
 
-            {{-- success message in center --}}
-            @if (session('success'))
-                <p class="text-green text-center">{{ session('success') }}</p>
-            @endif
 
             <!-- Action Buttons -->
             <div class="action-buttons">
                 <div>
-                    <a class="big-button">Audit Trails</a>
-                    <a href="#" class="big-button">Order Management</a>
-                    {{-- add user button --}}
-                    <a href="{{ route('admin.users.index') }}" class="big-button">User Management</a>
-                    {{-- edit profile --}}
-                    <a href="{{ route('admin.update.profile') }}" class="big-button">Edit Profile</a>
-                    {{-- change password --}}
-                    <a href="{{ route('admin.change.password') }}" class="big-button">Change Password</a>
+
 
                 </div>
                 <div>
                     {{-- sample button for logout --}}
                     <a href="{{ route('logout.confirm') }}" class="big-button">Logout</a>
                 </div>
-            </div>
-
-
-
-            <!-- Sales Summary -->
-            <div class="sales-summary">
-                <h2>Sales Summary</h2>
-                <canvas id="salesChart" width="600" height="400"></canvas>
             </div>
 
             <!-- Summary Cards -->
@@ -60,6 +41,14 @@
                     <p>1,234</p>
                 </div>
             </div>
+
+            <!-- Sales Summary -->
+            <div class="sales-summary">
+                <h2>Sales Summary</h2>
+                <canvas id="salesChart" width="600" height="400"></canvas>
+            </div>
+
+
 
             <!-- Most Ordered and Order Type Sections -->
             <div class="summary">

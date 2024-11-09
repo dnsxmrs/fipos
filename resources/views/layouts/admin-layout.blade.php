@@ -19,6 +19,7 @@
             box-sizing: border-box;
             font-family: 'Barlow', sans-serif;
         }
+
         body,
         html {
             margin: 0;
@@ -26,14 +27,15 @@
             background-color: #f3f3f3;
             height: 100%;
         }
+
         .main-frame {
             display: flex;
             height: 100vh;
-            width: 100%;
-            max-width: 1440px;
+            
             margin: auto;
             background-color: #f3f3f3;
         }
+
         /* Adjusted Content Layout to Full Width */
         .content {
             padding: 20px;
@@ -47,16 +49,19 @@
             margin-left: 20px;
             /* Adjusted margin for centering */
         }
+
         .header {
             display: flex;
             justify-content: space-between;
             margin-bottom: 20px;
             align-items: center;
         }
+
         .header h1 {
             font-weight: 600;
             font-size: 24px;
         }
+
         .header p {
             font-size: 16px;
             color: #555;
@@ -69,6 +74,7 @@
             gap: 20px;
             margin-bottom: 20px;
         }
+
         .big-button {
             background-color: #5a341a;
             color: #fff;
@@ -79,6 +85,7 @@
             cursor: pointer;
             text-decoration: none;
         }
+
         /* Sales Summary */
         .sales-summary {
             background-color: #fff;
@@ -87,11 +94,13 @@
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
+
         .sales-summary h2 {
             font-weight: 600;
             font-size: 18px;
             margin-bottom: 20px;
         }
+
         /* Cards for Summary */
         .summary {
             display: flex;
@@ -99,6 +108,7 @@
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
+
         .summary .card {
             background-color: #fff;
             border-radius: 8px;
@@ -108,15 +118,18 @@
             text-align: center;
             margin-bottom: 20px;
         }
+
         .card h3 {
             font-weight: 600;
             margin: 0 0 10px 0;
             font-size: 16px;
         }
+
         .card p {
             font-size: 14px;
             color: #555;
         }
+
         /* Most Ordered and Order Type Sections */
         .most-ordered,
         .order-type {
@@ -127,17 +140,20 @@
             margin-bottom: 20px;
             width: calc(50% - 10px);
         }
+
         .most-ordered-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .most-ordered h3,
         .order-type h3 {
             font-weight: 600;
             font-size: 16px;
             margin: 0 0 10px 0;
         }
+
         /* Logout Modal */
         .modal {
             display: none;
@@ -152,6 +168,7 @@
             justify-content: center;
             align-items: center;
         }
+
         .modal-content {
             display: flex;
             flex-direction: column;
@@ -166,6 +183,7 @@
             text-align: center;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
+
         .modal h3 {
             margin: 0;
             color: #333;
@@ -175,15 +193,18 @@
             justify-content: center;
             align-items: center;
         }
+
         .modal p {
             margin-bottom: 20px;
             font-size: 14px;
             color: #555;
         }
+
         .modal-buttons {
             display: flex;
             justify-content: space-around;
         }
+
         .modal-button {
             background-color: #5a341a;
             color: #fff;
@@ -194,7 +215,7 @@
             font-size: 14px;
         }
 
-                /* Error Message */
+        /* Error Message */
         .error-message {
             color: #ff4d4f;
             font-size: 14px;
@@ -249,7 +270,8 @@
         /* Orders Table */
         .orders-table {
             background-color: #fff;
-            margin: 2% 0; /* Top and bottom only */
+            margin: 2% 0;
+            /* Top and bottom only */
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -438,11 +460,15 @@
 
 <body>
     <!--mainframe-->
-    <div class="flex h-screen bg-[rgb(243,243,243)]">
-        @include('navigation-sidebar.admin-sidebar')
+    <div class="flex h-full w-screen bg-[rgb(243,243,243)]">
+        <!--sidebar-->
+        <div class="flex h-full bg-[rgb(243,243,243)] ">
+            @include('sidebar.admin-sidebar')
+        </div>
+
 
         <!--main content-->
-        <main class="flex-1 p-8 overflow-y-auto">
+        <main class="flex-1 p-8 overflow-y-auto w-5/6">
             @yield('content')
         </main>
 

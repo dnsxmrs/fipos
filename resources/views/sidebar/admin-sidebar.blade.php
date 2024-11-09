@@ -1,7 +1,7 @@
 
 
 <!--MainFrame-->
-<div class="flex h-screen bg-[rgb(243,243,243)]">
+<div >
 
     <!-- Sidebar -->
     <div class="w-20 bg-white border-r flex flex-col items-center py-6">
