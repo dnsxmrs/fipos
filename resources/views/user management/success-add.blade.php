@@ -99,7 +99,7 @@
 
             <div class="modal-buttons">
                 <div>
-                    <a href="{{ route('users.index') }}" class="button" >
+                    <a href="{{ route('admin.users.index') }}" class="button" >
                         Continue
                     </a>
                 </div>
