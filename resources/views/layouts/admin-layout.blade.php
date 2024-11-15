@@ -31,7 +31,7 @@
         .main-frame {
             display: flex;
             height: 100vh;
-            
+
             margin: auto;
             background-color: #f3f3f3;
         }
@@ -460,9 +460,9 @@
 
 <body>
     <!--mainframe-->
-    <div class="flex h-full w-screen bg-[rgb(243,243,243)]">
+    <div class="flex h-screen w-screen bg-[rgb(243,243,243)]">
         <!--sidebar-->
-        <div class="flex h-full bg-[rgb(243,243,243)] ">
+        <div class="flex h-screen bg-[rgb(243,243,243)] ">
             @include('sidebar.admin-sidebar')
         </div>
 

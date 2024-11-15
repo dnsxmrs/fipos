@@ -22,62 +22,80 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'isAdmin'])->group(function () {
     // Admin Routes
     Route::prefix('admin')->name('admin.')->group(function () {
-        // Redirect to the admin categories page when url is localhost:8000/admin
+        // Redirect to the dashboard page when url is localhost:8000/admin
         Route::get('/admin', function () {
-            return redirect()->route('admin.menu.categories');
+            return redirect()->route('admin.dashboard');
         })->name('landing');
 
-        Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
-        Route::get('/order-tracking', [AdminController::class, 'orders'])->name('order-tracking');
-        Route::get('/staff-management', [AdminController::class, 'staff'])->name('staff-management');
-        Route::get('/audit-trails', [AdminController::class, 'audit'])->name('audit-trails');
-        Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
-
-        // Redirect to the admin categories page when url is localhost:8000/admin/menu
-        Route::get('/menu', function () {
-            return redirect()->route('admin.menu.categories');
-        })->name('menu-categories');
-        // Menu Management Routes
-        Route::prefix('menu')->name('menu.')->group(function () {
-            // Route to display the categories and products
-            Route::get('/categories', [MenuController::class, 'categories'])->name('categories');
-            Route::get('/products', [MenuController::class, 'products'])->name('products');
-
-            // Route to store a new category
-            Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
-            // Route to update a category
-            Route::put('/categories', [CategoryController::class, 'update'])->name('categories.update');
-            // Route to delete a category
-            Route::delete('/categories/{id}', [CategoryController::class, 'delete'])->name('categories.delete');
-
-            // Route to store a new product
-            Route::post('/products', [ProductController::class, 'store'])->name('products.store');
-            // Route to update a product
-            Route::put('/products', [ProductController::class, 'update'])->name('products.update');
-            // Route to delete a product
-            Route::delete('/products/{id}', [ProductController::class, 'delete'])->name('products.delete');
-        });
-
+        // Admin Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        // Menu Page
+        Route::get('/menu', [MenuController::class, 'index'])->name('menu');
+        // Reports Page
+        Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
+        // Order Tacking
+        
 
-        Route::view('/add-user', 'user management.add-user')->name('add.user');
-        Route::post('/add-user', [AuthController::class, 'add']);
-
-        Route::view('/edit-profile', 'user management.edit-profile')->name('update.profile');
-        Route::post('/edit-profile', [ProfileController::class, 'updateProfile']);
-
-        Route::view('/success-add-user', 'user management.success-add')->name('success.add.user');
-        Route::view('/success-update-profile', 'user management.success-edit')->name('success.update.profile');
-
-        Route::get('/change-password', [ResetPasswordController::class, 'changePasswordView'])->name('change.password');
-        Route::post('/change-password', [ResetPasswordController::class, 'changePassword']);
-        Route::view('/success-change-password', 'password.change-auth.success-change')->name('success.change.password');
-
-        Route::view('/list-user', 'user management.list-user')->name('list.user');
-        Route::view('/role-management', 'user management.role-management')->name('role-management');
-        Route::get('/users', [UserController::class, 'display'])->name('users.index');
     });
-});
+
+
+//     Route::prefix('admin')->name('admin.')->group(function () {
+//         // Redirect to the admin categories page when url is localhost:8000/admin
+//         Route::get('/admin', function () {
+//             return redirect()->route('admin.menu.categories');
+//         })->name('landing');
+
+//         Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
+//         Route::get('/order-tracking', [AdminController::class, 'orders'])->name('order-tracking');
+//         Route::get('/staff-management', [AdminController::class, 'staff'])->name('staff-management');
+//         Route::get('/audit-trails', [AdminController::class, 'audit'])->name('audit-trails');
+//         Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
+
+//         // Redirect to the admin categories page when url is localhost:8000/admin/menu
+//         Route::get('/menu', function () {
+//             return redirect()->route('admin.menu.categories');
+//         })->name('menu-categories');
+//         // Menu Management Routes
+//         Route::prefix('menu')->name('menu.')->group(function () {
+//             // Route to display the categories and products
+//             Route::get('/categories', [MenuController::class, 'categories'])->name('categories');
+//             Route::get('/products', [MenuController::class, 'products'])->name('products');
+
+//             // Route to store a new category
+//             Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+//             // Route to update a category
+//             Route::put('/categories', [CategoryController::class, 'update'])->name('categories.update');
+//             // Route to delete a category
+//             Route::delete('/categories/{id}', [CategoryController::class, 'delete'])->name('categories.delete');
+
+//             // Route to store a new product
+//             Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+//             // Route to update a product
+//             Route::put('/products', [ProductController::class, 'update'])->name('products.update');
+//             // Route to delete a product
+//             Route::delete('/products/{id}', [ProductController::class, 'delete'])->name('products.delete');
+//         });
+
+//         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+//         Route::view('/add-user', 'user management.add-user')->name('add.user');
+//         Route::post('/add-user', [AuthController::class, 'add']);
+
+//         Route::view('/edit-profile', 'user management.edit-profile')->name('update.profile');
+//         Route::post('/edit-profile', [ProfileController::class, 'updateProfile']);
+
+//         Route::view('/success-add-user', 'user management.success-add')->name('success.add.user');
+//         Route::view('/success-update-profile', 'user management.success-edit')->name('success.update.profile');
+
+//         Route::get('/change-password', [ResetPasswordController::class, 'changePasswordView'])->name('change.password');
+//         Route::post('/change-password', [ResetPasswordController::class, 'changePassword']);
+//         Route::view('/success-change-password', 'password.change-auth.success-change')->name('success.change.password');
+
+//         Route::view('/list-user', 'user management.list-user')->name('list.user');
+//         Route::view('/role-management', 'user management.role-management')->name('role-management');
+//         Route::get('/users', [UserController::class, 'display'])->name('users.index');
+    //});
+ });
 
 // only guests can access these pages
 Route::middleware(['guest'])->group(function () {

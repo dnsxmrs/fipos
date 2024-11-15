@@ -2,14 +2,6 @@
 @extends('layouts.admin-layout')
 
 @section('content')
-        <!-- Header -->
-    <div class="mb-2">
-        <h1 class="font-barlow text-4xl font-bold mr-0">Caffeinated <span
-                class="text-4xl font-bold font-barlow ml-0 text-amber-950">POS</span></h1>
-        <p class="font-barlow text-lg mt-2">{{ now()->setTimezone('Asia/Manila')->format('l, F j, Y g:i A') }}</p>
-
-    </div>
-
     <!-- Main Content -->
     <div class="flex space-x-6 h-[870px]">
         <!--Sub-Sidebar Frame-->
@@ -17,9 +9,7 @@
         <div class="bg-white border rounded-md shadow-md w-[285px]">
 
             <div class="mt-12">
-                <button
-                    id="categoriesButton"
-                    onclick="toggleCategoryButton()"
+                <button id="categoriesButton" onclick="toggleCategoryButton()"
                     class="flex flex-col items-start text-left rounded-lg font-barlow text-xl mb-4 ml-2 w-[268px] h-auto p-4 text-black"
                     style="background-color: #E8C9B2;">
                     <div class="flex items-center">
@@ -31,9 +21,7 @@
             </div>
 
 
-        <button
-                id="productsButton"
-                onclick="toggleProductButton()"
+            <button id="productsButton" onclick="toggleProductButton()"
                 class="flex flex-col items-start text-left rounded-lg font-barlow text-xl mb-4 ml-2 w-[268px] h-auto p-4 text-black"
                 style="background-color: #E8C9B2;">
                 <div class="flex items-center">
@@ -41,9 +29,9 @@
                     <span>Products</span>
                 </div>
                 <p class="text-sm text-gray-800 mt-1 ml-8">Management of products</p>
-        </button>
+            </button>
 
-            </div>
+        </div>
 
 
         <!-- Sub-Sidebar Content -->
@@ -62,7 +50,7 @@
         let isCategoriesActive = true; // Default to Products being active
 
         function toggleCategoryButton() {
-            isCategoriesActive   = true; // Set state to false for Products
+            isCategoriesActive = true; // Set state to false for Products
             localStorage.setItem('activeButton', 'categories'); // Store state
             setButtonStates();
 
@@ -104,6 +92,4 @@
             }
         }
     </script>
-
-
 @endsection

@@ -7,7 +7,14 @@ use App\Models\Product;
 
 class MenuController extends Controller
 {
-    //
+    // return the main page
+    public function index()
+    {
+        return view('admin.menu.categories');
+    }
+
+
+
     public function categories()
     {
         $categories = Category::withCount('products')->get();
