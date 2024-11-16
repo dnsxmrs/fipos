@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     // add the user
-    public function add(Request $request) {
+    public function add(Request $request)
+    {
         // validate the request
         $user = $request->validate([
             'first_name' => ['required', 'max:255', 'regex:/^[A-Za-z\s.-]+$/'],
@@ -29,7 +30,8 @@ class AuthController extends Controller
     }
 
     // login the user
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
 
         // Validate the request
         $credentials = $request->validate([
@@ -77,7 +79,8 @@ class AuthController extends Controller
     }
 
     // method to logout the user
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -87,7 +90,8 @@ class AuthController extends Controller
     }
 
     // method to check password
-    public function checkPassword($password) {
+    public function checkPassword($password)
+    {
         $default_password = 'password';
 
         // Check if the password matches the default password

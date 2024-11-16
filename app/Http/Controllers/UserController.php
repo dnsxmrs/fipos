@@ -8,7 +8,8 @@ use App\Models\User;
 class UserController extends Controller
 {
     // method to display user
-    public function display() {
+    public function display()
+    {
         // retrieve all users
         $users = User::all();
 
