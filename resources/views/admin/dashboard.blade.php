@@ -1,108 +1,13 @@
 <!-- resources/views/admin/products.blade.php -->
-@extends('layouts.admin-layout')
+@extends('layouts.admin_layout')
 
 @section('content')
-    <div class="main-frame">
-        <!-- Main Content -->
-        <div class="content">
-            <div class="header">
-                <h1>Dashboard</h1>
-                <div>
-                    <p>Welcome, {{ Auth::user()->first_name }}</p>
-                    <p>{{ \Carbon\Carbon::now()->isoFormat('dddd, h:mm A') }}</p>
-                </div>
-            </div>
-
-            {{-- success message in center --}}
-            @if (session('success'))
-                <p class="text-green text-center">{{ session('success') }}</p>
-            @endif
-
-            <!-- Action Buttons -->
-            <div class="action-buttons">
-                <div>
-                    <a class="big-button">Audit Trails</a>
-                    <a href="#" class="big-button">Order Management</a>
-                    {{-- add user button --}}
-                    <a href="{{ route('admin.users.index') }}" class="big-button">User Management</a>
-                    {{-- edit profile --}}
-                    <a href="{{ route('admin.update.profile') }}" class="big-button">Edit Profile</a>
-                    {{-- change password --}}
-                    <a href="{{ route('admin.change.password') }}" class="big-button">Change Password</a>
-
-                </div>
-                <div>
-                    {{-- sample button for logout --}}
-                    <a href="{{ route('logout.confirm') }}" class="big-button">Logout</a>
-                </div>
-            </div>
-
-
-
-            <!-- Sales Summary -->
-            <div class="sales-summary">
-                <h2>Sales Summary</h2>
-                <canvas id="salesChart" width="600" height="400"></canvas>
-            </div>
-
-            <!-- Summary Cards -->
-            <div class="summary">
-                <div class="card">
-                    <h3>Total Revenue</h3>
-                    <p>PHP 10,243.00</p>
-                </div>
-                <div class="card">
-                    <h3>Total Dishes Ordered</h3>
-                    <p>23,456</p>
-                </div>
-                <div class="card">
-                    <h3>Total Customers</h3>
-                    <p>1,234</p>
-                </div>
-            </div>
-
-            <!-- Most Ordered and Order Type Sections -->
-            <div class="summary">
-                <div class="most-ordered">
-                    <div class="most-ordered-header">
-                        <h3>Most Ordered</h3>
-                        <select class="dropdown" id="mostOrderedFilter">
-                            <option value="today">Today</option>
-                            <option value="week">This Week</option>
-                            <option value="month">This Month</option>
-                        </select>
-                    </div>
-                    <div class="most-ordered-items">
-                        <!-- Items will be dynamically inserted here -->
-                    </div>
-                </div>
-
-                <div class="order-type">
-                    <div class="most-ordered-header">
-                        <h3>Most Type of Order</h3>
-                        <select class="dropdown" id="orderTypeFilter">
-                            <option value="today">Today</option>
-                            <option value="week">This Week</option>
-                            <option value="month">This Month</option>
-                        </select>
-                    </div>
-                    <div class="order-type-chart">
-                        <canvas id="orderTypeChart" width="300" height="300"></canvas>
-                    </div>
-                </div>
-            </div>
+    <!-- Main Content -->
+    <div class="">
+        <div class="">
         </div>
-    </div>
+        <div class="">
 
-    <!-- Logout Confirmation Modal -->
-    <div id="logoutModal" class="modal">
-        <div class="modal-content">
-            <h3>Confirm Logout</h3>
-            <p>Are you sure you want to log out?</p>
-            <div class="modal-buttons">
-                <button class="modal-button" onclick="confirmLogout()">Yes</button>
-                <button class="modal-button" onclick="closeModal()">No</button>
-            </div>
         </div>
     </div>
 
