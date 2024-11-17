@@ -7,14 +7,14 @@ use App\Models\User;
 
 class AdminController extends Controller
 {
-    public function menu()
+    public function dashboard()
     {
-        return view('admin.menu');
+        return view('admin.dashboard.dashboard');
     }
 
     public function reports()
     {
-        return view('admin.reports');
+        return view('admin.reports.reports');
     }
 
     public function orders()
@@ -26,7 +26,7 @@ class AdminController extends Controller
     {
         $users = User::all();
 
-        return view('admin.staff-management', compact('users'));
+        return view('admin.staff.staff_view', compact('users'));
     }
 
     public function audit()

@@ -1,7 +1,7 @@
 <!-- resources/views/admin/reports.blade.php -->
 @extends('layouts.admin-layout')
 
-@section('content')
+@section('admin_content')
     <div class="main-frame">
         <!-- Main Content -->
         <div class="content">

@@ -1,5 +1,5 @@
 <!-- resources/views/admin/reports.blade.php -->
-@extends('admin.menu')
+@extends('admin.menu.menu')
 
 @section('main-content')
     <div class="mb-4">

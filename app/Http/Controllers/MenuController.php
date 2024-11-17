@@ -13,7 +13,7 @@ class MenuController extends Controller
         $categories = Category::withCount('products')->get();
         $products = Product::all();
 
-        return view('admin.menu.categories', compact('categories', 'products'));
+        return view('admin.menu.categories.categories', compact('categories', 'products'));
     }
     public function products()
     {
@@ -23,6 +23,6 @@ class MenuController extends Controller
         $products = Product::all();
 
         // Return the view and pass the categories
-        return view('admin.menu.products', compact('categories', 'products'));
+        return view('admin.menu.products.products', compact('categories', 'products'));
     }
 }

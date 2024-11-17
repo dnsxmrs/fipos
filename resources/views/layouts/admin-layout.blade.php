@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Caffeinated</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> {{ env('APP_NAME') }} </title>
 
     <!-- Importing the Poppins font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
@@ -16,57 +15,35 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-        function showConfirmationModal() {
-            document.getElementById("confirmation-modal").style.display = "flex";
-        }
-
-        function closeModal() {
-            document.getElementById("confirmation-modal").style.display = "none";
-        }
-
-        function handleFormSubmission(event) {
-            event.preventDefault(); // Prevent actual form submission
-            showConfirmationModal(); // Show confirmation modal
-        }
-    </script>
-
     <style>
         * {
             font-family: "Poppins", sans-serif;
         }
     </style>
-
 </head>
+<body class="bg-gray-100">
+    <!-- Main container -->
+    <div class="flex h-screen overflow-y-auto">
 
-<body>
-    <!--mainframe-->
-    <div class="flex h-screen w-screen bg-[rgb(243,243,243)]">
-        <!--sidebar-->
-        <div class="flex h-screen ">
-            @include('navigation-sidebar.admin-sidebar')
+        <!-- Sidebar container -->
+        <div class="sidebar top-0 bottom-0 left-0  w-20 bg-gray-800 text-black">
+            {{-- Sidebar --}}
+            <x-sidebar.admin-sidebar/>
         </div>
 
+        <!-- Header and content container -->
+        <div class="flex-1 flex flex-col">
+            {{-- <!-- Header -->
+            <div class="shadow-md">
+                <x-header/>
+            </div> --}}
 
-        <!--main content-->
-        <main class="flex-1 p-5px overflow-y-auto w-5/6">
-
-            {{-- header --}}
-            <div class="fixed top-0 w-full bg-white shadow-md z-50">
-                <x-header />
+            <!-- Main content -->
+            <div class="flex-1 p-6">
+                @yield('admin_content')
             </div>
-
-            {{-- frame for content --}}
-            <div class="flex h-screen mx-auto bg-gray-100 ">
-                @yield('content')
-            </div>
-
-        </main>
+        </div>
 
     </div>
 </body>
-
 </html>

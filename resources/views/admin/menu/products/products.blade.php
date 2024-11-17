@@ -1,5 +1,5 @@
 <!-- resources/views/admin/reports.blade.php -->
-@extends('admin.menu')
+@extends('admin.menu.menu')
 
 @section('main-content')
     <!-- Header ng Product Management -->

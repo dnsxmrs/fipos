@@ -27,6 +27,9 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
             return redirect()->route('admin.menu.categories');
         })->name('landing');
 
+
+        // routes for sidebar
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
         Route::get('/order-tracking', [AdminController::class, 'orders'])->name('order-tracking');
         Route::get('/staff-management', [AdminController::class, 'staff'])->name('staff-management');
@@ -58,7 +61,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
             Route::delete('/products/{id}', [ProductController::class, 'delete'])->name('products.delete');
         });
 
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::view('/add-user', 'user management.add-user')->name('add.user');
         Route::post('/add-user', [AuthController::class, 'add']);

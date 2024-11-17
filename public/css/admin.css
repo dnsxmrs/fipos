@@ -6,7 +6,7 @@ html {
     padding: 0;
     background-color: #f3f3f3;
     height: 100%;
-} */ 
+} */
 
 /* .main-frame {
     display: flex;
@@ -67,7 +67,7 @@ html {
 }
 
 /* Sales Summary */
-.sales-summary {
+/* .sales-summary {
     background-color: #fff;
     border-radius: 8px;
     padding: 20px;
@@ -79,9 +79,9 @@ html {
     font-weight: 600;
     font-size: 18px;
     margin-bottom: 20px;
-}
+} */
 
-/* Cards for Summary */
+/* Cards for Summary
 .summary {
     display: flex;
     gap: 20px;
@@ -108,10 +108,10 @@ html {
 .card p {
     font-size: 14px;
     color: #555;
-}
+} */
 
 /* Most Ordered and Order Type Sections */
-.most-ordered,
+/* .most-ordered,
 .order-type {
     background-color: #fff;
     border-radius: 8px;
@@ -125,7 +125,7 @@ html {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
+} */
 
 .most-ordered h3,
 .order-type h3 {

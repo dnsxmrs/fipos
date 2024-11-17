@@ -1,71 +1,54 @@
 <!-- resources/views/admin/products.blade.php -->
 @extends('layouts.admin-layout')
 
-@section('content')
-    <div class="main-frame">
-        <!-- Main Content -->
-        <div class="content">
-            <div class="header">
-                <h1>Reports</h1>
-                <div>
-                    <p>Welcome, {{ Auth::user()->first_name }}</p>
-                    <p class="font-barlow text-lg mt-2">{{ now()->setTimezone('Asia/Manila')->format('l, F j, Y g:i A') }}</p>
-                </div>
+@section('admin_content')
+    <!-- Main Content -->
+    <div class="block">
+        <div class="flex justify-between">
+            <div>
+                <h3 class="text-lg">Dashboard</h3>
+                <p class="text-sm text-gray-500">Welcome, {{ Auth::user()->first_name }}</p>
+                <p class="text-sm text-gray-500">{{ now()->setTimezone('Asia/Manila')->format('l, g:i A') }}</p>
+
             </div>
-
-            {{-- success message in center --}}
-            @if (session('success'))
-                <p class="text-green text-center">{{ session('success') }}</p>
-            @endif
-
-            <!-- Action Buttons -->
-            <div class="action-buttons">
+            <div class="flex justify-between gap-5 mb-5">
                 <div>
-                    <a class="big-button">Audit Trails</a>
-                    <a href="{{ route('admin.reports') }}" class="big-button">Order Tracking</a>
-                    {{-- add user button --}}
-                    <a href="{{ route('admin.staff-management') }}" class="big-button">Staff Management</a>
-                    {{-- edit profile --}}
-                    <a href="{{ route('admin.update.profile') }}" class="big-button">Edit Profile</a>
-                    {{-- change password --}}
-                    <a href="{{ route('admin.change.password') }}" class="big-button">Change Password</a>
-
                 </div>
                 <div>
                     {{-- sample button for logout --}}
                     <a href="{{ route('logout.confirm') }}" class="big-button">Logout</a>
                 </div>
             </div>
+        </div>
+        <div class="flex mt-8">
+            <div class="block">
+                <div class="flex space-x-4 mb-3 flex-wrap ">
+                    <div class="bg-white rounded-lg p-5 w-[calc(33.333%-13.33px)] shadow-md text-center mb-5">
+                        <h3 class=" text-left font-medium mb-2.5 text-base">Total Revenue</h3>
+                        <p class="text-left  text-sm text-[#555]">PHP 10,243.00</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-5 w-[calc(33.333%-13.33px)] shadow-md text-center mb-5">
+                        <h3 class="text-left font-medium mb-2.5 text-base">Total Dishes Ordered</h3>
+                        <p class=" text-left text-sm text-[#555]">23,456</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-5 w-[calc(33.333%-13.33px)] shadow-md text-center mb-5">
+                        <h3 class="text-left font-medium mb-2.5 text-base">Total Customers</h3>
+                        <p class="text-left text-sm text-[#555]">1,234</p>
+                    </div>
 
-
-
-            <!-- Sales Summary -->
-            <div class="sales-summary">
-                <h2>Sales Summary</h2>
-                <canvas id="salesChart" width="600" height="400"></canvas>
+                </div>
+                <!-- Sales Summary -->
+                <div class="bg-white rounded-lg p-5 shadow-md mb-5">
+                    <h2 class="font-semibold text-lg mb-5">Sales Summary</h2>
+                    <canvas id="salesChart" width="600" height="400"></canvas>
+                </div>
             </div>
 
-            <!-- Summary Cards -->
-            <div class="summary">
-                <div class="card">
-                    <h3>Total Revenue</h3>
-                    <p>PHP 10,243.00</p>
-                </div>
-                <div class="card">
-                    <h3>Total Dishes Ordered</h3>
-                    <p>23,456</p>
-                </div>
-                <div class="card">
-                    <h3>Total Customers</h3>
-                    <p>1,234</p>
-                </div>
-            </div>
 
-            <!-- Most Ordered and Order Type Sections -->
-            <div class="summary">
-                <div class="most-ordered">
-                    <div class="most-ordered-header">
-                        <h3>Most Ordered</h3>
+            <div class="block ml-5">
+                <div class="bg-white rounded-lg p-5 shadow-md mb-5 w-full">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-semibold text-base mb-2.5">Most Ordered</h3>
                         <select class="dropdown" id="mostOrderedFilter">
                             <option value="today">Today</option>
                             <option value="week">This Week</option>
@@ -76,10 +59,9 @@
                         <!-- Items will be dynamically inserted here -->
                     </div>
                 </div>
-
-                <div class="order-type">
-                    <div class="most-ordered-header">
-                        <h3>Most Type of Order</h3>
+                <div class="bg-white rounded-lg p-5 shadow-md mb-5 w-full">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-semibold text-base mb-2.5">Most Type of Order</h3>
                         <select class="dropdown" id="orderTypeFilter">
                             <option value="today">Today</option>
                             <option value="week">This Week</option>
