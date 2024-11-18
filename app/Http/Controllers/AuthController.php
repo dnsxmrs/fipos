@@ -73,7 +73,7 @@ class AuthController extends Controller
 
         } catch (\Throwable $th) {
             // Log the error for debugging and show a generic error message
-            \Log::error('Login error: ' . $th->getMessage());
+            Log::error('Login error: ' . $th->getMessage());
             return redirect()->back()->withErrors(['failed' => 'An error occurred. Please try again.']);
         }
     }

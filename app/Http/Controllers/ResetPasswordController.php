@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Validation\Rules\Password as PasswordRule;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
@@ -51,11 +50,10 @@ class ResetPasswordController extends Controller
             'password' => ['required',
                             'min:8',
                             'confirmed',
-                            PasswordRule::min(8)->numbers()->letters()->mixedCase()->symbols(),
-                            'regex:/^\S*$/', // Disallow spaces
+                            'regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])\S{8,}$/'
                         ],
                     ], [
-                        'password.regex' => 'The password cannot contain spaces.',
+                        'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, one number and one special character.',
         ]);
 
         $status = Password::reset(
@@ -76,34 +74,5 @@ class ResetPasswordController extends Controller
                     : back()->withErrors(['error' => [__($status)]]);
     }
 
-    // Method to return change password view
-    public function changePasswordView() {
-        return view('password.change-auth.change-password');
-    }
 
-    // Method to change password
-    public function changePassword(Request $request) {
-        $request->validate([
-            'current_password' => ['required', 'max:255'],
-            'password' => ['required',
-                            'min:8',
-                            'confirmed',
-                            PasswordRule::min(8)->numbers()->letters()->mixedCase()->symbols(),
-                            'regex:/^\S*$/', // Disallow spaces
-                        ],
-                    ], [
-                        'password.regex' => 'The password cannot contain spaces.',
-        ]);
-
-        $user = auth()->user();
-
-        if (!Hash::check($request->current_password, $user->password)) {
-            return back()->withErrors(['current_password' => 'The provided password does not match your current password.']);
-        }
-
-        $user->password = Hash::make($request->password);
-        $user->save();
-
-        return redirect()->route('admin.success.change.password');
-    }
 }

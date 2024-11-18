@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Staff;
-use App\Http\Requests\StoreStaffRequest;
-use App\Http\Requests\UpdateStaffRequest;
+use Illuminate\Http\Request;
 
 class StaffController extends Controller
 {
@@ -13,7 +12,23 @@ class StaffController extends Controller
      */
     public function index()
     {
-        
+        $staffs = Staff::all();
+
+        if ($staffs->count() <= 0) {
+
+            return response()->json([
+
+                'message' => 'No records found.'
+
+            ], 200);
+
+        }
+
+        return response()->json([
+
+            'data' => $staffs
+
+        ], 200);
     }
 
     /**
@@ -27,17 +42,47 @@ class StaffController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreStaffRequest $request)
+    public function storeStaff(Request $request)
     {
-        //
+        $staff = $request->validate([
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'email' => 'required|email|unique:staff',
+            'phone_number' => 'required'
+        ]);
+
+        Staff::create($staff);
+
+
+        return response()->json([
+            'message' => 'Successfully added staff',
+            'data' => $staff
+        ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Staff $staff)
+    public function showStaff(Staff $id)
     {
-        //
+        $staff = Staff::find($id);
+
+        if (!$staff) {
+
+            return response()->json([
+
+                'message' => 'Staff not found'
+
+            ], 404);
+
+        }
+
+        return response()->json([
+
+            'success' => true,
+            'data' => $staff
+
+        ]);
     }
 
     /**
@@ -51,7 +96,7 @@ class StaffController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateStaffRequest $request, Staff $staff)
+    public function updateStaff(Request $request, Staff $staff)
     {
         //
     }
