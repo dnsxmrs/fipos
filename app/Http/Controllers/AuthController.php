@@ -1,84 +1,117 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Mail\WelcomeMail;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    // add the user
-    public function add(Request $request)
+
+    /**
+     * Register a new user
+     */
+    public function registerUser(Request $request)
     {
+
         // validate the request
         $user = $request->validate([
-            'first_name' => ['required', 'max:255', 'regex:/^[A-Za-z\s.-]+$/'],
-            'last_name' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z\s.-]+$/'],
-            'email' => ['required', 'email', 'unique:users', 'max:255'],
+            'first_name' => 'required|max:255|regex:/^[A-Za-z\s.-]+$/',
+            'last_name' => 'required|string|max:255|regex:/^[A-Za-z\s.-]+$/',
+            'email' => 'required|email|unique:users|max:255'
         ]);
 
-        // hash the default password
-        $user['password'] = bcrypt('password');
+        // Generate a random string for password
+        $generatedPassword = Str::random(12);
 
-        // create the user
-        User::create($user);
+        // hash the generated password
+        $user['password'] = Hash::make($generatedPassword);
 
-        // prompt success message
-        return redirect()->route('admin.success.add.user');
-    }
+        // create the user and store it to $user for sending email purposes
+        $user = User::create($user);
 
-    // login the user
-    public function login(Request $request)
-    {
+        // if user is successfully created
+        if ($user) {
 
-        // Validate the request
-        $credentials = $request->validate([
-            'email' => ['required', 'email', 'max:255'],
-            'password' => ['required', 'max:255']
-        ]);
+            // send the credentials to the respective email
+            Mail::to($user->email)->send(new WelcomeMail($user->first_name, $user->email, $generatedPassword));
 
-        try {
-            // Retrieve the user by email
-            $user = User::where('email', $credentials['email'])->first();
-
-            // Check if user exists and retrieve their status
-            if ($user && $user->status === 1) {
-                // Attempt to log in the user
-                if (Auth::attempt($credentials)) {
-                    // Retrieve the authenticated user
-                    $user = Auth::user();
-
-                    // Check if user is logging in for the first time
-                    if ($this->checkPassword($user->password)) {
-                        // Logout the user
-                        Auth::logout();
-                        $request->session()->invalidate();
-                        $request->session()->regenerateToken();
-
-                        // Redirect to change password notice
-                        return redirect()->route('notice.change.password');
-                    }
-
-                    // Check user role and redirect accordingly
-                    return $user->role === 'admin'
-                        ? redirect()->route('admin.dashboard') // if admin
-                        : redirect()->route('cashier.page');
-                }
-            }
-
-            // Redirect back with an error message for invalid credentials
-            return redirect()->back()->withErrors(['failed' => 'Invalid Credentials']);
-
-        } catch (\Throwable $th) {
-            // Log the error for debugging and show a generic error message
-            Log::error('Login error: ' . $th->getMessage());
-            return redirect()->back()->withErrors(['failed' => 'An error occurred. Please try again.']);
+            // prompt success message
+            return redirect()->route('admin.success.add.user');
+        } else {
+            return redirect()->back()->with(['error' => 'Creation of account failed.']);
         }
     }
 
-    // method to logout the user
+
+    /**
+     * Display the login page
+     */
+    public function displayLoginForm()
+    {
+        return view('auth.login');
+    }
+
+
+
+    /**
+     * Login the user
+     */
+    public function login(Request $request)
+    {
+        // Validate the request
+        $credentials = $request->validate([
+            'email' => 'required|email|max:255',
+            'password' => 'required|max:255'
+        ]);
+
+        // attempt to authenticate the user
+        if (Auth::attempt($credentials)) {
+
+            // get the authenticated user
+            $user = Auth::user();
+
+            // check if the status is 1, which means the user is not deleted
+            if ($user->status === 1) {
+
+                // check if the account is not yet activated
+                if ($user->is_activated === 0) {
+
+                    // change is_activated to 1
+                    $user->is_activated = 1;
+                    // Save the changes to the database
+                    $user->save();
+
+                    // force to change password
+                    return redirect()->route('notice.change.password');
+                }
+
+                // Log the login activity for audit trailing purposes
+                // activity('user_login')->log('user login');
+
+                // Check user role and redirect accordingly
+                return $user->role === 'admin'
+                    ? redirect()->route('admin.dashboard') // if admin
+                    : redirect()->route('cashier.page');
+            }
+        }
+
+        // log the user attempt to login
+        activity('attempt_login')->log('attempt to login');
+
+        // Redirect back with an error message for invalid credentials
+        return redirect()->back()->withErrors(['failed' => 'Invalid Credentials']);
+    }
+
+    /**
+     * Logout the user
+     */
     public function logout(Request $request)
     {
         Auth::logout();
@@ -89,7 +122,9 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
-    // method to check password
+    /**
+     * Check if the password is the same as default password
+     */
     public function checkPassword($password)
     {
         $default_password = 'password';
@@ -100,5 +135,4 @@ class AuthController extends Controller
         }
         return false; // Password does not match the default
     }
-
 }

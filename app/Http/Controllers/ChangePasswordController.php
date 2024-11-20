@@ -10,13 +10,15 @@ use App\Models\User;
 class ChangePasswordController extends Controller
 {
 
-    // Method to return change password view
-    public function changePasswordView() {
+    /**
+     * Return form to change password
+     */
+    public function showForm() {
         return view('password.change-auth.change-password');
     }
 
     // Method to change password
-    public function changePassword(Request $request) {
+    public function updatePassword(Request $request) {
         $request->validate([
             'current_password' => ['required', 'max:255'],
             'password' => ['required',
@@ -31,7 +33,7 @@ class ChangePasswordController extends Controller
         $user = Auth::find(Auth::id());
 
         if (!Hash::check($request->current_password, $user->password)) {
-            return back()->withErrors(['current_password' => 'The provided password does not match your current password.']);
+            return redirect()->back()->withErrors(['current_password' => 'The provided password does not match your current password.']);
         }
 
         $user->password = Hash::make($request->password);

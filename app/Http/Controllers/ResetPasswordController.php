@@ -24,7 +24,9 @@ class ResetPasswordController extends Controller
     // method to send reset password link
     public function sendPasswordLink(Request $request) {
         // validate email
-        $request->validate(['email' => ['required', 'email']]);
+        $request->validate([
+            'email' => 'required|email'
+        ]);
 
         $status = Password::sendResetLink(
             $request->only('email')

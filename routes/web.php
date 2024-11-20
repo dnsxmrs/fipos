@@ -18,6 +18,11 @@ Route::middleware(['auth'])->group(function () {
     Route::view('/logout-confirm', 'auth.logout-modal')->name('logout.confirm');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::view('/cashier-page', 'cashier.cashier-main')->name('cashier.page');
+
+    Route::get('/notice-reset-password', [ResetPasswordController::class, 'noticeToChangePassword'])->name('notice.change.password');
+    Route::get('/change-password', [ChangePasswordController::class, 'showForm'])->name('change.password');
+    Route::post('/change-password', [ChangePasswordController::class, 'updatePassword']);
+    Route::view('/success-change-password', 'password.change-auth.success-change')->name('success.change.password');
 });
 
 // only authenticated users and admin can access this page
@@ -66,17 +71,13 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
         // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::view('/add-user', 'user management.add-user')->name('add.user');
-        Route::post('/add-user', [AuthController::class, 'add']);
+        Route::post('/add-user', [AuthController::class, 'registerUser']);
 
         Route::view('/edit-profile', 'user management.edit-profile')->name('update.profile');
         Route::post('/edit-profile', [ProfileController::class, 'updateProfile']);
 
         Route::view('/success-add-user', 'user management.success-add')->name('success.add.user');
         Route::view('/success-update-profile', 'user management.success-edit')->name('success.update.profile');
-
-        Route::get('/change-password', [ChangePasswordController::class, 'changePasswordView'])->name('change.password');
-        Route::post('/change-password', [ChangePasswordController::class, 'changePassword']);
-        Route::view('/success-change-password', 'password.change-auth.success-change')->name('success.change.password');
 
         Route::view('/list-user', 'user management.list-user')->name('list.user');
         Route::view('/role-management', 'user management.role-management')->name('role-management');
@@ -86,10 +87,9 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 
 // only guests can access these pages
 Route::middleware(['guest'])->group(function () {
-    Route::view('/', 'auth.login')->name('login');
+    Route::get('/', [AuthController::class, 'displayLoginForm'])->name('login');
     Route::post('/', [AuthController::class, 'login']);
     // routes for password
-    Route::get('/notice-reset-password', [ResetPasswordController::class, 'noticeToChangePassword'])->name('notice.change.password');
     Route::get('/forgot-password', [ResetPasswordController::class, 'forgotPassword'])->name('password.request');
     Route::post('/forgot-password', [ResetPasswordController::class, 'sendPasswordLink']);
     Route::get('/reset-password/{token}', [ResetPasswordController::class, 'resetPasswordView'])->name('password.reset');
@@ -97,13 +97,12 @@ Route::middleware(['guest'])->group(function () {
 });
 
 
-Route::prefix('staffs')->name('staffs.')->group(function () {
+// Route::prefix('staffs')->name('staffs.')->group(function () {
 
-    Route::post('/', [StaffController::class, 'store'])->name('staff.create');
-    Route::get('/', [StaffController::class, 'index'])->name('staffs.get');
-    Route::get('/{id}', [StaffController::class, 'showStaff'])->name('staff.show');
-
-});
+//     Route::post('/', [StaffController::class, 'store'])->name('staff.create');
+//     Route::get('/', [StaffController::class, 'index'])->name('staffs.get');
+//     Route::get('/{id}', [StaffController::class, 'showStaff'])->name('staff.show');
+// });
 
 
 

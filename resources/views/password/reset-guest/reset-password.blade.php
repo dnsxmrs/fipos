@@ -73,6 +73,10 @@
                             class="filter grayscale">
                     </div>
                 </span>
+
+                @error('password')
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                @enderror
             </div>
 
             @error('error')

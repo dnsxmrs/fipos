@@ -30,7 +30,7 @@
 <body class="flex items-center justify-center min-h-screen bg-white">
     <div class="bg-[#F3F3F3] p-8 rounded-md w-[595px] h-[495px] shadow-lg flex flex-col justify-center items-center">
         <h1 class="text-2xl font-bold mb-4 text-center">Change your password</h1>
-        <form action="{{ route('admin.change.password') }}" method="POST" class="w-full" id="passwordForm">
+        <form action="{{ route('change.password') }}" method="POST" class="w-full" id="passwordForm">
             @csrf
 
             <div class="mb-4">
@@ -82,6 +82,10 @@
                             class="filter grayscale">
                     </div>
                 </span>
+
+                @error('password')
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="mt-8 flex justify-center">
