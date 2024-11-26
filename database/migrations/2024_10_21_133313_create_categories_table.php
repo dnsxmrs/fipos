@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('category_name')->unique(); // Unique category name
             $table->string('image')->nullable(); // Nullable path to image
             $table->timestamps();
+            $table->softDeletes('deleted_at', precision: 0);
         });
     }
 

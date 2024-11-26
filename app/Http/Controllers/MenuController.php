@@ -8,14 +8,16 @@ use App\Models\Product;
 class MenuController extends Controller
 {
     //
-    public function categories()
+    public function showCategories()
     {
         $categories = Category::withCount('products')->get();
         $products = Product::all();
 
         return view('admin.menu.categories.categories', compact('categories', 'products'));
     }
-    public function products()
+
+
+    public function showProducts()
     {
 
         // Fetch categories from the database

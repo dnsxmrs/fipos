@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StaffController;
 
 // only authenticated users can access these pages
@@ -50,8 +51,8 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
         // Menu Management Routes
         Route::prefix('menu')->name('menu.')->group(function () {
             // Route to display the categories and products
-            Route::get('/categories', [MenuController::class, 'categories'])->name('categories');
-            Route::get('/products', [MenuController::class, 'products'])->name('products');
+            Route::get('/categories', [MenuController::class, 'showCategories'])->name('categories');
+            Route::get('/products', [MenuController::class, 'showProducts'])->name('products');
 
             // Route to store a new category
             Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
@@ -107,3 +108,7 @@ Route::middleware(['guest'])->group(function () {
 
 
 Route::get('/categories', [MenuController::class, 'categories'])->name('categories');
+
+
+Route::get('/pay-cashless', [PaymentController::class, 'payCashless'])->name('pay.cashless');
+Route::get('/success', [PaymentController::class, 'success'])->name('pay.success');

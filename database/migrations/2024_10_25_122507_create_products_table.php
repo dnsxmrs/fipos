@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->boolean('isAvailable')->default(true); // Availability defaulting to true
             $table->string('image')->nullable(); // Nullable path to image
             $table->timestamps();
+            $table->softDeletes('deleted_at', precision: 0);
 
             // Foreign key constraint for category_id
             $table->foreign('category_id')->references('category_id')->on('categories')->onDelete('set null');

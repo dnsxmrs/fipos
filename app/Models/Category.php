@@ -4,13 +4,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Category extends Model
 {
 
-    use LogsActivity;
+    use LogsActivity, SoftDeletes;
 
     protected $primaryKey = 'category_id'; // Define the primary key
     protected $fillable = [

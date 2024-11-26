@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Staff extends Model
 {
 
-    use LogsActivity;
+    use LogsActivity, SoftDeletes;
 
     // Explicitly set the table name
     protected $table = 'staffs';
