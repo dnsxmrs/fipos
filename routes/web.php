@@ -14,6 +14,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StaffController;
 
+
 // only authenticated users can access these pages
 Route::middleware(['auth'])->group(function () {
     Route::view('/logout-confirm', 'auth.logout-modal')->name('logout.confirm');
@@ -24,6 +25,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/change-password', [ChangePasswordController::class, 'showForm'])->name('change.password');
     Route::post('/change-password', [ChangePasswordController::class, 'updatePassword']);
     Route::view('/success-change-password', 'password.change-auth.success-change')->name('success.change.password');
+
+});
+
+
+Route::get('/cashier', function () {
+    return view('cashier-draft');
+
 });
 
 // only authenticated users and admin can access this page
@@ -104,6 +112,14 @@ Route::middleware(['guest'])->group(function () {
 //     Route::get('/', [StaffController::class, 'index'])->name('staffs.get');
 //     Route::get('/{id}', [StaffController::class, 'showStaff'])->name('staff.show');
 // });
+
+Route::get('/order-track', function () {
+    return view('pos-cashier.order-track');
+})->name("order.track");
+
+Route::get('/online-order', function () {
+    return view('pos-cashier.online-order');
+})->name("online.order");
 
 
 
