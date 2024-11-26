@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/cashier', function () {
+    return view('cashier-draft');
 });
 
 Route::get('/product-header', function () {
@@ -41,6 +41,14 @@ Route::get('/category-edit', function () {
 Route::get('/category-delete', function () {
     return view('category-management.modal-delete');
 })->name("category.delete");
+
+Route::get('/order-track', function () {
+    return view('pos-cashier.order-track');
+})->name("order.track");
+
+Route::get('/online-order', function () {
+    return view('pos-cashier.online-order');
+})->name("online.order");
 
 
 
