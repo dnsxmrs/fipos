@@ -77,29 +77,25 @@ class AuthController extends Controller
             // get the authenticated user
             $user = Auth::user();
 
-            // check if the status is 1, which means the user is not deleted
-            if ($user->status === 1) {
+            // check if the account is not yet activated
+            if ($user->is_activated === 0) {
 
-                // check if the account is not yet activated
-                if ($user->is_activated === 0) {
+                // change is_activated to 1
+                $user->is_activated = 1;
+                // Save the changes to the database
+                $user->save();
 
-                    // change is_activated to 1
-                    $user->is_activated = 1;
-                    // Save the changes to the database
-                    $user->save();
-
-                    // force to change password
-                    return redirect()->route('notice.change.password');
-                }
-
-                // Log the login activity for audit trailing purposes
-                // activity('user_login')->log('user login');
-
-                // Check user role and redirect accordingly
-                return $user->role === 'admin'
-                    ? redirect()->route('admin.dashboard') // if admin
-                    : redirect()->route('cashier.page');
+                // force to change password
+                return redirect()->route('notice.change.password');
             }
+
+            // Log the login activity for audit trailing purposes
+             activity('user_login')->log('user login');
+
+            // Check user role and redirect accordingly
+            return $user->role === 'admin'
+                ? redirect()->route('admin.dashboard') // if admin
+                : redirect()->route('cashier.page');
         }
 
         // log the user attempt to login
@@ -122,17 +118,4 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
-    /**
-     * Check if the password is the same as default password
-     */
-    public function checkPassword($password)
-    {
-        $default_password = 'password';
-
-        // Check if the password matches the default password
-        if (Hash::check($default_password, $password)) {
-            return true; // Password matches the default
-        }
-        return false; // Password does not match the default
-    }
 }

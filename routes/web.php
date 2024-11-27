@@ -25,14 +25,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/change-password', [ChangePasswordController::class, 'showForm'])->name('change.password');
     Route::post('/change-password', [ChangePasswordController::class, 'updatePassword']);
     Route::view('/success-change-password', 'password.change-auth.success-change')->name('success.change.password');
-
 });
 
 
-Route::get('/cashier', function () {
-    return view('cashier-draft');
+// Route::get('/cashier', function () {
+//     return view('cashier.menu');
+// });
 
-});
+
+Route::get('/menu', [MenuController::class, 'showMenu'])->name('menu.showAll');
+Route::get('/menu/{id}', [MenuController::class, 'showCategorizedMenu'])->name('menu.showPerCategory');
+
 
 // only authenticated users and admin can access this page
 Route::middleware(['auth', 'isAdmin'])->group(function () {

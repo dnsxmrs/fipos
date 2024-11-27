@@ -22,7 +22,6 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => bcrypt('adminpassword123'), // use a secure password
             'role' => 'admin',
-            'status' => true,
             'remember_token' => Str::random(10),
         ]);
     }
