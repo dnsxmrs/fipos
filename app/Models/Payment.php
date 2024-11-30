@@ -7,7 +7,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Payment extends Model
 {
-    use SoftDeletes;
 
-    
+    protected $fillable = [
+        'order_id',
+        'amount',
+        'description',
+        'mode_of_payment',
+        'status'
+    ];
+
+
+    // Relationship with Order
+    public function orders()
+    {
+        $this->hasMany(Order::class);
+    }
 }

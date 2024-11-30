@@ -11,10 +11,28 @@ class Order extends Model
 
 
     protected $fillable = [
-        'name',
-        'description',
+        'order_number',
         'order_type',
-        'product_id',
-        'order_status'
+        'total_price',
+        'user_id',
+        'status'
     ];
+
+    // Relationsip with OrderProduct
+    public function products()
+    {
+        $this->hasMany(Product::class);
+    }
+
+    // Relationship with User
+    public function user()
+    {
+        $this->belongsTo(User::class);
+    }
+
+    // Relationship with Payment
+    public function payment()
+    {
+        $this->belongsTo(Payment::class);
+    }
 }

@@ -3,11 +3,11 @@
     <div class="flex justify-between items-center">
         <!-- Title Section -->
         <div>
-            <h1 class="font-barlow text-4xl font-bold">
+            <h1 class="font-barlow text-xl font-bold">
                 <span class="mr-0">Caffeinated</span>
                 <span class="text-amber-700">POS</span>
             </h1>
-            <p class="font-barlow text-lg mt-2">Sunday, October 20, 2024</p>
+            <p class="font-barlow text-sm mt-2">Sunday, October 20, 2024</p>
         </div>
 
         <!-- Search Bar -->

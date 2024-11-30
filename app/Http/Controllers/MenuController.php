@@ -41,7 +41,7 @@ class MenuController extends Controller
         // fetch the category for display in header
         $categories = Category::all();
 
-        return view('cashier.menu.all-menu', compact('items', 'categories'));
+        return view('cashier.menu.index', compact('items', 'categories'));
     }
 
     /**

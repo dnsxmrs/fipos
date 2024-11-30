@@ -11,7 +11,7 @@
 
         <div class="mt-3 ml-20 flex space-x-4">
             {{-- all menu button --}}
-            <a href=" {{ route('menu.showAll')}} "
+            <a href=" {{ route('menu.showAll') }} "
                 class="p-4 border border-gray-300 rounded-lg shadow-md w-[138px] h-[55px] text-center cursor-pointer hover:bg-amber-100 active:bg-amber-200 bg-white hover:text-amber-500">
                 All Menu
             </a>
@@ -32,21 +32,18 @@
 
             {{-- Display the menu --}}
             @foreach ($items as $item)
-                <!-- Product Card 1 -->
                 <button
-                    class="block p-4 border border-gray-300 rounded-lg shadow-md bg-white w-[200px] hover:bg-amber-100 active:bg-amber-200 bg-white hover:text-amber-500">
+                    class="block p-4 border border-gray-300 rounded-lg shadow-md bg-white w-[200px] hover:bg-amber-100 active:bg-amber-200 bg-white hover:text-amber-500 product-card"
+                    data-name="{{ $item->product_name }}" data-price="{{ $item->product_price }}">
                     <img src="{{ asset($item->image) }}" alt="{{ $item->product_name }}"
                         class="rounded-lg w-[200px] h-[150px] object-cover mb-4">
                     <p class="text-center text-lg font-semibold"> {{ $item->product_name }} </p>
                     <p class="text-center text-gray-500"> {{ $item->product_price }} </p>
                 </button>
             @endforeach
-
-
-
         </div>
 
-
+        {{-- CURRENT ORDER PART --}}
         <!--pos receipt-->
         <div class="absolute bottom-0 right-0 p-4 w-[504px] h-[790px] border border-gray-300 rounded-lg bg-white">
             <h2 class="text-xl font-semibold mb-4 ml-3 mt-3">Current Order</h2>
@@ -307,4 +304,110 @@
             </div><!--POS Closingtag-->
         </div>
     </div>
+@endsection
+
+@section('script')
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const productCards = document.querySelectorAll('.product-card');
+            const orderList = document.querySelector(
+                '.current-order-list'); // Target the container for current order items
+            const subtotalElement = document.querySelector('.subtotal'); // Target the subtotal element
+            const taxElement = document.querySelector('.tax'); // Target the tax element
+            const payableElement = document.querySelector('.payable-amount'); // Target the payable amount element
+
+            let order = []; // To track items in the current order
+
+            productCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const productName = card.getAttribute('data-name');
+                    const productPrice = parseFloat(card.getAttribute('data-price'));
+
+                    // Check if the item is already in the order
+                    const existingItem = order.find(item => item.name === productName);
+
+                    if (existingItem) {
+                        existingItem.quantity += 1;
+                        existingItem.totalPrice += productPrice;
+                    } else {
+                        order.push({
+                            name: productName,
+                            price: productPrice,
+                            quantity: 1,
+                            totalPrice: productPrice
+                        });
+                    }
+
+                    // Update the current order display
+                    renderOrderList();
+
+                    // Update totals
+                    updateTotals();
+                });
+            });
+
+            function renderOrderList() {
+                orderList.innerHTML = ''; // Clear the list before rendering
+                order.forEach(item => {
+                    const orderRow = document.createElement('div');
+                    orderRow.className = 'flex justify-between mt-2 text-sm ml-6';
+
+                    orderRow.innerHTML = `
+                    <span class="w-1/3 text-left">${item.name}</span>
+                    <span class="w-1/3 text-center flex items-center justify-center space-x-2">
+                        <button class="decrease-qty flex items-center justify-center p-3 border border-gray-300 bg-amber-900 text-white rounded-md hover:bg-gray-200 hover:text-amber-900 w-[23px] h-[20px]" data-name="${item.name}">-</button>
+                        <span>${item.quantity}</span>
+                        <button class="increase-qty flex items-center justify-center p-3 border border-gray-300 bg-amber-900 text-white rounded-md hover:bg-gray-200 hover:text-amber-900 w-[23px] h-[20px]" data-name="${item.name}">+</button>
+                    </span>
+                    <span class="w-1/3 text-center">₱ ${item.totalPrice.toFixed(2)}</span>
+                `;
+
+                    orderList.appendChild(orderRow);
+                });
+
+                // Attach event listeners for quantity buttons
+                document.querySelectorAll('.decrease-qty').forEach(button => {
+                    button.addEventListener('click', handleQuantityChange);
+                });
+                document.querySelectorAll('.increase-qty').forEach(button => {
+                    button.addEventListener('click', handleQuantityChange);
+                });
+            }
+
+            function handleQuantityChange(event) {
+                const productName = event.target.getAttribute('data-name');
+                const isIncrease = event.target.classList.contains('increase-qty');
+
+                const item = order.find(i => i.name === productName);
+
+                if (item) {
+                    if (isIncrease) {
+                        item.quantity += 1;
+                        item.totalPrice += item.price;
+                    } else {
+                        item.quantity -= 1;
+                        item.totalPrice -= item.price;
+
+                        if (item.quantity === 0) {
+                            order = order.filter(i => i.name !== productName);
+                        }
+                    }
+
+                    // Update the order list and totals
+                    renderOrderList();
+                    updateTotals();
+                }
+            }
+
+            function updateTotals() {
+                const subtotal = order.reduce((sum, item) => sum + item.totalPrice, 0);
+                const tax = subtotal * 0.12; // Example: 12% tax
+                const payable = subtotal + tax;
+
+                subtotalElement.textContent = `₱ ${subtotal.toFixed(2)}`;
+                taxElement.textContent = `₱ ${tax.toFixed(2)}`;
+                payableElement.textContent = `₱ ${payable.toFixed(2)}`;
+            }
+        });
+    </script>
 @endsection

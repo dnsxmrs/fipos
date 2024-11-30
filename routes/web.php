@@ -120,6 +120,10 @@ Route::get('/order-track', function () {
     return view('pos-cashier.order-track');
 })->name("order.track");
 
+Route::get('/reset', function () {
+    return view('auth.reset-password');
+})->name("reset");
+
 Route::get('/online-order', function () {
     return view('pos-cashier.online-order');
 })->name("online.order");
@@ -131,3 +135,13 @@ Route::get('/categories', [MenuController::class, 'categories'])->name('categori
 
 Route::get('/pay-cashless', [PaymentController::class, 'payCashless'])->name('pay.cashless');
 Route::get('/success', [PaymentController::class, 'success'])->name('pay.success');
+
+
+// sample routes
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
+
+Route::get('/cashier', [MenuController::class, 'showMenu'])->name('cashier');
+
+Route::post('/order', [MenuController::class, 'storeOrder'])->name('order.store');
