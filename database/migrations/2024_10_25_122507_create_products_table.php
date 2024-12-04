@@ -13,10 +13,11 @@ class CreateProductsTable extends Migration
             $table->id(); // Primary key column with unique, auto-incremented ID
             $table->string('product_name'); // Unique name for each product
             $table->text('product_description')->nullable(); // Nullable description
-            $table->decimal('product_price', 8, 2); // Price with 2 decimal places
-            $table->unsignedBigInteger('category_id')->nullable(); // Nullable foreign key to category
-            $table->boolean('isAvailable')->default(true); // Availability defaulting to true
-            $table->string('image')->nullable(); // Nullable path to image
+            $table->decimal('product_price', 10, 2); // Price with 2 decimal places
+            $table->boolean('isAvailable')->default(true); // Availability flag (default: true)
+            $table->boolean('has_customization')->default(false); // Customization flag (default: false)
+            $table->string('image')->nullable(); // Nullable image for the product
+            $table->unsignedBigInteger('category_id')->nullable(); // Foreign key to category
             $table->timestamps();
             $table->softDeletes('deleted_at', precision: 0);
 

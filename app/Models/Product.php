@@ -17,9 +17,10 @@ class Product extends Model
         'product_name',
         'product_description',
         'product_price',
-        'category_id',
         'isAvailable',
-        'image'
+        'has_customization',
+        'image',
+        'category_id',
     ];
 
     // Define relationship with Category
@@ -37,9 +38,10 @@ class Product extends Model
                 'product_name',
                 'product_description',
                 'product_price',
-                'category_id',
                 'isAvailable',
-                'image'
+                'has_customization',
+                'image',
+                'category_id',
 
             ])
             ->useLogName('product_activity') // Customize log name

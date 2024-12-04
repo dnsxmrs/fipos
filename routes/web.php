@@ -57,8 +57,8 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 
         // Redirect to the admin categories page when url is localhost:8000/admin/menu
         Route::get('/menu', function () {
-            return redirect()->route('admin.menu.categories');
-        })->name('menu-categories');
+            return redirect()->route('admin.menu.categories');});
+
         // Menu Management Routes
         Route::prefix('menu')->name('menu.')->group(function () {
             // Route to display the categories and products

@@ -16,6 +16,8 @@ class Category extends Model
     protected $primaryKey = 'category_id'; // Define the primary key
     protected $fillable = [
         'category_name'
+        , 'type'
+        , 'beverage_type'
         , 'image'
     ]; // Fillable fields
 
@@ -32,8 +34,10 @@ class Category extends Model
         return LogOptions::defaults()
             ->logOnly([
 
-                'category_name',
-                'emage',
+                'category_name'
+                , 'type'
+                , 'beverage_type'
+                , 'image'
 
             ])
             ->useLogName('category_activity') // Customize log name

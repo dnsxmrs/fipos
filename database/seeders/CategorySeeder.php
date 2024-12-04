@@ -16,24 +16,76 @@ class CategorySeeder extends Seeder
         //
         DB::table('categories')->insert([
             [
-                'category_name' => 'Beverages',
-                'image' => 'images/products/beverages.jpg'
+                'beverage_type' => 'iced',
+                'created_at' => now(),
+                'deleted_at' => null,  // Add null value for deleted_at
+                'image' => 'assets/iced-coffee-icon.png',
+                'category_name' => 'Iced Coffee',
+                'type' => 'beverage',
+                'updated_at' => now(),  // Add current timestamp for updated_at
             ],
             [
-                'category_name' => 'Desserts',
-                'image' => 'images/products/desserts.jpg'
+                'beverage_type' => 'hot',
+                'created_at' => now(),
+                'deleted_at' => null,
+                'image' => 'assets/hot-coffee-icon.png',
+                'category_name' => 'Hot Coffee',
+                'type' => 'beverage',
+                'updated_at' => now(),
             ],
             [
-                'category_name' => 'Cakes',
-                'image' => 'images/products/cakes.jpg'
+                'beverage_type' => 'iced',
+                'created_at' => now(),
+                'deleted_at' => null,
+                'image' => 'assets/iced-non-coffee-icon.png',
+                'category_name' => 'Iced Non-Coffee',
+                'type' => 'beverage',
+                'updated_at' => now(),
             ],
             [
-                'category_name' => 'Sandwiches',
-                'image' => 'images/products/sandwiches.jpg'
+                'beverage_type' => 'hot',
+                'created_at' => now(),
+                'deleted_at' => null,
+                'image' => 'assets/hot-non-coffee-icon.png',
+                'category_name' => 'Hot Non-Coffee',
+                'type' => 'beverage',
+                'updated_at' => now(),
             ],
             [
-                'category_name' => 'Appetizers',
-                'image' => 'images/products/appetizers.jpg'
+                'beverage_type' => 'iced',
+                'created_at' => now(),
+                'deleted_at' => null,
+                'image' => 'assets/frappuccino-espresso-icon.png',
+                'category_name' => 'Frappuccino Espresso',
+                'type' => 'beverage',
+                'updated_at' => now(),
+            ],
+            [
+                'beverage_type' => 'iced',
+                'created_at' => now(),
+                'deleted_at' => null,
+                'image' => 'assets/frappuccino-non-espresso-icon.png',
+                'category_name' => 'Frappuccino Non-Espresso',
+                'type' => 'beverage',
+                'updated_at' => now(),
+            ],
+            [
+                'beverage_type' => null,
+                'created_at' => now(),
+                'deleted_at' => null,
+                'image' => 'assets/snack-icon.png',
+                'category_name' => 'Snack',
+                'type' => 'food',
+                'updated_at' => now(),
+            ],
+            [
+                'beverage_type' => null,
+                'created_at' => now(),
+                'deleted_at' => null,
+                'image' => 'assets/dessert-icon.png',
+                'category_name' => 'Dessert',
+                'type' => 'food',
+                'updated_at' => now(),
             ],
         ]);
     }
