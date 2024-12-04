@@ -12,8 +12,6 @@
     <title>Caffeinated</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
-
-
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -44,6 +42,6 @@
     </div>
 </body>
 
-@yield('script')
+<script src="{{ asset('js/cashier-order.js') }}"></script>
 
 </html>

@@ -26,7 +26,7 @@ class AdminController extends Controller
     {
         $users = User::all();
 
-        return view('admin.staff.staff_view', compact('users'));
+        return view('admin.staffs.index', compact('users'));
     }
 
     public function audit()

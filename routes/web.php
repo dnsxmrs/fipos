@@ -11,31 +11,37 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StaffController;
-
 
 // only authenticated users can access these pages
 Route::middleware(['auth'])->group(function () {
     Route::view('/logout-confirm', 'auth.logout-modal')->name('logout.confirm');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::view('/cashier-page', 'cashier.cashier-main')->name('cashier.page');
 
     Route::get('/notice-reset-password', [ResetPasswordController::class, 'noticeToChangePassword'])->name('notice.change.password');
     Route::get('/change-password', [ChangePasswordController::class, 'showForm'])->name('change.password');
     Route::post('/change-password', [ChangePasswordController::class, 'updatePassword']);
     Route::view('/success-change-password', 'password.change-auth.success-change')->name('success.change.password');
+
+    // ROUTES FOR CASHIER
+    Route::prefix('cashier')->group(function () {
+        // Redirect to the admin categories page when url is localhost:8000/admin
+        Route::get('/cashier', function () {
+            return redirect()->route('menu.show');
+        })->name('cashier.main');
+
+        Route::get('/menu', [MenuController::class, 'showMenu'])->name('menu.show');
+        Route::get('/menu/{id}', [MenuController::class, 'showCategorizedMenu'])->name('menu.categorized');
+        Route::post('/menu', [OrderController::class, 'storeOrder'])->name('order.store');
+        Route::post('/pay-cash', [PaymentController::class, 'payCash'])->name('pay.cash');
+        Route::post('/pay-cashless', [PaymentController::class, 'payCashless'])->name('pay.cashless');
+        Route::get('/orders', [OrderController::class, 'showOrders'])->name('orders.show');
+        Route::get('/orders-online', [OrderController::class, 'showOnlineOrders'])->name('online.orders.show');
+
+    });
 });
-
-
-// Route::get('/cashier', function () {
-//     return view('cashier.menu');
-// });
-
-
-Route::get('/menu', [MenuController::class, 'showMenu'])->name('menu.showAll');
-Route::get('/menu/{id}', [MenuController::class, 'showCategorizedMenu'])->name('menu.showPerCategory');
-
 
 // only authenticated users and admin can access this page
 Route::middleware(['auth', 'isAdmin'])->group(function () {
@@ -59,6 +65,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
         Route::get('/menu', function () {
             return redirect()->route('admin.menu.categories');
         })->name('menu-categories');
+
         // Menu Management Routes
         Route::prefix('menu')->name('menu.')->group(function () {
             // Route to display the categories and products
@@ -81,7 +88,6 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
         });
 
         // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
         Route::view('/add-user', 'user management.add-user')->name('add.user');
         Route::post('/add-user', [AuthController::class, 'registerUser']);
 
@@ -136,12 +142,3 @@ Route::get('/categories', [MenuController::class, 'categories'])->name('categori
 Route::get('/pay-cashless', [PaymentController::class, 'payCashless'])->name('pay.cashless');
 Route::get('/success', [PaymentController::class, 'success'])->name('pay.success');
 
-
-// sample routes
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
-
-Route::get('/cashier', [MenuController::class, 'showMenu'])->name('cashier');
-
-Route::post('/order', [MenuController::class, 'storeOrder'])->name('order.store');

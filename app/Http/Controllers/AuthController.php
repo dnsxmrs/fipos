@@ -95,7 +95,7 @@ class AuthController extends Controller
             // Check user role and redirect accordingly
             return $user->role === 'admin'
                 ? redirect()->route('admin.dashboard') // if admin
-                : redirect()->route('cashier.page');
+                : redirect()->route('menu.show');
         }
 
         // log the user attempt to login

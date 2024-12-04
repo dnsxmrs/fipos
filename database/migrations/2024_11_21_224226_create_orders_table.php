@@ -14,12 +14,15 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('order_number')->unique();
-            $table->enum('order_type', ['dine-in', 'take out']);
+            $table->enum('order_type', ['dine-in', 'take-out']);
             $table->decimal('total_price', 10, 2);
+            $table->decimal('tax_amount', 10, 2);
+            $table->enum('discount_type', ['none', 'senior citizen', 'pwd'])->default('none');
+            $table->decimal('discount_amount', 10, 2);
+            $table->decimal('subtotal', 10, 2);
             $table->unsignedBigInteger('user_id'); // user that processed the order
             $table->enum('status', ['pending', 'preparing', 'ready', 'completed', 'cancelled'])->default('pending');
             $table->timestamps();
-            $table->softDeletes('deleted_at', precision: 0);
 
             // foreign key constraints
             $table->foreign('user_id')->references('id')->on('users')->noActionOnDelete();

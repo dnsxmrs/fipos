@@ -28,6 +28,14 @@ class Product extends Model
         return $this->belongsTo(Category::class, 'category_id', 'category_id');
     }
 
+    // relationship with orderproducts
+    public function orderProducts()
+    {
+        return $this->hasMany(OrderProduct::class);
+    }
+
+
+
     /** Activity that will be log if changed or created */
     public function getActivitylogOptions(): LogOptions
     {

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->mediumText('description')->nullable();
             $table->enum('mode_of_payment', ['cash', 'cashless']);
-            $table->enum('status', ['pending', 'completed', 'failed'])->default('pending');
+            $table->enum('status', ['pending', 'paid', 'failed'])->default('pending');
             $table->timestamps();
 
             // foreign key constraint

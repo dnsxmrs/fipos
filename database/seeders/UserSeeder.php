@@ -22,7 +22,15 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => bcrypt('adminpassword123'), // use a secure password
             'role' => 'admin',
-            'remember_token' => Str::random(10),
+        ]);
+
+        User::create([
+            'first_name' => 'Darben',
+            'last_name' => 'Pogi',
+            'email' => 'darben@gmail.com',
+            'email_verified_at' => now(),
+            'password' => bcrypt('password123'), // use a secure password
+            'role' => 'staff',
         ]);
     }
 }

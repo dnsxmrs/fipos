@@ -133,7 +133,7 @@
             logoutModal.classList.remove('active');
             logoutModal.setAttribute('aria-hidden', 'true');
             // Redirect back to the referring page
-            window.location.href = document.referrer || "{{ route('cashier.page') }}"; // Fallback to cashier page if referrer is not available
+            window.location.href = document.referrer; // Fallback to cashier page if referrer is not available
         }
 
         // Call showModal to display it (or implement a button click to trigger it)

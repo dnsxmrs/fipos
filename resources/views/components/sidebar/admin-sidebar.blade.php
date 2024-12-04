@@ -49,4 +49,9 @@
         <img src="{{ asset('Assets/Setting.png') }}" alt="Settings Icon" class="w-6 h-6 mb-2">
         <span class="text-xs">Settings</span>
     </a>
+
+    <div class="mt-20 bg-orange-200 h-10">
+        {{-- sample button for logout --}}
+        <a href="{{ route('logout.confirm') }}" class="big-button">Logout</a>
+    </div>
 </div>

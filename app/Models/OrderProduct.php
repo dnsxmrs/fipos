@@ -23,7 +23,6 @@ class OrderProduct extends Model
     // Relationship with Products
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class, 'product_id', 'id');
     }
-
 }
