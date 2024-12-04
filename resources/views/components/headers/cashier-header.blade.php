@@ -7,7 +7,7 @@
                 <span class="mr-0">Caffeinated</span>
                 <span class="text-amber-700">POS</span>
             </h1>
-            <p class="font-barlow text-sm mt-2">Sunday, October 20, 2024</p>
+            <p class="font-barlow text-sm mt-2">{{ now()->setTimezone('Asia/Manila')->format('l, g:i A') }}</p>
         </div>
 
         <!-- Search Bar -->

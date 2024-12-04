@@ -10,7 +10,7 @@
                     <span class="mr-0">Online</span>
                     <span class="text-amber-700">Orders</span>
                 </h1>
-                <p class="font-barlow text-m mt-2">Sunday, October 20, 2024</p>
+                <p class="font-barlow text-m mt-2">{{ now()->setTimezone('Asia/Manila')->format('l, g:i A') }}</p>
             </div>
         </header>
 

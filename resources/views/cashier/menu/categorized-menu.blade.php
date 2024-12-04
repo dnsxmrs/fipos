@@ -257,10 +257,12 @@
                 .then(data => {
                     console.log('Order submitted successfully:', data);
 
-                    if (data.redirect) {
-                        // redirect to menu page
+                    success();
+
+                    setTimeout(() => {
+                        // Redirect to menu page
                         window.location.href = data.redirect;
-                    }
+                    }, 3000);
 
                     // Optionally clear the order
                     // clearOrder();

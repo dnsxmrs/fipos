@@ -52,7 +52,6 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
             return redirect()->route('admin.menu.categories');
         })->name('landing');
 
-
         // routes for sidebar
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
@@ -65,7 +64,6 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
         Route::get('/menu', function () {
             return redirect()->route('admin.menu.categories');
         })->name('menu-categories');
-            return redirect()->route('admin.menu.categories');});
 
         // Menu Management Routes
         Route::prefix('menu')->name('menu.')->group(function () {
