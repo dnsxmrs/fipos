@@ -74,12 +74,15 @@
                             <div class="text-2xl">+</div>
                             <span class="block mt-2">Upload Image</span>
                         </div>
+                        @error('image')
+                            <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
+                        @enderror
                     </label>
                     <div class="flex flex-col items-center mt-4">
                         <div class="relative w-[350px] mb-4">
                             <input id="itemName"
                             class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
-                            type="text" placeholder="Item name " name="product_name" required>
+                            type="text" placeholder="Category Name " name="category_name" required>
                         <label
                         class="text-sm absolute left-2 -top-5 scale-75 text-gray-500 origin-left"
                             for="itemName">Category name</label>
@@ -148,7 +151,7 @@
                         <div class="relative w-[350px] mb-4">
                             <input id="editCategoryName"
                             class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
-                            type="text" placeholder="Item name " name="product_name" required>
+                            type="text" placeholder="Category Name" name="category_name" required>
                         <label
                         class="text-sm absolute left-2 -top-6 scale-75 text-gray-500 origin-left"
                             for="itemName">Category name</label>
@@ -299,6 +302,8 @@
             dialog.classList.remove('hidden');
             setTimeout(() => dialog.classList.remove('opacity-0'), 0);
         }
+
+
         // Hide the added item dialog
         function hideAddedDialog() {
             const dialog = document.getElementById('added-dialog');

@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 class ProductController extends Controller
 {
@@ -26,19 +27,24 @@ class ProductController extends Controller
             throw $e; // or handle the exception as needed
         }
         // Initialize path as null
-        $path = null;
+        $path = 'https://example-gateway.com/public-key/image/upload/container/image.jpg';
         // Handle the file upload if an image is provided
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('images/products', 'public');
         }
-        Product::create([
+        $product = Product::create([
             'product_name' => $request->input('product_name'),
             'product_description' => $request->input('product_description'),
             'product_price' => $request->input('product_price'),
             'category_id' => $request->input('category_id'),
             'isAvailable' => true, // Set default value for isAvailable
+            'has_customization' => false, // Set default value for has_customization
             'image' => $path,
         ]);
+
+        // Sync with OOS after product creation
+        $this->syncWithOos('POST', $product);
+
         return redirect()->back()->with('success', 'Product added successfully!');
     }
 
@@ -79,6 +85,9 @@ class ProductController extends Controller
                 'image' => $path,
             ]);
 
+            // Sync with OOS after product update
+            $this->syncWithOos('PUT', $product);
+
             return redirect()->route('admin.menu.products')->with('success', 'Product updated successfully!');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -98,7 +107,79 @@ class ProductController extends Controller
         }
         // Delete the product
         $product->delete();
+
+        // Sync with OOS after product deletion
+        $this->syncWithOos('DELETE', $product);
+
         // Return a JSON response for AJAX requests
         return response()->json(['message' => 'Product deleted successfully!'], 200);
+    }
+
+    // Sync with OOS after product operation (create, update, delete)
+    protected function syncWithOos(string $method, $product)
+    {
+        $url = 'http://127.0.0.1:8000/api/webhook/product-update'; // Change to your OOS API endpoint
+
+        // Prepare the data to send to OOS
+        $data = [
+            'product_id' => $product->id,
+            'name' => $product->product_name,
+            'description' => $product->product_description,
+            'price' => $product->product_price,
+            'isAvailable' => $product->isAvailable,
+            'has_customization' => $product->has_customization,
+            'image' => $product->image ? asset('storage/' . $product->image) : null, // Store full URL path for OOS
+            'category_number' => $product->category_id,
+
+            // 'name' => 'required|string|max:255', // Ensure the name is required and not too long
+            // 'description' => 'nullable|string|max:1000', // Allow null, limit description length to avoid overly large data
+            // 'price' => 'required|numeric|between:0,999999.99', // Ensure the price is numeric and within a reasonable range
+            // 'isAvailable' => 'required|boolean', // Ensure availability is explicitly set to true/false
+            // 'has_customization' => 'required|boolean', // Ensure customization flag is explicitly set
+            // 'image' => 'nullable|image|max:2048', // Validate image file if provided, limit size to 2MB
+            // 'category_number' => 'nullable|integer|exists:categories,category_number', // Ensure category exists if provided
+
+        ];
+
+        Log::info('Sending data to OOS:', [
+            'method' => $method,
+            'url' => $url,
+            'data' => $data,
+            // 'category_number' => $category->category_id,
+            // 'category_name' => $category->category_name,
+            // 'type' => $category->type,
+            // 'beverage_type' => $category->beverage_type,
+            // 'image_url' => $category->image ? asset('storage/' . $category->image) : null,
+        ]);
+
+        // Perform the HTTP request to sync with OOS
+        try {
+            $response = Http::send($method, $url, [
+                'json' => $data,
+            ]);
+
+            if ($response->failed()) {
+                \Log::error('Failed to sync with OOS', [
+                    'method' => $method,
+                    'url' => $url,
+                    'status' => $response->status(),
+                    'message' => $response->body(),
+                ]);
+            } else {
+                \Log::info('Successfully synced with OOS', [
+                    'method' => $method,
+                    'url' => $url,
+                    'status' => $response->status(),
+                    'message' => $response->body(),
+                ]);
+            }
+
+        } catch (\Exception $e) {
+            \Log::error('Error syncing with OOS', [
+                'error' => $e->getMessage(),
+                'method' => $method,
+                'url' => $url,
+            ]);
+        }
     }
 }

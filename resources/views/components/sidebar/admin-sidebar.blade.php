@@ -55,3 +55,34 @@
         <a href="{{ route('logout.confirm') }}" class="big-button">Logout</a>
     </div>
 </div>
+
+<script>
+    // Set the default active button if none is stored
+    document.addEventListener('DOMContentLoaded', function () {
+        const defaultButton = 'dashboard';
+        const storedButton = localStorage.getItem('adminButton');
+
+        // If no button is stored, default to 'dashboard'
+        if (!storedButton) {
+            localStorage.setItem('adminButton', defaultButton);
+        }
+
+        // Add click event listeners to all sidebar buttons
+        const buttons = document.querySelectorAll('.flex.flex-col.items-center');
+        buttons.forEach(button => {
+            button.addEventListener('click', function () {
+                const buttonName = this.querySelector('span').textContent.trim(); // Get the button name
+                setActiveButton(buttonName);
+            });
+        });
+    });
+
+    // Function to store the active button in localStorage
+    function setActiveButton(buttonName) {
+        localStorage.setItem('adminButton', buttonName.toLowerCase());
+
+        if (buttonName === 'Menu') {
+            localStorage.setItem('activeButton', 'categories');
+        }
+    }
+</script>
