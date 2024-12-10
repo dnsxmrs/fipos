@@ -297,17 +297,11 @@ function success()
  */
 function reloadPage(forceReload = false)
 {
+    resetOrder();
     location.reload(forceReload);
 
 }
 
-/**
- * for cashless payment
- */
-function payCashless()
-{
-    alert('wala pa to, ongoing development');
-}
 
 // back to payment method modal
 function backToPaymentMethod()
@@ -362,13 +356,13 @@ document.getElementById("closeModal").addEventListener("click", () => {
     paymentModal.classList.add("hidden");
 });
 
-// Optional: Close the modal when clicking outside of it
-window.addEventListener("click", (event) => {
-    const modal = document.getElementById("paymentModal");
-    if (event.target === modal) {
-        modal.classList.add("hidden");
-    }
-});
+// // Optional: Close the modal when clicking outside of it
+// window.addEventListener("click", (event) => {
+//     const modal = document.getElementById("paymentModal");
+//     if (event.target === modal) {
+//         modal.classList.add("hidden");
+//     }
+// });
 
 // Open Payment Modal
 document.getElementById("openModal").addEventListener("click", () => {
@@ -380,5 +374,4 @@ document.getElementById("openModal").addEventListener("click", () => {
 
     paymentModal.classList.remove("hidden");
 
-    // submitOrder();
 });

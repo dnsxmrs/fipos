@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/menu', [OrderController::class, 'storeOrder'])->name('order.store');
         Route::post('/pay-cash', [PaymentController::class, 'payCash'])->name('pay.cash');
         Route::post('/pay-cashless', [PaymentController::class, 'payCashless'])->name('pay.cashless');
+        Route::get('/pay-cashless/success', [PaymentController::class, 'success'])->name('pay.success');
         Route::get('/orders', [OrderController::class, 'showOrders'])->name('orders.show');
         Route::get('/orders-online', [OrderController::class, 'showOnlineOrders'])->name('online.orders.show');
 
@@ -138,6 +139,6 @@ Route::get('/online-order', function () {
 Route::get('/categories', [MenuController::class, 'categories'])->name('categories');
 
 
-Route::get('/pay-cashless', [PaymentController::class, 'payCashless'])->name('pay.cashless');
-Route::get('/success', [PaymentController::class, 'success'])->name('pay.success');
-
+// Route::post('/pay-cashless', [PaymentController::class, 'payCashless'])->name('pay.cashless');
+// Route::post('/pay-cashless/success', [PaymentController::class, 'success'])->name('pay.success');
+Route::get('/menu', [MenuController::class, 'showMenu'])->name('menu.show');

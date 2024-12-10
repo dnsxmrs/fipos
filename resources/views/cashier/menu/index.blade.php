@@ -120,7 +120,7 @@
                         class="w-[120px] px-4 py-2 bg-blue-200 text-black border border-blue-500 rounded-full hover:bg-gray-200 mt-4">
                         Cash
                     </button>
-                    <button value="cashless" onclick="payCashless()"
+                    <button id="cashlessButton" value="cashless" onclick="payCashless()"
                         class="w-[120px] px-4 py-2 bg-blue-200 text-black border border-blue-500 rounded-full hover:bg-gray-200">
                         Cashless
                     </button>
@@ -232,7 +232,7 @@
             // call the submit order function to get the payload
             const payload = submitOrder();
 
-            // Send the data to the server
+            // Send the data to the PaymentController
             fetch('{{ route('pay.cash') }}', {
                     method: 'POST',
                     headers: {
@@ -266,6 +266,54 @@
                 });
         }
 
+
+        /*
+            HANDLES CASHLESS PAYMENT - BACKEND
+        */
+        function payCashless ()
+        {
+            // call the submit order function to get the payload
+            const payload = submitOrder();
+
+            // get the mode of payment
+            payload.modeOfPayment = document.getElementById('cashlessButton').value;
+
+            // Send the data to the server
+            fetch('{{ route('pay.cashless') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    },
+                    body: JSON.stringify(payload),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Failed to submit order');
+                    }
+                })
+                .then(data => {
+                    console.log('Order submitted successfully:', data);
+
+                    // success();
+
+                    setTimeout(() => {
+                        // Redirect to menu page
+                        window.location.href = data.redirect;
+                    });
+
+                })
+                .catch(error => {
+                    console.error('Error submitting order:', error);
+                });
+        }
+
+
+        /*
+            SUBMITS THE ORDER
+        */
         function submitOrder() {
             // get the data from the ui element
             subTotal = parseFloat(document.getElementById("sub-total").textContent.replace('₱ ', '').replace(',', ''));

@@ -29,12 +29,12 @@ class Order extends Model
     // Relationship with User
     public function user()
     {
-        $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     // Relationship with Payment
     public function payment()
     {
-        $this->belongsTo(Payment::class, 'payment_id', 'id');
+        return $this->belongsTo(Payment::class, 'payment_id', 'id');
     }
 }

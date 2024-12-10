@@ -90,7 +90,7 @@ class AuthController extends Controller
             }
 
             // Log the login activity for audit trailing purposes
-             activity('user_login')->log('user login');
+            activity('user_login')->log('user login');
 
             // Check user role and redirect accordingly
             return $user->role === 'admin'

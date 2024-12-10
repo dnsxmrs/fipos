@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('order_id');
             $table->decimal('amount', 10, 2);
             $table->mediumText('description')->nullable();
-            $table->enum('mode_of_payment', ['cash', 'cashless']);
+            $table->enum('mode_of_payment', ['cash', 'card', 'gcash', 'paymaya']);
             $table->enum('status', ['pending', 'paid', 'failed'])->default('pending');
             $table->timestamps();
 

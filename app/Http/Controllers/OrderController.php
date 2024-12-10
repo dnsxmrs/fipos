@@ -71,9 +71,9 @@ class OrderController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Order Created',
-                'data' => $createdOrder
-
+                'data' => $createdOrder,
             ], 201);
+
         } catch (ValidationException $e) {
             Log::error('Validation Errors:', $e->errors());
             return response()->json(['errors' => $e->errors()], 422);
