@@ -4,32 +4,11 @@
 @section('admin_content')
     <!-- Main Content -->
     <div class="flex space-x-6 h-[870px]">
-        <!--Sub-Sidebar Frame-->
+        <!-- Sub-Sidebar Frame -->
         <!-- Sub-Sidebar Options -->
-        <div class="bg-white border rounded-md shadow-md w-[285px]">
-            <div class="mt-12">
-                <button id="categoriesButton" onclick="toggleCategoryButton()"
-                    class="flex flex-col items-start text-left rounded-lg font-barlow text-xl mb-4 ml-2 w-[268px] h-auto p-4 text-black"
-                    style="background-color: transparent;">
-                    <div class="flex items-center">
-                        <img src="{{ asset('Assets/category-icon.png') }}" alt="Category Icon" class="w-6 h-6 mr-2 ml-3">
-                        <span>Categories</span>
-                    </div>
-                    <p class="text-sm text-gray-800 mt-1 ml-9">Management of categories</p>
-                </button>
-                <button id="productsButton" onclick="toggleProductButton()"
-                    class="flex flex-col items-start text-left rounded-lg font-barlow text-xl mb-4 ml-2 w-[268px] h-auto p-4 text-black"
-                    style="background-color: transparent;">
-                    <div class="flex items-center">
-                        <img src="{{ asset('Assets/product-icon.png') }}" alt="Product Icon" class="w-6 h-6 mr-2 ml-3">
-                        <span>Products</span>
-                    </div>
-                    <p class="text-sm text-gray-800 mt-1 ml-8">Management of products</p>
-                </button>
-            </div>
-        </div>
+      
         <!-- Sub-Sidebar Content -->
-        <div class="bg-white border rounded-md shadow-md p-6 w-[1450px]">
+        <div class="bg-white border rounded-md shadow-md p-6 w-full ml-[285px]"> <!-- Adjust width here -->
             @yield('main-content')
         </div>
     </div>

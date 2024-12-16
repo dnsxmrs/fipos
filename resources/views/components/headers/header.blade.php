@@ -1,8 +1,9 @@
 <!-- Header -->
-<header class="p-4 mb-4 ml-20 bg-white rounded">
-    <div class="flex items-center justify-between">
+<header class="fixed top-0 left-0 z-50 w-full p-4 mb-4 bg-white rounded shadow-md">
+    <div class="flex items-center justify-between w-full lg:w-[1095px] mx-auto"> <!-- Adjusted width to be more flexible -->
+
         <!-- Title Section -->
-        <div>
+        <div class="flex-1">
             <h1 class="text-xl font-bold font-barlow">
                 <span class="mr-0">Caffeinated</span>
                 <span class="text-amber-700">POS</span>
@@ -11,9 +12,9 @@
         </div>
 
         <!-- Profile and Notification Icons -->
-        <div class="flex items-center space-x-10">
+        <div class="flex items-center space-x-6 md:space-x-10">
             <!-- Notification Icon -->
-            <button class="relative mr-30">
+            <button class="relative">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                     stroke="currentColor" class="w-6 h-6 text-gray-700 hover:text-amber-700">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -31,3 +32,8 @@
         </div>
     </div>
 </header>
+
+<!-- Main Content Wrapper -->
+<div class="mt-20"> <!-- Added margin to avoid overlap with fixed header -->
+    <!-- Your other page content goes here -->
+</div>
