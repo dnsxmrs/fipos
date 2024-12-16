@@ -20,6 +20,13 @@
         <span class="text-xs">Menu</span>
     </a>
 
+    <!-- Inventory Labels -->
+    <a href="{{ route('admin.inventory.show') }}" class="flex flex-col items-center">
+        <div class="w-10 h-10 rounded-lg mb-2"></div>
+        <img src="" alt="Inventory Icon" class="w-6 h-6 mb-1">
+        <span class="text-xs">Inventory</span>
+    </a>
+
     <!--ReportModule-->
     <a href="{{ route('admin.reports') }}" class="flex flex-col items-center">
         <div class="w-10 h-10 mb-2 rounded-lg"></div>

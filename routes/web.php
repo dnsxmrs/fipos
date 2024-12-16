@@ -14,6 +14,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\InventoryController;
 
 // only authenticated users can access these pages
 Route::middleware(['auth'])->group(function () {
@@ -86,6 +87,16 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
             // Route to delete a product
             Route::delete('/products/{id}', [ProductController::class, 'delete'])->name('products.delete');
         });
+
+
+        // Inventory routes
+        Route::prefix('inventory')->group(function() {
+
+            Route::get('/', [InventoryController::class, 'showItems'])->name('inventory.show');
+            Route::get('/{name}', [InventoryController::class, 'showCategorizedItems'])->name('inventory.categorized');
+
+        });
+
 
         // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::view('/add-user', 'user management.add-user')->name('add.user');

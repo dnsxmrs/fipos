@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Payment;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Ixudra\Curl\Facades\Curl;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Http;
 
 class PaymentController extends Controller
 {
@@ -50,19 +52,49 @@ class PaymentController extends Controller
     public function payCash(Request $request)
     {
         try {
-
-            // validate request
+            // Validate the request and get orders data
             $orders = $this->validateRequest($request);
+
+
+            Log::info(json_encode($orders));
+            // Ensure 'orders' and 'orderItems' exist in the structure
+            if (isset($orders['orders']['orderItems']) && is_array($orders['orders']['orderItems']) && !empty($orders['orders']['orderItems'])) {
+                // Loop through each item in 'orderItems' and append 'has_customization'
+                foreach ($orders['orders']['orderItems'] as &$orderItem) {
+                    $orderItem['has_customization'] = false;  // Example logic to append 'has_customization'
+                }
+
+                // Log the updated order items to check if 'has_customization' was added
+                Log::info('Updated Order Items: ', $orders['orders']['orderItems']);
+            } else {
+                // Handle the case where 'orderItems' is missing or null
+                Log::error("orderItems is missing or null in the request data.");
+            }
+
+
 
             // store the order
             $storeOrder = new OrderController();
             $orderCreated = $storeOrder->storeOrder(new Request($orders));
 
+            $order_extract = $orderCreated->getData()->data;
 
             // check if the order creation is success
             if ($orderCreated) {
                 // extract the data from the response
                 $extractedOrder = $orderCreated->getData()->data;
+
+                \Log::error('', [
+                    'extractedOrder' => $extractedOrder,
+                ]);
+
+                \Log::error('', [
+                    'order_extract' => $order_extract,
+                ]);
+
+                \Log::error('', [
+                    'orders' => $orders,
+                ]);
 
                 // transform the array to be sent
                 $payment = [
@@ -72,8 +104,6 @@ class PaymentController extends Controller
                     'mode_of_payment' => $orders['modeOfPayment'],
                     'status' => 'paid'
                 ];
-
-
 
                 // store the payment
                 $response = $this->storePayment(new Request($payment));
@@ -86,6 +116,8 @@ class PaymentController extends Controller
                         'message' => 'Payment creation failed'
                     ], 200);
                 }
+
+                $this->pushOrder($extractedOrder, $orders);
 
                 return response()->json([
 
@@ -101,6 +133,64 @@ class PaymentController extends Controller
         }
     }
 
+    public function pushOrder($extractedOrder, $orders)
+    {
+        //get the order id
+        $order = Order::find($extractedOrder->id);
+
+        // get the order status
+        $order_status = $order->status;
+
+        // dd($orders); // Dump and die to inspect the structure of $orders
+
+
+        $pushOrder = [
+            'order_id' => $extractedOrder->id,
+            'order_status' => $order_status,
+            'order_number' => $extractedOrder->order_number,
+            'order_date' => $extractedOrder->created_at,
+            'order_time' => $extractedOrder->created_at,
+            'order_items' => $orders['orderItems'],
+            'notes' => 'none',
+        ];
+
+        \Log::error('Pushing order to KDS', [
+            'order_id' => $extractedOrder->id,
+            'order_status' => $order_status,
+            'order_number' => $extractedOrder->order_number,
+            'order_date' => $extractedOrder->created_at,
+            'order_time' => $extractedOrder->created_at,
+            'order_items' => $orders['orderItems'],
+        ]);
+
+
+        // Perform the HTTP request to push order to KDS
+        try {
+            $response = Http::send('post', 'http://127.0.0.1:8002/api/orders-post', [
+                'json' => $pushOrder,
+            ]);
+
+            if ($response->failed()) {
+                \Log::error('Failed to sync with OOS', [
+                    'status' => $response->status(),
+                    'message' => $response->body(),
+                ]);
+            } else {
+                \Log::info('Successfully synced with OOS', [
+                    'status' => $response->status(),
+                    'message' => $response->body(),
+                ]);
+            }
+
+        } catch (\Exception $e) {
+            \Log::error('Error syncing with OOS', [
+                'error' => $e->getMessage(),
+            ]);
+        }
+
+        // $order = new OrderController();
+        // $order->pushOrder(new Request($orders));
+    }
 
     /**
      * Method to process cashless payment
@@ -136,7 +226,7 @@ class PaymentController extends Controller
                     if ($orderProduct->product && $orderProduct->product->product_name) {
                         $items[] = [
                             'name' => $orderProduct->product->product_name,
-                            'quantity' => (int)$orderProduct->quantity,
+                            'quantity' => (int) $orderProduct->quantity,
                             'amount' => $orderProduct->product->product_price * 100, // Convert to PHP cents
                             'currency' => 'PHP',
                             'description' => $extractedOrder->order_number,
@@ -290,7 +380,7 @@ class PaymentController extends Controller
 
         if ($response->data->attributes->payments[0]->attributes->status === "paid") {
 
-            $orderId = (int)base64_decode($response->data->attributes->metadata->order_id);
+            $orderId = (int) base64_decode($response->data->attributes->metadata->order_id);
             $amount = $response->data->attributes->payments[0]->attributes->amount;
             $description = $response->data->attributes->payments[0]->attributes->description;
             $modeOfPayment = $response->data->attributes->payment_method_used;
