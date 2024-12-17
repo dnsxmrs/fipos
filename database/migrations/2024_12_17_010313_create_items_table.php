@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('items', function (Blueprint $table) {
-            $table->uuid();
+            $table->id();
             $table->string('item_name');
             $table->unsignedBigInteger('category_id')->nullable();
             $table->decimal('stock', 8, 2);
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('category_id')->references('id')->on('categories')->nullOnDelete();
+            $table->foreign('category_id')->references('id')->on('inventory_categories')->nullOnDelete();
         });
     }
 

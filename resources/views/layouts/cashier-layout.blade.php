@@ -33,7 +33,7 @@
         <div class="flex-1 flex flex-col">
 
             {{-- Header --}}
-            <x-headers.cashier-header />
+            <x-headers.header />
 
             <!-- Main content -->
             @yield('cashier_content')

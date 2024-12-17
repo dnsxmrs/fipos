@@ -49,7 +49,7 @@
         <a href="{{ route('change.password') }}" class="mt-4 w-64 py-3 bg-green-800 hover:bg-green-700 text-white font-bold rounded-lg ">
             Continue
         </a>
-        <a href="{{ route('admin.dashboard') }}" class="mt-4 text-blue-800 underline">Go to Dashboard</a>
+        {{-- <a href="{{ route('admin.dashboard') }}" class="mt-4 text-blue-800 underline">Go to Dashboard</a> --}}
 </body>
 
 </html>

@@ -14,8 +14,8 @@
             <a href="{{ route('admin.inventory.show') }}" class="px-5 py-5 bg-[#FFC107] rounded-t-xl">All items</a>
 
             @foreach ($categories as $category)
-                <a href="{{ route('admin.inventory.categorized', ['name' => $category['category_name']]) }}"
-                    class="px-5 py-5 bg-[#FFC107] rounded-t-xl"> {{ $category['category_name'] }} </a>
+                <a href="{{ route('admin.inventory.categorized', ['name' => $category->category_name]) }}"
+                    class="px-5 py-5 bg-[#FFC107] rounded-t-xl"> {{ $category->category_name }} </a>
             @endforeach
         </div>
 
@@ -43,7 +43,7 @@
                         <option value="" selected disabled>Select a category</option>
 
                         @foreach ($categories as $category)
-                            <option value="{{ $category['category_name'] }}">{{ $category['category_name'] }}</option>
+                            <option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -86,16 +86,16 @@
 
                             <tr class="border-b border-gray-300 text-sm">
                                 <td class="text-center p-3">{{ $loop->iteration }}</td>
-                                <td class="text-center p-3">{{ ucfirst($item['item_name']) }}</td>
-                                <td class="text-center p-3">{{ $item['category']['category_name'] }}</td>
-                                <td class="text-center p-3">{{ $item['stock'] }}</td>
-                                <td class="text-center p-3">{{ $item['unit'] }}</td>
-                                <td class="text-center p-3">{{ $item['last_restocked'] }}</td>
-                                <td class="text-center p-3">{{ $item['expiry_date'] }}</td>
+                                <td class="text-center p-3">{{ ucfirst($item->item_name) }}</td>
+                                <td class="text-center p-3">{{ $item->category->category_name }}</td>
+                                <td class="text-center p-3">{{ $item->stock }}</td>
+                                <td class="text-center p-3">{{ $item->unit }}</td>
+                                <td class="text-center p-3">{{ $item->last_restocked }}</td>
+                                <td class="text-center p-3">{{ $item->expiry_date }}</td>
                                 <td class="text-center p-3">
                                     <span class="text-xs {{ $statusStyle['text'] }} rounded-md px-2 py-1"
                                         style="background-color: {{ $statusStyle['bg'] }}">
-                                        {{ ucfirst($item['status']) }}
+                                        {{ ucfirst($item->status) }}
                                     </span>
                                 </td>
                             </tr>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\InventoryCategory;
+use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -12,18 +14,8 @@ class InventoryController extends Controller
      */
     public function showItems()
     {
-        $response = Http::get('http://127.0.0.1:8081/inventory/get');
-
-        if ($response->failed()) {
-
-            return response()->json([
-                'message' => 'Failed to get the items'
-            ], 500);
-
-        }
-
-        $items = $response->json()['items'];
-        $categories = $response->json()['categories'];
+        $categories = InventoryCategory::all();
+        $items = Item::with('category')->get();
 
         return view('admin.inventory.index', compact('items', 'categories'));
     }
@@ -32,20 +24,15 @@ class InventoryController extends Controller
     /**
      *  Get the categorized items
      */
-    public function showCategorizedItems($name) {
+    public function showCategorizedItems($name)
+    {
+        // get the category with the given name
+        $category = InventoryCategory::where('category_name', $name)->first();
 
-        $response = Http::get('http://127.0.0.1:8081/inventory/get/' . $name);
-
-        if ($response->failed()) {
-
-            return response()->json([
-                'message' => 'Failed to get the items'
-            ], 500);
-
-        }
-
-        $categorizedItems = $response->json()['categorizedItems'];
-        $categories = $response->json()['categories'];
+        $categories = InventoryCategory::all();
+        $categorizedItems = Item::where('category_id', $category->id)
+            ->with('category')
+            ->get();
 
         return view('admin.inventory.categorized', compact('categorizedItems', 'categories'));
     }

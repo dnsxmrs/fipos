@@ -25,11 +25,11 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'first_name' => 'Darben',
-            'last_name' => 'Pogi',
-            'email' => 'darben@gmail.com',
+            'first_name' => 'Cashier',
+            'last_name' => 'Account',
+            'email' => 'cashier@gmail.com',
             'email_verified_at' => now(),
-            'password' => bcrypt('password123'), // use a secure password
+            'password' => bcrypt('staff123'), // use a secure password
             'role' => 'staff',
         ]);
     }

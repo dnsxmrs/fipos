@@ -4,7 +4,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- Main Content -->
-<div class="flex flex-col block min-h-screen ml-16 lg:ml-64"> <!-- Added left margin for responsive sidebar space -->
+<div class="flex flex-col min-h-screen ml-16 lg:ml-64"> <!-- Added left margin for responsive sidebar space -->
 
     <!-- Top Header -->
     <div class="flex items-center justify-between">
@@ -25,7 +25,7 @@
                 <p class="text-sm text-[#555]">PHP 10,243.00</p>
             </div>
 
-            
+
             <div class="p-5 text-center bg-white rounded-lg shadow-md border-2 border-transparent hover:border-green-700">
                 <h3 class="font-medium mb-2.5 text-base">Total Dishes Ordered</h3>
                 <p class="text-sm text-[#555]">23,456</p>
