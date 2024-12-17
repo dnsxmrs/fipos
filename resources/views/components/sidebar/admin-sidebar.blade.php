@@ -6,14 +6,14 @@
     </div>
 
     {{-- Dashboard --}}
-    <a href="{{ route('admin.dashboard') }}" class="flex flex-row items-center justify-start p-2 mb-6 mr-2 space-x-2 transition rounded-lg hover:bg-green-500 hover:text-white">
+    <a href="{{ route('admin.dashboard') }}" class="flex items-center justify-start w-full p-2 mb-6 space-x-2 transition rounded-lg hover:bg-green-500 hover:text-white">
         <img src="{{ asset('Assets/dashboard.png') }}" alt="dashboard Icon" class="w-6 h-6 mr-2">
         <span class="text-sm text-white">Dashboard</span>
     </a>
 
     <!-- Menu Dropdown -->
-    <div class="relative">
-        <a href="javascript:void(0);" class="flex flex-row items-center justify-start p-2 mb-6 space-x-2 transition rounded-lg hover:bg-green-500 hover:text-white group" onclick="toggleDropdown()">
+    <div class="relative w-full">
+        <a href="javascript:void(0);" class="flex items-center justify-start w-full p-2 mb-6 space-x-2 transition rounded-lg hover:bg-green-500 hover:text-white group" onclick="toggleDropdown()">
             <img src="{{ asset('Assets/menu.png') }}" alt="Menu Icon" class="w-6 h-6 mb-1">
             <span class="text-sm text-white">Menu</span>
         </a>
@@ -24,44 +24,43 @@
     </div>
 
     {{-- Inventory Labels --}}
-    <a href="{{ route('admin.inventory.show') }}" class="flex flex-row items-center justify-start p-2 mb-6 space-x-2 transition rounded-lg hover:bg-green-500 hover:text-white">
+    <a href="{{ route('admin.inventory.show') }}" class="flex items-center justify-start w-full p-2 mb-6 space-x-2 transition rounded-lg hover:bg-green-500 hover:text-white">
         <img src="{{ asset('Assets/inventory.png') }}" alt="Menu Icon" class="w-6 h-6 mb-1">
         <span class="text-sm text-white">Inventory</span>
     </a>
 
     <!-- ReportModule -->
-    <a href="{{ route('admin.reports') }}" class="flex flex-row items-center justify-start p-2 mb-6 space-x-2 transition rounded-lg hover:bg-green-500 hover:text-white">
+    <a href="{{ route('admin.reports') }}" class="flex items-center justify-start w-full p-2 mb-6 space-x-2 transition rounded-lg hover:bg-green-500 hover:text-white">
         <img src="{{ asset('Assets/report.png') }}" alt="Reports Icon" class="w-6 h-6 mb-2">
         <span class="text-sm text-white">Reports</span>
     </a>
 
     <!-- OnlineOrders Module -->
-    <a href="{{ route('admin.staff-management') }}" class="flex flex-row items-center justify-start p-2 mb-6 space-x-2 transition rounded-lg hover:bg-green-500 hover:text-white">
+    <a href="{{ route('admin.staff-management') }}" class="flex items-center justify-start w-full p-2 mb-6 space-x-2 transition rounded-lg hover:bg-green-500 hover:text-white">
         <img src="{{ asset('Assets/staff.png') }}" alt="Staff Icon" class="w-6 h-6 mb-2">
         <span class="text-sm text-white">Staff</span>
         <span class="text-sm text-white">Management</span>
     </a>
 
     <!-- Order Tracking Module -->
-    <a href="{{ route('admin.order-tracking') }}" class="flex flex-row items-center justify-start p-2 space-x-2 transition rounded-lg hover:bg-green-500 hover:text-white">
+    <a href="{{ route('admin.order-tracking') }}" class="flex items-center justify-start w-full p-2 space-x-2 transition rounded-lg hover:bg-green-500 hover:text-white">
         <img src="{{ asset('Assets/order-track.png') }}" alt="Order Tracking Icon" class="w-6 h-6 mb-30">
         <div class="text-sm text-white">Order</div>
         <div class="text-sm text-white">Tracking</div>
     </a>
 
     <!-- Settings -->
-    <a href="{{ route('admin.settings') }}" class="flex flex-row items-center justify-start p-2 mt-auto mb-6 space-x-2 transition rounded-lg hover:bg-green-500 hover:text-white">
+    <a href="{{ route('admin.settings') }}" class="flex items-center justify-start w-full p-2 mt-auto mb-6 space-x-2 transition rounded-lg hover:bg-green-500 hover:text-white">
         <img src="{{ asset('Assets/settings.png') }}" alt="Settings Icon" class="w-6 h-6 mb-2">
         <span class="text-sm text-white">Settings</span>
     </a>
 
     <!-- Log out -->
-    <a href="{{ route('logout.confirm') }}" class="flex flex-row items-center justify-start p-2 mb-6 space-x-2 transition rounded-lg hover:bg-green-500 hover:text-white">
+    <a href="{{ route('logout.confirm') }}" class="flex items-center justify-start w-full p-2 mb-6 space-x-2 transition rounded-lg hover:bg-green-500 hover:text-white">
         <img src="{{ asset('Assets/logout.png') }}" alt="log-out.png" class="w-6 h-6 mb-2">
         <span class="text-sm text-white">Log out</span>
     </a>
 </div>
-
 
 <script>
     // Toggle the dropdown menu visibility
