@@ -3,19 +3,19 @@
 
 @section('main-content')
     <div class="mb-4">
-        <div class="flex justify-between items-center">
-            <h2 class="font-barlow text-2xl font-bold">Category Management</h2>
+        <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold font-barlow">Category Management</h2>
             <!--Add Category-->
-            <button onclick="showAddDialog()" class="text-white px-4 py-2 rounded-md focus:outline-none"
+            <button onclick="showAddDialog()" class="px-4 py-2 text-white rounded-md focus:outline-none"
                 style="background-color: #45A834"">
                 + Add Category
             </button>
         </div>
         <!-- Search Bar -->
         <div class="flex items-center border border-gray-300 rounded-full w-[314px] p-2 mt-2">
-            <img src="{{ asset('Assets/search-icon.png') }}" alt="Search Icon" class="w-6 h-6 mr-2 ml-2">
+            <img src="{{ asset('Assets/search-icon.png') }}" alt="Search Icon" class="w-6 h-6 ml-2 mr-2">
             <input type="text" placeholder="Search for category..."
-                class="w-full focus:outline-none focus:border-gray-500 rounded-lg" name="category_search"
+                class="w-full rounded-lg focus:outline-none focus:border-gray-500" name="category_search"
                 id="category_search" autocomplete="off" onkeyup="filterCategories()" />
         </div>
     </div>
@@ -24,10 +24,10 @@
     <table class="border-collapse w-[1400px] mt-9" id="category_table">
         <thead>
             <tr class="border-b border-gray-300">
-                <th class="text-left p-2">No.</th>
-                <th class="text-left p-2">Category Name</th>
-                <th class="text-left p-2">Total Products</th>
-                <th class="text-left p-2">Actions</th>
+                <th class="p-2 text-left">No.</th>
+                <th class="p-2 text-left">Category Name</th>
+                <th class="p-2 text-left">Total Products</th>
+                <th class="p-2 text-left">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -36,16 +36,16 @@
                     <td class="p-2">{{ $category->category_id }}</td>
                     <td class="p-2">{{ $category->category_name }}</td>
                     <td class="p-2">{{ $category->products_count }}</td>
-                    <td class="py-2 px-4 flex space-x-2">
+                    <td class="flex px-4 py-2 space-x-2">
                         <button onclick="showEditDialog(this)" data-id="{{ $category->category_id }}"
                             data-name="{{ $category->category_name }}"
                             data-image="{{ $category->image ? asset('storage/' . $category->image) : '' }}"
-                            class="flex items-right text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out">
+                            class="flex text-blue-500 transition duration-300 ease-in-out items-right hover:text-blue-700">
                             <img src="{{ asset('Assets/Edit.png') }}" alt="Edit Icon" class="ml-9">
                         </button>
                         <button onclick="showDeleteDialog({{ $category->category_id }})"
-                            class="flex items-right text-red-500 hover:text-red-700 ml-2 transition duration-300 ease-in-out">
-                            <img src="{{ asset('Assets/Delete.png') }}" alt="Delete Icon" class="mr-5 ml-5">
+                            class="flex ml-2 text-red-500 transition duration-300 ease-in-out items-right hover:text-red-700">
+                            <img src="{{ asset('Assets/Delete.png') }}" alt="Delete Icon" class="ml-5 mr-5">
                         </button>
                     </td>
                 </tr>
@@ -54,20 +54,20 @@
     </table>
 
     <!-- No Categories Found Message -->
-    <div id="no-categories-message" class="hidden text-center text-red-500 mt-4">
+    <div id="no-categories-message" class="hidden mt-4 text-center text-red-500">
         No categories found matching your search criteria.
     </div>
 
     <!-- Add Modal -->
     <div id="add-dialog"
-        class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50"
+        class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50 opacity-0"
         aria-hidden="true">
-        <div class="bg-white shadow-md p-8 flex flex-col items-center rounded-lg" style="width: 455px; height: 600px;">
-            <h1 class="text-center text-xl font-bold mb-4 text-black">Add New Category</h1>
+        <div class="flex flex-col items-center p-8 bg-white rounded-lg shadow-md" style="width: 455px; height: 600px;">
+            <h1 class="mb-4 text-xl font-bold text-center text-black">Add New Category</h1>
             <form action="{{ route('admin.menu.categories.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="flex flex-col items-center justify-center">
-                    <label class="bg-white py-3 px-5 rounded text-black shadow-md text-center mt-4 ml-6 items-center mb-6"
+                    <label class="items-center px-5 py-3 mt-4 mb-6 ml-6 text-center text-black bg-white rounded shadow-md"
                         style="width: 346px; height: 231px; border: 2px dashed black;">
                         <input type="file" name="image" accept="image/*" class="hidden">
                         <div class="text-center">
@@ -75,7 +75,7 @@
                             <span class="block mt-2">Upload Image</span>
                         </div>
                         @error('image')
-                            <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
+                            <span class="mt-1 text-xs text-red-600">{{ $message }}</span>
                         @enderror
                     </label>
                     <div class="flex flex-col items-center mt-4">
@@ -84,10 +84,10 @@
                             class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
                             type="text" placeholder="Category Name " name="category_name" required>
                         <label
-                        class="text-sm absolute left-2 -top-5 scale-75 text-gray-500 origin-left"
+                        class="absolute text-sm text-gray-500 origin-left scale-75 left-2 -top-5"
                             for="itemName">Category name</label>
                             @error('category_name')
-                                <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
+                                <span class="mt-1 text-xs text-red-600">{{ $message }}</span>
                             @enderror
                         </div>
                         <button onclick="showAddedDialog()"
@@ -107,12 +107,12 @@
 
     <!-- Item Added Successfully Modal -->
     <div id="added-dialog"
-        class="hidden modal fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50"
+        class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-75 opacity-0 modal"
         aria-hidden="true">
         <div class="bg-white shadow-md p-8 flex flex-col items-center w-[500px] h-[370px] rounded-[20px] overflow-hidden">
             <img src="{{ asset('Assets/update-icon.png') }}" alt="Success Icon" class="w-[150px] h-[150px]">
-            <h1 class="text-center text-2xl font-bold mb-4">Item Added Successfully</h1>
-            <h2 class="text-center mb-2 font-barlow text-sm">The category has been successfully added
+            <h1 class="mb-4 text-2xl font-bold text-center">Item Added Successfully</h1>
+            <h2 class="mb-2 text-sm text-center font-barlow">The category has been successfully added
                 to the list and is now available for viewing.</h2>
             <button onclick="hideAddedDialog()"
                 class="mt-4 bg-yellow-600 text-sm text-white px-4 py-2 hover:bg-yellow-200 w-[200px] rounded-full">
@@ -123,23 +123,23 @@
 
     <!-- Edit Modal -->
     <div id="edit-dialog"
-        class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50"
+        class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50 opacity-0"
         aria-hidden="true">
-        <div class="bg-white shadow-md p-8 flex flex-col items-center rounded-lg" style="width: 455px; height: 600px;">
-            <h1 class="text-center text-xl font-bold mb-4 text-black">Edit Category</h1>
+        <div class="flex flex-col items-center p-8 bg-white rounded-lg shadow-md" style="width: 455px; height: 600px;">
+            <h1 class="mb-4 text-xl font-bold text-center text-black">Edit Category</h1>
             <form action="{{ route('admin.menu.categories.update') }}" method="POST" enctype="multipart/form-data"
                 id="edit-category">
                 @csrf
                 @method('PUT')
                 <input type="hidden" value="" name="editCategoryId" id="editCategoryId">
                 <div class="flex flex-col items-center justify-center">
-                    <label class="bg-white py-3 px-5 rounded text-black shadow-md text-center mt-4 ml-6 items-center mb-6"
+                    <label class="items-center px-5 py-3 mt-4 mb-6 ml-6 text-center text-black bg-white rounded shadow-md"
                         style="width: 346px; height: 231px; border: 2px dashed black;" id="editImageLabel">
                         <input type="file" value='' id='editImage' name="editImage" accept="image/*"
                             class="hidden">
                         <div class="text-center">
                             <img id="categoryImage" src="" alt="Category Image"
-                                class="w-full h-full object-cover rounded hidden" />
+                                class="hidden object-cover w-full h-full rounded" />
                             <div class="upload-message">
                                 <div class="text-2xl">+</div>
                                 <span class="block mt-2">Upload Image</span>
@@ -153,10 +153,10 @@
                             class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
                             type="text" placeholder="Category Name" name="category_name" required>
                         <label
-                        class="text-sm absolute left-2 -top-6 scale-75 text-gray-500 origin-left"
+                        class="absolute text-sm text-gray-500 origin-left scale-75 left-2 -top-6"
                             for="itemName">Category name</label>
                             @error('category_name')
-                                <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
+                                <span class="mt-1 text-xs text-red-600">{{ $message }}</span>
                             @enderror
                         </div>
                         <button type="submit" onclick="showEditedDialog()"
@@ -175,13 +175,13 @@
 
     <!-- Successfully item update Modal -->
     <div id="edited-dialog"
-        class="hidden modal fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50"
+        class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-75 opacity-0 modal"
         aria-hidden="true">
         <div class="bg-white shadow-md p-8 flex flex-col items-center w-[500px] h-[350px] rounded-[20px] overflow-hidden">
             <img src="{{ asset('Assets/icon-success.png') }}" alt="Success Icon" class="w-[150px] h-[150px]">
-            <h1 class="text-center text-2xl font-bold mb-2 font-barlow mt-2">Item Updated
+            <h1 class="mt-2 mb-2 text-2xl font-bold text-center font-barlow">Item Updated
                 Successfully!</h1>
-            <h2 class="text-center mb-4 font-barlow text-sm">The category has been successfully added
+            <h2 class="mb-4 text-sm text-center font-barlow">The category has been successfully added
                 to the list</h2>
             <button onclick="hideEditedDialog()"
                 class="mt-4 bg-yellow-600 text-sm text-white px-4 py-2  hover:bg-amber-700 w-[200px] rounded-full">
@@ -192,13 +192,13 @@
 
     <!-- Delete Modal -->
     <div id="delete-dialog"
-        class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50"
+        class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50 opacity-0"
         aria-hidden="true">
         <div class="bg-white shadow-md p-8 flex flex-col items-center w-[500px] h-[350px] rounded-[20px] overflow-hidden">
             <img src="{{ asset('Assets/icons-delete.png') }}" alt="deleteIcon" class="w-[150px] h-[150px]">
-            <h1 class="text-center text-xl font-bold mb-4">Delete Category</h1>
+            <h1 class="mb-4 text-xl font-bold text-center">Delete Category</h1>
             <p class="text-center">Are you sure you want to delete this category?</p>
-            <div class="flex space-x-4 mt-4">
+            <div class="flex mt-4 space-x-4">
                 <button onclick="showConfirmDelete()"
                     class="rounded-full flex items-center justify-center text-center text-white hover:text-red-700 bg-red-600 px-4 py-2 h-[40px] w-[140px]">
                     Delete
@@ -213,7 +213,7 @@
 
     <!--Confirm Delete-->
     <div id="confirm-delete-dialog"
-        class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 hidden" aria-hidden="true">
+        class="fixed inset-0 flex items-center justify-center hidden bg-gray-500 bg-opacity-75" aria-hidden="true">
         <div
             class="bg-white p-4 shadow-md text-center w-[500px] h-[420px] rounded-[20px] overflow-hidden flex flex-col items-center">
             <img src="{{ asset('Assets/icons-password.png') }}" alt="Password Icon" class="w-[150px] h-[150px] mb-6">
@@ -225,7 +225,7 @@
                 class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
                 type="text" placeholder="Item name " name="product_name" required>
             <label
-            class="text-sm absolute left-2 -top-6 scale-75 text-gray-500 origin-left"
+            class="absolute text-sm text-gray-500 origin-left scale-75 left-2 -top-6"
                 for="itemName">Password</label>
             </div>
             <button id="confirmButton" onclick="hideConfirmDelete"
@@ -234,7 +234,7 @@
     </div>
 
     <!-- Success Message Modal -->
-    <div id="deleted-dialog" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 hidden"
+    <div id="deleted-dialog" class="fixed inset-0 flex items-center justify-center hidden bg-gray-500 bg-opacity-75"
         aria-hidden="true">
         <div
             class="bg-white p-4 shadow-md text-center w-[500px] h-[350px] rounded-[20px] overflow-hidden flex flex-col items-center">
