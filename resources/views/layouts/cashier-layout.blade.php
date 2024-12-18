@@ -20,25 +20,28 @@
 </head>
 
 <body class="bg-gray-100">
-    <!-- Main container -->
-    <div class="flex h-screen overflow-y-auto">
+    {{-- Header --}}
+    @include('components.headers.cashier-header')
 
-        <!-- Sidebar container -->
-        <div class="sidebar top-0 bottom-0 left-0  w-20 bg-gray-800 text-black">
+    <!-- Main content -->
+    <div class="flex">
+        <div class="fixed h-full bg-[#066543]">
             {{-- Sidebar --}}
             <x-sidebar.cashier-sidebar />
         </div>
 
-        <!-- Header and content container -->
-        <div class="flex-1 flex flex-col">
+        <div class="flex w-full mt-24 ml-20 mr-[510px] px-5  ">
+            <!-- Scrollable Cashier Content -->
+            <div class="h-full overflow-y-auto">
+                @yield('cashier_content')
+            </div>
 
-            {{-- Header --}}
-            <x-headers.header />
-
-            <!-- Main content -->
-            @yield('cashier_content')
+            <!-- Cashier Panel -->
+            <div class="fixed right-0">
+                @yield('cashier_panel')
+            </div>
         </div>
-
+    </div>
     </div>
 </body>
 

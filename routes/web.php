@@ -152,4 +152,8 @@ Route::get('/categories', [MenuController::class, 'categories'])->name('categori
 
 // Route::post('/pay-cashless', [PaymentController::class, 'payCashless'])->name('pay.cashless');
 // Route::post('/pay-cashless/success', [PaymentController::class, 'success'])->name('pay.success');
-Route::get('/menu', [MenuController::class, 'showMenu'])->name('menu.show');
+// Route::get('/menu', [MenuController::class, 'showMenu'])->name('menu.show');
+
+Route::get('/menu-new', function() {
+    return view('cashier.menu.cashier');
+});

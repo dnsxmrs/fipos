@@ -50,12 +50,12 @@ class MenuController extends Controller
     public function showCategorizedMenu($category_id)
     {
         // find products with the certain category
-        $products = Product::where('category_id', $category_id)->get();
+        $items = Product::where('category_id', $category_id)->get();
         $categories = Category::all();
 
 
         // return fetched data to view
-        return view('cashier.menu.categorized-menu', compact('products', 'categories'));
+        return view('cashier.menu.categorized-menu', compact('items', 'categories'));
     }
 
 
