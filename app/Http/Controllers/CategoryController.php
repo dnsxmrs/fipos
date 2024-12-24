@@ -8,23 +8,35 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Http;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 
 class CategoryController extends Controller
 {
+    public function upload(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:jpg,png,jpeg|max:2048', // Validation
+        ]);
+
+
+
+        return response()->json(['url' => $uploadedFileUrl]);
+    }
+
     public function store(Request $request)
     {
+        // Validate the request
         $request->validate([
             'category_name' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Initialize path as null
-        $path = 'https://example-gateway.com/public-key/image/upload/container/image.jpg';
-
-        // Handle the file upload if an image is provided
+        // Upload image to Cloudinary if present
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('images/products', 'public');
+            $path = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+        } else {
+            $path = null;
         }
 
         // Create the category
@@ -32,14 +44,16 @@ class CategoryController extends Controller
             'category_name' => $request->input('category_name'),
             'type' => 'beverage',
             'beverage_type' => 'hot',
-            'image' => $path,
+            'image' => $path, // Save Cloudinary URL or null
         ]);
 
         // Sync with OOS after category creation
         $this->syncWithOos('POST', $category);
 
-        return redirect()->back()->with('success', 'Product added successfully!');
+        // Redirect back with success message
+        return redirect()->back()->with('success', 'Category added successfully!');
     }
+
 
     public function update(Request $request)
     {
@@ -52,10 +66,11 @@ class CategoryController extends Controller
 
         $category = Category::findOrFail($request->input('editCategoryId'));
 
-        // Handle the image upload or retain existing image path
-        $path = $category->image;
+        // Upload image to Cloudinary if present
         if ($request->hasFile('editImage')) {
-            $path = $request->file('editImage')->store('images/products', 'public');
+            $path = Cloudinary::upload($request->file('editImage')->getRealPath())->getSecurePath();
+        } else {
+            $path = $category->image ? $category->image : null;
         }
 
         // Update the category
@@ -113,8 +128,7 @@ class CategoryController extends Controller
             'category_name' => $category->category_name,
             'type' => $category->type,
             'beverage_type' => $category->beverage_type,
-            'image_url' => $category->image ? asset('storage/' . $category->image) : null, // Store full URL path for OOS
-
+            'image_url' => $category->image // Store full URL path for OOS
         ];
 
         Log::info('Sending data to OOS:', [
@@ -124,7 +138,7 @@ class CategoryController extends Controller
             'category_name' => $category->category_name,
             'type' => $category->type,
             'beverage_type' => $category->beverage_type,
-            'image_url' => $category->image ? asset('storage/' . $category->image) : null,
+            'image_url' => $category->image // Store full URL path for OOS
         ]);
 
         // Perform the HTTP request to sync with OOS
