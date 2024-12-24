@@ -1,27 +1,38 @@
-<!-- Header -->
-<header class="mb-4 bg-white rounded p-4">
-    <div class="flex justify-between items-center">
-        <!-- Title Section -->
-        <div>
-            <h1 class="font-barlow text-xl font-bold">
-                <span class="mr-0">Caffeinated</span>
-                <span class="text-amber-700">POS</span>
-            </h1>
-            <p class="font-barlow text-sm mt-2">{{ now()->setTimezone('Asia/Manila')->format('l, g:i A') }}</p>
-        </div>
+<nav class="flex items-center justify-between w-full p-5 bg-white shadow fixed top-0 h-24 max-h-24">
 
-        <!-- Search Bar -->
-        <div class="relative w-[363px]">
-            <input type="text" placeholder="Search for coffee, food, etc..."
-                class="w-full px-4 py-2 border border-amber-700 rounded shadow-sm bg-gray-50 focus:ring-amber-700 focus:border-amber-700" />
-            <button class="absolute left-3 top-2 text-gray-500 hover:text-amber-700">
-                <!-- Search Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                    stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M21 21l-4.35-4.35M16.6 11A5.6 5.6 0 1111 5.4a5.6 5.6 0 015.6 5.6z" />
-                </svg>
-            </button>
+    {{-- LOGO --}}
+    <div class="flex items-center justify-start text-2xl">
+        <div class="w-20"></div>
+        <div class="block ">
+            <span class="font-semibold">
+                Caffeinated
+                <span class=" text-green-700">POS</span>
+            </span>
+            <p class="text-sm">{{ now()->setTimezone('Asia/Manila')->format('l, g:i A') }}
+            </p>
         </div>
     </div>
-</header>
+
+    {{-- SEARCH BAR --}}
+    <div class="flex w-72 border border-green-700 p-2 rounded-lg ">
+        <img class="w-[24px]" src="{{ asset('images/search.png') }}" alt="search icon">
+        <input type="text" placeholder="Search for menu"
+            class="ml-2 outline-none bg-transparent w-full focus:border-transparent">
+    </div>
+
+    {{-- PROFILE INFO --}}
+    <div class="flex items-center justify-start space-x-2">
+        <img class="cursor-pointer" src="{{ asset('Assets/notification.png') }}" alt="notification">
+        <div class="bg-gray-300 rounded-lg p-2 flex items-center justify-start w-44 space-x-2 max-h-12">
+            <img class="h-9" src="{{ asset('Assets/profile.png') }}" alt="profile icon">
+            <div>
+                <p class="text-sm font-medium text-black">
+                    {{ Auth::user()->first_name }}
+                </p>
+                <p class="text-sm font-regular text-gray-500">
+                    {{ ucfirst(Auth::user()->role) }}
+                </p>
+            </div>
+        </div>
+    </div>
+</nav>

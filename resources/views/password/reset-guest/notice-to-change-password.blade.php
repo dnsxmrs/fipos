@@ -40,15 +40,16 @@
     <!-- Modal -->
     <div id="reset-modal" class="modal bg-white shadow-lg rounded-lg p-10 flex flex-col items-center text-center">
         <!-- Reset Password Header -->
-        <h2 class="text-2xl font-bold text-brown mb-4">Notice!</h2>
+        <h2 class="text-2xl font-semibold text-brown mb-4">Notice!</h2>
         <p class="text-sm text-gray-700 mb-8">
-            It seems that this is your first time logging in {{ env('APP_NAME').'.' }} Please change your password to continue.
+            It seems that this is your first time logging in {{ env('APP_NAME').'.' }} We recommend to change your password.
         </p>
 
         {{-- Continue button --}}
-        <a href="{{ route('change.password') }}" class="mt-4 w-64 py-3 bg-brown hover:bg-brown-dark text-white font-bold rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brown">
+        <a href="{{ route('change.password') }}" class="mt-4 w-64 py-3 bg-green-800 hover:bg-green-700 text-white font-bold rounded-lg ">
             Continue
         </a>
+        {{-- <a href="{{ route('admin.dashboard') }}" class="mt-4 text-blue-800 underline">Go to Dashboard</a> --}}
 </body>
 
 </html>

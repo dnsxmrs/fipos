@@ -24,27 +24,27 @@
 </head>
 <body class="bg-gray-100">
     <!-- Main container -->
-    <div class="flex h-screen overflow-y-auto">
+    <main class="flex ">
 
         <!-- Sidebar container -->
-        <div class="sidebar top-0 bottom-0 left-0  w-20 bg-gray-800 text-black">
+        <div class="h-full  max-w-20">
             {{-- Sidebar --}}
             <x-sidebar.admin-sidebar/>
         </div>
 
         <!-- Header and content container -->
-        <div class="flex-1 flex flex-col">
-            {{-- <!-- Header -->
+        <div class="flex flex-col">
+            <!-- Header -->
             <div class="shadow-md">
-                <x-header/>
-            </div> --}}
+                <x-headers.header/>
+            </div>
 
             <!-- Main content -->
-            <div class="flex-1 p-6">
+            <div class="p-6">
                 @yield('admin_content')
             </div>
         </div>
 
-    </div>
+    </main>
 </body>
 </html>
