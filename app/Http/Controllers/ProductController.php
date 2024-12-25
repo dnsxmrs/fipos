@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ProductController extends Controller
 {
@@ -26,12 +27,13 @@ class ProductController extends Controller
             Log::error('Validation failed: ', $e->validator->errors()->toArray());
             throw $e; // or handle the exception as needed
         }
-        // Initialize path as null
-        $path = 'https://example-gateway.com/public-key/image/upload/container/image.jpg';
-        // Handle the file upload if an image is provided
+
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('images/products', 'public');
+            $path = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+        } else {
+            $path = null;
         }
+
         $product = Product::create([
             'product_name' => $request->input('product_name'),
             'product_description' => $request->input('product_description'),
@@ -66,10 +68,10 @@ class ProductController extends Controller
 
             $product = Product::findOrFail($id);
 
-            // Handle the image upload or retain existing image path
-            $path = $product->image;
             if ($request->hasFile('editImage')) {
-                $path = $request->file('editImage')->store('images/products', 'public');
+                $path = Cloudinary::upload($request->file('editImage')->getRealPath())->getSecurePath();
+            } else {
+                $path = $product->image ? $product->image : null;
             }
 
             // Determine the availability status; defaults to false if not present
@@ -128,7 +130,7 @@ class ProductController extends Controller
             'price' => $product->product_price,
             'isAvailable' => $product->isAvailable,
             'has_customization' => $product->has_customization,
-            'image' => $product->image ? asset('storage/' . $product->image) : null, // Store full URL path for OOS
+            'image' => $product->image,
             'category_number' => $product->category_id,
 
             // 'name' => 'required|string|max:255', // Ensure the name is required and not too long
