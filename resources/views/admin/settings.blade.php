@@ -2,7 +2,10 @@
 @extends('layouts.admin-layout')
 
 @section('admin_content')
-<h1>Settings</h1>
-<p>Here are your settings.</p>
-<!-- Add more report-related HTML and Blade code here -->
+    <!-- Top Header -->
+    <div class="flex items-center justify-between">
+        <div class="my-3 mb-7">
+            <p class="text-xl font-medium text-gray-700">Settings</p>
+        </div>
+    </div>
 @endsection

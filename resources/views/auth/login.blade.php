@@ -1,19 +1,9 @@
 @extends('layouts.auth-layout')
 
-@section('content')
-    <div class="flex">
-        <div class="bg-white shadow-lg rounded-lg p-8 md:p-10 lg:p-12 w-[504px] h-[557px] text-center flex-none ml-16 focus:outline-yellow focus:ring-4 focus:ring-yellow-500">
-            <div class="mb-8">
-                <h1 class="text-4xl font-bold text-gray-800">Caffeinated<span style="color: #451a03">POS</span></h1>
-                <p class="text-xl text-gray-600">POINT OF SALE</p>
-                <div class="flex-1 bg-center bg-cover" style="background-image: url('your-image-url.jpg');">
-            </div>
-            </div>
-
-            <!-- Message for attempts -->
-            <p id="attempt-message" class="mb-4 text-sm text-gray-600">
-                You have 3 attempts to log in before your account is locked.
-            </p>
+@section('auth_content')
+    <div class="bg-white rounded-lg p-10 shadow-md">
+        <div class="w-full h-full flex flex-col items-center justify-evenly">
+            <img class="h-24 object-cover" src="{{ asset('Assets/Caffeinated Logo 1.png') }}" alt="logo">
 
             {{-- success message --}}
             @if (session('status'))
@@ -22,91 +12,62 @@
                 </div>
             @endif
 
-        <!-- Form -->
-        <form action="{{ route('login') }}" method="POST" id="login-form" class="space-y-6">
-            @csrf
-            <div class="text-left">
-                <label for="email" class="block mb-1 text-sm font-medium text-gray-700">Email <span
-                        class="text-red-500">*</span></label>
-                <input type="text" id="email" name="email" value="{{ old('email') }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-brown"
-                    placeholder="Enter your email" @error('email') style="border-color: red" @enderror>
-                @error('email')
-                    <p class="text-sm text-red-500">{{ $message }}</p>
-                @enderror
-            </div>
-            <div class="text-left">
-                <label for="password" class="block mb-1 text-sm font-medium text-gray-700">Password <span
-                        class="text-red-500">*</span></label>
-                <div class="relative">
+            <!-- Form -->
+            <form class="w-full p-5 flex flex-col items-center justify-center" action="{{ route('login') }}" method="POST"
+                id="login-form">
+                @csrf
+
+                <div class="mt-10">
+                    <input type="text" id="email" name="email" value="{{ old('email') }}"
+                        class="border w-80 p-3 text-xs font-normal border-gray-300 bg-gray-100 rounded-lg focus:outline-blue-400 outline-1 text-gray-500"
+                        placeholder="Email" @error('email') style="border-color: red" @enderror>
+                    @error('email')
+                        <p class="text-xs pl-1 mt-1 text-red-500">{{ $message }}</p>
+                    @enderror
+                    <div id="email-error" class=" text-red-500 w-80 text-xs mt-2 ml-1 block"></div>
+                </div>
+                <div class="mt-5 relative">
                     <input type="password" id="password" name="password"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-brown"
-                        placeholder="Enter your password" @error('password') style="border-color: red" @enderror>
+                        class="border w-80 p-3 text-xs font-normal border-gray-200 bg-gray-100 rounded-lg focus:outline-blue-400 outline-1 text-gray-500"
+                        placeholder="Password" @error('password') style="border-color: red" @enderror>
+
                     <span class="absolute inset-y-0 flex items-center cursor-pointer right-3" id="toggle-password">
                         <!-- Hidden Eye Slash icon (for password hidden) -->
                         <div id="eye-slash-icon" style="display: block;" class="w-5 h-5">
-                            <img src="{{ asset('Assets/hide_password.png') }}" alt="hide password icon"
-                                class="filter grayscale">
+                            <img src="{{ asset('Assets/password_hide.png') }}" alt="hide password icon"
+                                class="filter grayscale opacity-50">
                         </div>
 
                         <!-- Show Eye icon (for password visible) -->
                         <div id="eye-show-icon" style="display: none;" class="w-5 h-5">
-                            <img src="{{ asset('Assets/show_password.png') }}" alt="show password icon"
-                                class="filter grayscale">
+                            <img src="{{ asset('Assets/password_show.png') }}" alt="show password icon"
+                                class="filter grayscale opacity-50">
                         </div>
                     </span>
-
                 </div>
-                @error('password')
+                <div class="w-full pl-1">
+                    @error('password')
+                        <p class="text-xs mt-1 text-red-500">{{ $message }}</p>
+                    @enderror
+                    <div id="password-error" class=" text-red-500 w-80 text-xs mt-2 ml-1 block"></div>
+                </div>
+
+                <div class="w-full  text-right mr-2 mt-2">
+                    <a href="{{ route('password.request') }}"
+                        class="hover:underline italic text-xs font-medium text-green-800 text-opacity-70" href="">Forgot
+                        password?</a>
+                </div>
+
+                {{-- Error message for invalid credentials --}}
+                @error('failed')
                     <p class="text-sm text-red-500">{{ $message }}</p>
                 @enderror
-            </div>
 
-            <!-- Forgot Password -->
-            <div class="text-right">
-                <a href="{{ route('password.request') }}" class="text-sm text-gray-500 hover:underline">Forgot your
-                    password?</a>
-            </div>
+                <button
+                    class="text-white w-60 px-10 py-2 text-center text-sm mt-6 rounded-full bg-green-900 bg-opacity-90 hover:bg-opacity-100 shadow-lg"
+                    type="submit">Login</button>
 
-            {{-- Error message for invalid credentials --}}
-            @error('failed')
-                <p class="text-sm text-red-500">{{ $message }}</p>
-            @enderror
-
-            <!-- Login Button -->
-            <div>
-                <button type="submit"
-                    class="w-64 py-3 mt-4 font-bold text-white bg-yellow-500 rounded-lg hover:bg-brown-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brown-500">
-                    Login
-                </button>
-            </div>
-
-
-        </form>
+            </form>
+        </div>
     </div>
-
-    <script>
-        // Toggle password visibility and icons
-        const togglePassword = document.getElementById('toggle-password');
-        const passwordField = document.getElementById('password');
-        const eyeShowIcon = document.getElementById('eye-show-icon');
-        const eyeSlashIcon = document.getElementById('eye-slash-icon');
-
-        togglePassword.addEventListener('click', function() {
-            // Toggle the type attribute
-            const type = passwordField.type === 'password' ? 'text' : 'password';
-            passwordField.type = type;
-
-            // Toggle the icons visibility
-            if (type === 'password') {
-                // Password is hidden, show eye-slash icon
-                eyeShowIcon.style.display = 'none';
-                eyeSlashIcon.style.display = 'block';
-            } else {
-                // Password is visible, show eye icon
-                eyeShowIcon.style.display = 'block';
-                eyeSlashIcon.style.display = 'none';
-            }
-        });
-    </script>
 @endsection

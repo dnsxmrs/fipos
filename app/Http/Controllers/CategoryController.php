@@ -38,7 +38,7 @@ class CategoryController extends Controller
         // Sync with OOS after category creation
         $this->syncWithOos('POST', $category);
 
-        return redirect()->back()->with('success', 'Product added successfully!');
+        return redirect()->back()->with('success', 'Category added successfully!');
     }
 
     public function update(Request $request)
@@ -134,14 +134,14 @@ class CategoryController extends Controller
             ]);
 
             if ($response->failed()) {
-                \Log::error('Failed to sync with OOS', [
+                Log::error('Failed to sync with OOS', [
                     'method' => $method,
                     'url' => $url,
                     'status' => $response->status(),
                     'message' => $response->body(),
                 ]);
             } else {
-                \Log::info('Successfully synced with OOS', [
+                Log::info('Successfully synced with OOS', [
                     'method' => $method,
                     'url' => $url,
                     'status' => $response->status(),
@@ -150,7 +150,7 @@ class CategoryController extends Controller
             }
 
         } catch (\Exception $e) {
-            \Log::error('Error syncing with OOS', [
+            Log::error('Error syncing with OOS', [
                 'error' => $e->getMessage(),
                 'method' => $method,
                 'url' => $url,

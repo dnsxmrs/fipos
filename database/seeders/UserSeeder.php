@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
             'last_name' => 'Account',
             'email' => 'cashier@gmail.com',
             'email_verified_at' => now(),
-            'password' => bcrypt('staff123'), // use a secure password
+            'password' => bcrypt('cashier123'), // use a secure password
             'role' => 'staff',
         ]);
     }

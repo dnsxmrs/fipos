@@ -10,10 +10,10 @@ class MenuController extends Controller
     //
     public function showCategories()
     {
-        $categories = Category::withCount('products')->get();
+        $categories = Category::withCount('products')->paginate(10);
         $products = Product::all();
 
-        return view('admin.menu.categories.categories', compact('categories', 'products'));
+        return view('admin.menu.categories', compact('categories', 'products'));
     }
 
 
@@ -22,11 +22,11 @@ class MenuController extends Controller
 
         // Fetch categories from the database
         $categories = Category::all();
-        $products = Product::all();
+        $products = Product::paginate(10);
 
 
         // Return the view and pass the categories
-        return view('admin.menu.products.products', compact('categories', 'products'));
+        return view('admin.menu.products', compact('categories', 'products'));
     }
 
 
@@ -36,7 +36,7 @@ class MenuController extends Controller
     public function showMenu()
     {
         // fetch the products
-        $items = Product::all();
+        $items = Product::with('category')->get();
 
         // fetch the category for display in header
         $categories = Category::all();
@@ -44,19 +44,6 @@ class MenuController extends Controller
         return view('cashier.menu.index', compact('items', 'categories'));
     }
 
-    /**
-     * Show menu per category
-     */
-    public function showCategorizedMenu($category_id)
-    {
-        // find products with the certain category
-        $items = Product::where('category_id', $category_id)->get();
-        $categories = Category::all();
-
-
-        // return fetched data to view
-        return view('cashier.menu.categorized-menu', compact('items', 'categories'));
-    }
 
 
 }

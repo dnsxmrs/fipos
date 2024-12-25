@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id('category_id'); // Primary key with auto-increment
             $table->string('category_name')->unique(); // Unique category name
+            $table->mediumText('description')->nullable();
             $table->enum('type', ['food', 'beverage']); // Type of category: Food or Beverage
             $table->enum('beverage_type', ['hot', 'iced'])->nullable(); // Beverage type (only for beverages)
             $table->string('image')->nullable(); // Nullable path to image

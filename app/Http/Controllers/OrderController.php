@@ -38,7 +38,7 @@ class OrderController extends Controller
             ]);
 
             // generate random string for order number
-            $orderNumber = 'CAF-' . strtoupper(uniqid());
+            $orderNumber = 'CAF' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 6));
 
             // create the order record
             $createdOrder = Order::create([
@@ -89,21 +89,41 @@ class OrderController extends Controller
         try {
 
             // Get the dine-in and take-out orders along with their associated products
-            $dineInOrders = Order::where('order_type', 'dine-in')
-                ->with('products.product')
-                ->get();
+            $orders = Order::with('products.product')->paginate(10);
 
-            $takeOutOrders = Order::where('order_type', 'take-out')
-                ->with('products.product')
-                ->get();
+            return view('cashier.orders.all-orders', compact('orders'));
 
-            return view('cashier.orders.index', compact('dineInOrders', 'takeOutOrders'));
         } catch (\Throwable $th) {
 
             // Log the exception
             Log::error('Error fetching orders: ' . $th->getMessage());
             throw $th;
         }
+    }
+
+    /**
+     *  Show dine-in orders
+     */
+    public function showDineInOrders() {
+
+        $dineInOrders = Order::where('order_type', 'dine-in')
+            ->with('products.product')
+            ->paginate(10);
+
+        return view('cashier.orders.dine-in', compact('dineInOrders'));
+    }
+
+
+    /**
+     *  Show take-out orders
+     */
+    public function showTakeOutOrders() {
+
+        $takeOutOrders = Order::where('order_type', 'take-out')
+            ->with('products.product')
+            ->paginate(10);
+
+        return view('cashier.orders.take-out', compact('takeOutOrders'));
     }
 
 

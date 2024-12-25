@@ -22,12 +22,6 @@ class AdminController extends Controller
         return view('admin.order-tracking');
     }
 
-    public function staff()
-    {
-        $users = User::all();
-
-        return view('admin.staffs.index', compact('users'));
-    }
 
     public function audit()
     {

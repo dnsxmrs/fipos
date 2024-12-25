@@ -8,173 +8,284 @@ use Illuminate\Support\Facades\DB;
 
 class ProductSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
         DB::table('products')->insert([
             // Iced Coffee
             [
-                'product_name' => 'Americano',
-                'product_description' => 'A strong black coffee with a bold flavor.',
-                'product_price' => 3.50,
+                'product_name' => 'Iced Americano',
+                'product_description' => 'Refreshing iced espresso with water and ice.',
+                'product_price' => 150.00,
                 'isAvailable' => true,
-                'has_customization' => true,
-                'image' => 'assets/americano.jpg',
-                'category_id' => 1, // Iced Coffee
+                'has_customization' => false,
+                'image' => 'images/products/iced-americano.png',
+                'category_id' => 1, // Iced Coffee category ID
                 'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'product_name' => 'Sweetened Americano',
-                'product_description' => 'A rich Americano with added sweetness.',
-                'product_price' => 3.75,
+                'product_name' => 'Iced Latte',
+                'product_description' => 'A smooth blend of espresso, cold milk, and ice.',
+                'product_price' => 180.00,
                 'isAvailable' => true,
                 'has_customization' => true,
-                'image' => 'assets/sweetened_americano.jpg',
-                'category_id' => 1, // Iced Coffee
+                'image' => 'images/products/iced-latte.png',
+                'category_id' => 1, // Iced Coffee category ID
                 'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'product_name' => 'Iced Caramel Macchiato',
+                'product_description' => 'Iced espresso with caramel syrup and milk.',
+                'product_price' => 190.00,
+                'isAvailable' => true,
+                'has_customization' => true,
+                'image' => 'images/products/iced-caramel-macchiato.png',
+                'category_id' => 1, // Iced Coffee category ID
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'product_name' => 'Iced Mocha',
+                'product_description' => 'A delicious combination of iced espresso and chocolate syrup.',
+                'product_price' => 200.00,
+                'isAvailable' => true,
+                'has_customization' => true,
+                'image' => 'images/products/iced-mocha.png',
+                'category_id' => 1, // Iced Coffee category ID
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'product_name' => 'Iced Flat White',
+                'product_description' => 'Iced espresso with steamed milk for a creamy taste.',
+                'product_price' => 170.00,
+                'isAvailable' => true,
+                'has_customization' => true,
+                'image' => 'images/products/iced-flat-white.png',
+                'category_id' => 1, // Iced Coffee category ID
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
 
             // Hot Coffee
             [
-                'product_name' => 'Americano',
-                'product_description' => 'A smooth and strong espresso with hot water.',
-                'product_price' => 3.00,
+                'product_name' => 'Hot Espresso',
+                'product_description' => 'Strong hot espresso shot with rich flavor.',
+                'product_price' => 120.00,
                 'isAvailable' => true,
                 'has_customization' => false,
-                'image' => 'assets/hot_americano.jpg',
-                'category_id' => 2, // Hot Coffee
+                'image' => 'images/products/hot-espresso.png',
+                'category_id' => 2, // Hot Coffee category ID
                 'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'product_name' => 'Cafe Latte',
-                'product_description' => 'A creamy espresso with steamed milk and a touch of foam.',
-                'product_price' => 3.50,
-                'isAvailable' => true,
-                'has_customization' => false,
-                'image' => 'assets/cafe_latte.jpg',
-                'category_id' => 2, // Hot Coffee
-                'created_at' => now(),
-            ],
-
-            // Iced Non-Coffee
-            [
-                'product_name' => 'Choco',
-                'product_description' => 'A refreshing iced chocolate drink.',
-                'product_price' => 3.00,
+                'product_name' => 'Hot Cappuccino',
+                'product_description' => 'A balanced blend of espresso, steamed milk, and foam.',
+                'product_price' => 160.00,
                 'isAvailable' => true,
                 'has_customization' => true,
-                'image' => 'assets/choco.jpg',
-                'category_id' => 3, // Iced Non-Coffee
+                'image' => 'images/products/hot-cappuccino.png',
+                'category_id' => 2, // Hot Coffee category ID
                 'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'product_name' => 'Strawberry Milk',
-                'product_description' => 'A sweet and creamy strawberry milkshake.',
-                'product_price' => 3.25,
+                'product_name' => 'Hot Latte',
+                'product_description' => 'Espresso with steamed milk, topped with foam.',
+                'product_price' => 180.00,
                 'isAvailable' => true,
                 'has_customization' => true,
-                'image' => 'assets/strawberry_milk.jpg',
-                'category_id' => 3, // Iced Non-Coffee
+                'image' => 'images/products/hot-latte.png',
+                'category_id' => 2, // Hot Coffee category ID
                 'created_at' => now(),
+                'updated_at' => now(),
             ],
-
-            // Hot Non-Coffee
             [
-                'product_name' => 'Choco',
-                'product_description' => 'A warm and comforting hot chocolate.',
-                'product_price' => 2.50,
-                'isAvailable' => true,
-                'has_customization' => false,
-                'image' => 'assets/hot_choco.jpg',
-                'category_id' => 4, // Hot Non-Coffee
-                'created_at' => now(),
-            ],
-
-            // Frappuccino Espresso
-            [
-                'product_name' => 'Java Chip',
-                'product_description' => 'A rich frappuccino blended with chocolate chips and espresso.',
-                'product_price' => 4.50,
+                'product_name' => 'Hot Mocha',
+                'product_description' => 'A delightful combination of hot espresso and chocolate syrup.',
+                'product_price' => 190.00,
                 'isAvailable' => true,
                 'has_customization' => true,
-                'image' => 'assets/java_chip.jpg',
-                'category_id' => 5, // Frappuccino Espresso
+                'image' => 'images/products/hot-mocha.png',
+                'category_id' => 2, // Hot Coffee category ID
                 'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'product_name' => 'Caramel',
-                'product_description' => 'A smooth frappuccino with caramel and a hint of coffee.',
-                'product_price' => 4.00,
+                'product_name' => 'Hot Macchiato',
+                'product_description' => 'Espresso with a small amount of steamed milk and foam.',
+                'product_price' => 150.00,
                 'isAvailable' => true,
                 'has_customization' => true,
-                'image' => 'assets/caramel_frappuccino.jpg',
-                'category_id' => 5, // Frappuccino Espresso
+                'image' => 'images/products/hot-macchiato.png',
+                'category_id' => 2, // Hot Coffee category ID
                 'created_at' => now(),
+                'updated_at' => now(),
             ],
 
-            // Frappuccino Non-Espresso
+            // Blended Coffee (Frappes)
             [
-                'product_name' => 'Choco Hazelnut',
-                'product_description' => 'A delicious blend of chocolate and hazelnut in a frappuccino.',
-                'product_price' => 4.25,
+                'product_name' => 'Espresso Frappuccino',
+                'product_description' => 'Blended ice with espresso, milk, and a hint of sweetness.',
+                'product_price' => 200.00,
                 'isAvailable' => true,
                 'has_customization' => true,
-                'image' => 'assets/choco_hazelnut.jpg',
-                'category_id' => 6, // Frappuccino Non-Espresso
+                'image' => 'images/products/espresso-frappuccino.png',
+                'category_id' => 3, // Blended Coffee category ID
                 'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'product_name' => 'Strawberry Delight',
-                'product_description' => 'A refreshing strawberry frappuccino with creamy texture.',
-                'product_price' => 4.00,
+                'product_name' => 'Caramel Frappuccino',
+                'product_description' => 'Blended ice with espresso, caramel syrup, and milk.',
+                'product_price' => 210.00,
                 'isAvailable' => true,
                 'has_customization' => true,
-                'image' => 'assets/strawberry_delight.jpg',
-                'category_id' => 6, // Frappuccino Non-Espresso
+                'image' => 'images/products/caramel-frappuccino.png',
+                'category_id' => 3, // Blended Coffee category ID
                 'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'product_name' => 'Chocolate Frappuccino',
+                'product_description' => 'Blended ice with espresso and chocolate syrup.',
+                'product_price' => 220.00,
+                'isAvailable' => true,
+                'has_customization' => true,
+                'image' => 'images/products/chocolate-frappuccino.png',
+                'category_id' => 3, // Blended Coffee category ID
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'product_name' => 'Vanilla Frappuccino',
+                'product_description' => 'Blended ice with espresso and vanilla flavor.',
+                'product_price' => 230.00,
+                'isAvailable' => true,
+                'has_customization' => true,
+                'image' => 'images/products/vanilla-frappuccino.png',
+                'category_id' => 3, // Blended Coffee category ID
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'product_name' => 'Mocha Frappuccino',
+                'product_description' => 'Blended ice with espresso, chocolate syrup, and milk.',
+                'product_price' => 240.00,
+                'isAvailable' => true,
+                'has_customization' => true,
+                'image' => 'images/products/mocha-frappuccino.png',
+                'category_id' => 3, // Blended Coffee category ID
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
 
-            // Snack
+            // Pastries
             [
-                'product_name' => 'Fries',
-                'product_description' => 'Crispy golden fries served with a dipping sauce.',
-                'product_price' => 2.00,
+                'product_name' => 'Chocolate Cake',
+                'product_description' => 'Rich and moist chocolate cake.',
+                'product_price' => 120.00,
                 'isAvailable' => true,
                 'has_customization' => false,
-                'image' => 'assets/fries.jpg',
-                'category_id' => 7, // Snack
+                'image' => 'images/products/chocolate-cake.png',
+                'category_id' => 5, // Pastries category ID
                 'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'product_name' => 'Big Siomai',
-                'product_description' => 'Delicious steamed dumplings filled with pork and spices.',
-                'product_price' => 2.50,
+                'product_name' => 'Strawberry Cheesecake',
+                'product_description' => 'Creamy cheesecake topped with fresh strawberries.',
+                'product_price' => 150.00,
                 'isAvailable' => true,
                 'has_customization' => false,
-                'image' => 'assets/big_siomai.jpg',
-                'category_id' => 7, // Snack
+                'image' => 'images/products/strawberry-cheesecake.png',
+                'category_id' => 5, // Pastries category ID
                 'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'product_name' => 'Vegan Chocolate Cake',
+                'product_description' => 'Delicious and rich vegan chocolate cake.',
+                'product_price' => 130.00,
+                'isAvailable' => true,
+                'has_customization' => false,
+                'image' => 'images/products/vegan-chocolate-cake.png',
+                'category_id' => 5, // Pastries category ID
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'product_name' => 'Lemon Meringue Pie',
+                'product_description' => 'Tangy lemon filling with a fluffy meringue topping.',
+                'product_price' => 140.00,
+                'isAvailable' => true,
+                'has_customization' => false,
+                'image' => 'images/products/lemon-meringue-pie.png',
+                'category_id' => 5, // Pastries category ID
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'product_name' => 'Tiramisu',
+                'product_description' => 'Classic Italian dessert with layers of coffee-soaked ladyfingers.',
+                'product_price' => 160.00,
+                'isAvailable' => true,
+                'has_customization' => false,
+                'image' => 'images/products/tiramisu.png',
+                'category_id' => 5, // Pastries category ID
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
 
-            // Dessert
+            // Snacks
             [
-                'product_name' => 'Chocolate Chip Cookie',
-                'product_description' => 'A soft and chewy chocolate chip cookie.',
-                'product_price' => 1.50,
+                'product_name' => 'Garlic Bread',
+                'product_description' => 'Toasted bread with garlic butter and herbs.',
+                'product_price' => 80.00,
                 'isAvailable' => true,
                 'has_customization' => false,
-                'image' => 'assets/chocolate_chip_cookie.jpg',
-                'category_id' => 8, // Dessert
+                'image' => 'images/products/garlic-bread.png',
+                'category_id' => 6, // Snacks category ID
                 'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'product_name' => 'Compfire S\'mores Cookie',
-                'product_description' => 'A delicious cookie filled with marshmallows, chocolate, and graham cracker crumbs.',
-                'product_price' => 2.00,
+                'product_name' => 'French Fries',
+                'product_description' => 'Crispy fried potato strips served with ketchup.',
+                'product_price' => 90.00,
                 'isAvailable' => true,
                 'has_customization' => false,
-                'image' => 'assets/compfire_smores_cookie.jpg',
-                'category_id' => 8, // Dessert
+                'image' => 'images/products/french-fries.png',
+                'category_id' => 6, // Snacks category ID
                 'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'product_name' => 'Onion Rings',
+                'product_description' => 'Crispy battered onion rings, perfect as a snack.',
+                'product_price' => 100.00,
+                'isAvailable' => true,
+                'has_customization' => false,
+                'image' => 'images/products/onion-rings.png',
+                'category_id' => 6, // Snacks category ID
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'product_name' => 'Mozzarella Sticks',
+                'product_description' => 'Deep-fried mozzarella cheese sticks.',
+                'product_price' => 120.00,
+                'isAvailable' => true,
+                'has_customization' => false,
+                'image' => 'images/products/mozarella-sticks.png',
+                'category_id' => 6, // Snacks category ID
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
     }

@@ -3,40 +3,125 @@
 @section('cashier_content')
     {{-- LEFT PANNEL --}}
 
-    <div class="mt-5 text-2xl font-poppins">
-        <p>Categories</p>
-    </div>
+    {{-- ALL ITEMS --}}
+    <div class="mr-[550px] ">
+        <div class="my-5">
+            <p class="text-xl font-medium text-gray-700">Menu</p>
+            <p class="text-sm text-gray-500">A list of all available menu.</p>
+        </div>
 
-    <div class="my-3 gap-2 flex flex-wrap items-center justify-start">
-        {{-- all menu button --}}
-        <a href=" {{ route('menu.show') }} "
-            class="p-4 border border-gray-300 px-5 rounded-lg shadow-md h-[55px] text-center cursor-pointer hover:bg-amber-100 active:bg-amber-200 bg-white hover:text-amber-500">
-            All Menu
-        </a>
-
-        <!-- categories button -->
-        @foreach ($categories as $category)
-            <a href=" {{ route('menu.categorized', ['id' => $category->category_id]) }} "
-                class="p-4 border border-gray-300 px-5 rounded-lg shadow-md h-[55px] text-center cursor-pointer hover:bg-amber-100 active:bg-amber-200 bg-white hover:text-amber-500">
-                {{ $category->category_name }}
-            </a>
-        @endforeach
-    </div>
-
-    <div class="flex flex-wrap gap-3">
-
-        {{-- Display the menu --}}
-        @foreach ($items as $item)
+        <div class="my-5 gap-2 flex flex-wrap items-center justify-start mr-10 mb-10">
+            {{-- all menu button (active by default) --}}
             <button
-                class="block p-4  border border-gray-300 rounded-lg shadow-md w-[200px] hover:bg-amber-100 active:bg-amber-200 bg-white hover:text-amber-500 product-card"
-                data-name="{{ $item->product_name }}" data-price="{{ $item->product_price }}" onclick="addItemToOrder(this)">
-                <img src="{{ asset($item->image) }}" alt="{{ $item->product_name }}"
-                    class="rounded-lg w-[200px] h-[150px] object-cover mb-4">
-                <p class="text-center text-lg font-semibold"> {{ $item->product_name }} </p>
-                <p class="text-center text-gray-500"> {{ $item->product_price }} </p>
+                class="p-4 border px-5 text-green-800 rounded-lg shadow h-[55px] text-center cursor-pointer hover:bg-green-100 active:bg-green-200 bg-green-200"
+                onclick="filterItems('all', event)" id="all-menu-btn">
+                All Menu
             </button>
-        @endforeach
+
+            <!-- Category Buttons -->
+            @foreach ($categories as $category)
+                <span id="category-{{ $category->category_name }}" onclick="filterItems('{{ $category->category_name }}', event)"
+                    class="category-button flex items-center justify-center border p-4 text-green-800 px-5 rounded-lg shadow-md h-[55px] text-center cursor-pointer hover:bg-green-100 active:bg-green-200 bg-white ">
+                    <img class="rounded-lg h-11 inline object-cover mr-3 p-1" src="{{ asset($category->image) }}"
+                        alt="{{ $category->category_name }}">
+                    <span>{{ $category->category_name }}</span>
+                </span>
+            @endforeach
+        </div>
+
+        <div>
+            <div id="all-items" class="flex flex-wrap gap-3">
+
+                {{-- Display the menu --}}
+                @foreach ($items as $item)
+                    <button
+                        class="item-button block p-4 border border-gray-300 rounded-lg shadow-md w-[200px] hover:bg-green-100 bg-white hover:text-green-700 product-card"
+                        data-category="{{ $item->category->category_name }}" data-name="{{ $item->product_name }}"
+                        data-price="{{ $item->product_price }}" onclick="addItemToOrder(this)">
+                        <img src="{{ asset($item->image) }}" alt="{{ $item->product_name }}"
+                            class="rounded-lg w-[200px] h-[150px] object-cover mb-4">
+                        <p class="text-center text-lg font-semibold"> {{ $item->product_name }} </p>
+                        <p class="text-center text-gray-500"> {{ $item->product_price }} </p>
+                    </button>
+                @endforeach
+            </div>
+        </div>
     </div>
+
+    <!-- RIGHT PANEL -->
+    <div
+        class="flex flex-col fixed right-0 top-24 p-4 w-[550px] h-[calc(100vh-6rem)] border border-gray-300 rounded-lg bg-white justify-between">
+        <!-- Header and Order Type -->
+        <div class="h-1/4">
+            <h2 class="text-xl font-semibold mb-4 ml-3 mt-3">Current Order</h2>
+            <div class="mx-10">
+                <select name="order-type" id="order-type"
+                    class="p-2 border border-gray-300 rounded-lg shadow-md w-full h-[40px] text-xs cursor-pointer bg-white hover:bg-amber-900 hover:text-white active:bg-amber-600">
+                    <option value="dine-in">Dine in</option>
+                    <option value="take-out">Take out</option>
+                </select>
+            </div>
+
+            <!-- Header row with underline and aligned text -->
+            <div class="flex mt-10 text-sm space-x-4 font-medium text-gray-800 border-b pb-2 mx-3">
+                <p class="w-1/4 text-left">Item</p>
+                <p class="w-1/4 text-center">Quantity</p>
+                <p class="w-1/4 text-center">Price</p>
+                <p class=""></p>
+            </div>
+        </div>
+
+        <!-- Items List and Scrollable Container -->
+        <div class="flex-1 mt-6 overflow-y-auto">
+            <div id="order-items-container" class="mx-4">
+                <!-- Dynamically added items will appear here -->
+            </div>
+        </div>
+
+        <!-- Total Calculation Section (Fixed at Bottom) -->
+        <div class="sticky bottom-0 bg-white">
+            <div class="border-t mt-2">
+                <div class="flex justify-between text-sm font-semibold text-gray-600 ml-6 mr-8 mt-5">
+                    <span class="text-center">Sub Total</span>
+                    <span class="text-center" id="sub-total">₱ 0.00</span>
+                </div>
+                <div class="flex justify-between text-sm font-semibold text-gray-600 ml-6 mr-8 mt-5">
+                    <span class="text-center">Discount</span>
+                    <span class="text-center" id="discount">- ₱ 0.00</span>
+                </div>
+                <div class="flex justify-between text-sm font-semibold text-gray-600 ml-6 mr-8 mt-5">
+                    <span class="text-center">Tax</span>
+                    <span class="text-center" id="tax">₱ 0.00</span>
+                </div>
+
+                <div class="flex justify-between text-l font-bold text-black ml-6 mr-8 mt-5">
+                    <span class="text-center">Payable Amount</span>
+                    <span class="text-center" id="payable-amount">₱ 0.00</span>
+                </div>
+            </div>
+
+            <div class="flex justify-between text-sm ml-6 mr-8 mt-8">
+                <p>Add a Discount: </p>
+                <select
+                    class="w-50 h-[40px] text-center font-regular text-green-500 bg-white border border-green-500 hover:bg-gray-100 px-4 py-2 rounded-lg focus:outline-none focus:ring-0 focus:ring-green-500"
+                    id="discount-dropdown">
+                    <option value="none" selected>None</option>
+                    <option value="senior citizen">Senior Citizen</option>
+                    <option value="pwd">PWD</option>
+                </select>
+            </div>
+
+            <div class="flex justify-between text-sm text-gray-200 ml-6 mr-8 mt-8">
+                <button id="openModal"
+                    class="text-center w-full font-regular text-white bg-green-900 hover:bg-green-600 px-4 py-2 mb-5 rounded-full">
+                    Continue to Payment
+                </button>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
 
     <!-- PAYMENT MODE MODAL -->
     <div id="paymentModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
@@ -273,76 +358,4 @@
             return payload;
         }
     </script>
-@endsection
-
-
-@section('cashier_panel')
-    {{-- RIGHT PANNEL --}}
-    <!--pos receipt-->
-    <div class=" p-4 w-[504px] h-screen border border-gray-300 rounded-lg mt-28 bg-white overflow-y-auto">
-        <h2 class="text-xl font-semibold mb-4 ml-3 mt-3">Current Order</h2>
-        <div class="mx-10">
-            <select name="order-type" id="order-type"
-                class="p-2 border border-gray-300 rounded-lg shadow-md w-full h-[40px] text-xs cursor-pointer bg-white hover:bg-amber-900 hover:text-white active:bg-amber-600">
-                <option value="dine-in">Dine in</option>
-                <option value="take-out">Take out</option>
-            </select>
-        </div>
-
-
-        <!-- RIGHT PANEL - POS Receipt -->
-        <div class="mt-6">
-            <!-- Header row with underline and aligned text -->
-            <div class="flex justify-between text-sm font-semibold text-gray-600 border-b pb-2 ml-6 mr-8">
-                <span class=" text-center">Item</span>
-                <span class=" text-center">Quantity</span>
-                <span class="">Price</span>
-            </div>
-
-            <!-- Dynamically added items will appear here -->
-            <div id="order-items-container">
-                <!-- Dynamically added items will appear here -->
-            </div>
-
-            <!-- Total Calculation -->
-            <div class="border-t mt-10">
-                <div class="flex justify-between text-sm font-semibold text-gray-600 ml-6 mr-8 mt-5 ">
-                    <span class=" text-center">Sub Total</span>
-                    <span class=" text-center" id="sub-total">₱ 0.00</span>
-                </div>
-                <div class="flex justify-between text-sm font-semibold text-gray-600 ml-6 mr-8 mt-5">
-                    <span class=" text-center">Discount</span>
-                    <span class=" text-center" id="discount">- ₱ 0.00</span>
-                </div>
-                <div class="flex justify-between text-sm font-semibold text-gray-600 ml-6 mr-8 mt-5">
-                    <span class=" text-center">Tax</span>
-                    <span class=" text-center" id="tax">₱ 0.00</span>
-                </div>
-
-                <div class="flex justify-between text-l font-bold text-black ml-6 mr-8 mt-5">
-                    <span class=" text-center">Payable Amount</span>
-                    <span class=" text-center" id="payable-amount">₱ 0.00</span>
-                </div>
-            </div>
-
-            <div class="flex justify-between text-sm ml-6 mr-8 mt-8">
-                <p>Add a Discount: </p>
-                <select
-                    class="w-50 h-[40px] text-center font-regular text-green-500 bg-white border border-green-500 hover:bg-gray-100 px-4 py-2 rounded-full"
-                    id="discount-dropdown">
-                    <option value="none" selected>None</option>
-                    <option value="senior citizen">Senior Citizen</option>
-                    <option value="pwd">PWD</option>
-                </select>
-            </div>
-
-            <div class="flex justify-between text-sm text-gray-200 ml-6 mr-8 mt-8">
-
-                <button id="openModal"
-                    class="text-center w-full font-regular text-white bg-green-500 hover:bg-gray-300 px-4 py-2 rounded-full hover:text-black">
-                    Continue to Payment
-                </button>
-            </div>
-        </div>
-    </div>
 @endsection

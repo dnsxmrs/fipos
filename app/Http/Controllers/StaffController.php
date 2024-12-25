@@ -12,23 +12,16 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $staffs = Staff::all();
+        $staffs = Staff::paginate(10);
 
         if ($staffs->count() <= 0) {
 
             return response()->json([
-
                 'message' => 'No records found.'
-
             ], 200);
-
         }
 
-        return response()->json([
-
-            'data' => $staffs
-
-        ], 200);
+        return view('admin.staffs.index', compact('staffs'));
     }
 
     /**

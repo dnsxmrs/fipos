@@ -10,14 +10,24 @@ use Illuminate\Support\Facades\Http;
 class InventoryController extends Controller
 {
     /**
-     *  Get the items from the microservice
+     *  Show the items
      */
     public function showItems()
     {
         $categories = InventoryCategory::all();
-        $items = Item::with('category')->get();
+        $items = Item::with('category')->paginate(10);
 
-        return view('admin.inventory.index', compact('items', 'categories'));
+        return view('admin.inventory.item.items', compact('items', 'categories'));
+    }
+
+    /**
+     *  Show the categories
+     */
+    public function showCategories()
+    {
+        $categories = InventoryCategory::withCount('items')->paginate(10);
+
+        return view('admin.inventory.category.categories', compact('categories'));
     }
 
 

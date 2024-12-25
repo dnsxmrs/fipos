@@ -8,9 +8,13 @@
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
+    <meta lang="en">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caffeinated</title>
+    <title>{{ env('APP_NAME') }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="{{ asset('js/cashier/cashier-order.js') }}"></script>
+    <script defer src="{{ asset('js/cashier/orders.js') }}"></script>
+    <script defer src="{{ asset('js/cashier/cashier-header.js') }}"></script>
 
     <style>
         body {
@@ -25,26 +29,19 @@
 
     <!-- Main content -->
     <div class="flex">
-        <div class="fixed h-full bg-[#066543]">
+        <div class="fixed">
             {{-- Sidebar --}}
             <x-sidebar.cashier-sidebar />
         </div>
 
-        <div class="flex w-full mt-24 ml-20 mr-[510px] px-5  ">
+        <div class="flex w-full mt-20 ml-24 px-5  ">
             <!-- Scrollable Cashier Content -->
-            <div class="h-full overflow-y-auto">
+            <div class="overflow-y-auto">
                 @yield('cashier_content')
             </div>
 
-            <!-- Cashier Panel -->
-            <div class="fixed right-0">
-                @yield('cashier_panel')
-            </div>
         </div>
     </div>
-    </div>
 </body>
-
-<script src="{{ asset('js/cashier-order.js') }}"></script>
 
 </html>

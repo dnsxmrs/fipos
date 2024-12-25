@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -13,12 +14,29 @@ class ResetPasswordController extends Controller
 {
     // return notice to change password view
     public function noticeToChangePassword() {
-        return view('password.reset-guest.notice-to-change-password');
+        return view('password.notice-to-change-password');
+    }
+
+
+    // Redirect to respective pages if skipped
+    public function skipChangePassword()
+    {
+        $userRole = Auth::user()->role;
+
+        if ($userRole === 'staff') {
+
+            return redirect()->route('menu.show');
+
+        } else if ($userRole === 'admin') {
+
+            return redirect()->route('admin.dashboard');
+
+        }
     }
 
     // return forgot passsword view with email input
     public function forgotPassword() {
-        return view('password.reset-guest.forgot-password');
+        return view('password.forgot-password');
     }
 
     // method to send reset password link
@@ -40,7 +58,7 @@ class ResetPasswordController extends Controller
 
     // Method to return reset password view
     public function resetPasswordView($token) {
-        return view('password.reset-guest.reset-password', ['token' => $token]);
+        return view('password.reset-password', ['token' => $token]);
     }
 
 
