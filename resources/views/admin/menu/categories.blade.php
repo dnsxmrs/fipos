@@ -100,7 +100,7 @@
                                 <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                             @enderror
                         </div>
-                        <button onclick="showAddedDialog()"
+                        <button
                             class="text-sm text-white rounded-lg h-[40px] w-[350px] hover:bg-amber-700 mt-8"
                             style="background-color: #45A834">
                             Add Category
@@ -124,7 +124,7 @@
             <h1 class="text-center text-2xl font-bold mb-4">Item Added Successfully</h1>
             <h2 class="text-center mb-2 font-barlow text-sm">The category has been successfully added
                 to the list and is now available for viewing.</h2>
-            <button onclick="hideAddedDialog()"
+            <button id="close-modal"
                 class="mt-4 bg-yellow-600 text-sm text-white px-4 py-2 hover:bg-yellow-200 w-[200px] rounded-full">
                 Close
             </button>
@@ -255,4 +255,19 @@
                 class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded-full hover:bg-gray-100 w-[258px]">Ok</button>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('added-dialog');
+            const closeModal = document.getElementById('close-modal');
+
+            @if (session('status'))
+                modal.classList.remove('hidden');
+            @endif
+
+            closeModal.addEventListener('click', () => {
+                modal.classList.add('hidden');
+            });
+        });
+    </script>
 @endsection
