@@ -17,7 +17,7 @@
                 name="product_search" id="product_search" autocomplete="off" onkeyup="filterProducts()" />
 
             <!--ADD BUTTON-->
-            <button onclick="showAddDialog()"
+            <button onclick="showAddDialogProducts()"
                 class="bg-green-600 ml-3 text-white px-10 h-10 font-medium text-sm hover:bg-green-700 shadow-sm rounded-full">
                 + Add Product
             </button>
@@ -26,7 +26,8 @@
         {{-- ORDERS TABLE --}}
         <div class="flex items-start my-7  justify-center rounded-lg w-full">
             <div class="w-full ">
-                <table class="w-full shadow rounded-lg table-auto mb-5">
+
+                <table id="products_table" class="products_table w-full shadow rounded-lg table-auto mb-5">
                     <thead class="bg-slate-100 border-b-2 rounded-lg">
                         <tr>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">No.</th>
@@ -40,7 +41,7 @@
                     </thead>
                     <tbody class="text-center text-xs">
                         @foreach ($products as $index => $product)
-                            <tr class="border-b hover:bg-slate-50">
+                            <tr class="product_row border-b hover:bg-slate-50">
                                 <td class="py-3 px-5">
                                     {{ ($products->currentPage() - 1) * $products->perPage() + $loop->iteration }} </td>
                                 <td class="py-3 px-5"> {{ ucfirst($product->product_name) }} </td>
@@ -55,17 +56,17 @@
                                     </span>
                                 </td>
                                 <td class="flex py-3 px-5 space-x-2 items-center justify-end">
-                                    <button onclick="showEditDialog(this)"
+                                    <button onclick="showEditDialogProducts(this)"
                                         class="flex items-center text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out"
                                         data-id="{{ $product->id }}" data-name="{{ $product->product_name }}"
                                         data-description="{{ $product->product_description }}"
                                         data-price="{{ $product->product_price }}"
                                         data-category="{{ $product->category_id }}"
                                         data-availability="{{ $product->isAvailable ? '1' : '0' }}"
-                                        data-image="{{ $product->image ? asset('storage/' . $product->image) : '' }}">
+                                        data-image="{{ $product->image }}">
                                         <img src="{{ asset('Assets/Edit.png') }}" alt="Edit Icon" class="mr-2 ml-2">
                                     </button>
-                                    <button onclick="showDeleteDialog({{ $product->id }})"
+                                    <button onclick="showDeleteDialogProducts({{ $product->id }})"
                                         class="flex items-center text-red-500 hover:text-red-700 ml-2 transition duration-300 ease-in-out">
                                         <img src="{{ asset('Assets/Delete.png') }}" alt="Delete Icon" class="mr-2 ml-2">
                                     </button>
@@ -74,6 +75,10 @@
                         @endforeach
                     </tbody>
                 </table>
+                <!-- No Products Found Message -->
+                <div id="no-products-message" class="hidden text-center text-red-500 mt-4">
+                    No products found matching your search criteria.
+                </div>
 
                 <div class="mt-5">
                     {{ $products->links() }}
@@ -82,13 +87,10 @@
         </div>
     </div>
 
-    <!-- No Products Found Message -->
-    <div id="no-products-message" class="hidden text-center text-red-500 mt-4">
-        No products found matching your search criteria.
-    </div>
+
 
     <!-- Add Modal -->
-    <div id="add-dialog"
+    <div id="add-dialog-products"
         class="hidden fixed p-10 inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50"
         aria-hidden="true">
         <div class="bg-white shadow-md p-8 flex flex-col items-center justify-center rounded-lg w-[500px] h-auto">
@@ -154,7 +156,7 @@
                             class="bg-[#45A834] text-sm text-white rounded-lg h-[40px] w-[350px] hover:bg-amber-700 mt-8">
                             Add Item
                         </button>
-                        <button type="button" onclick="hideAddDialog()"
+                        <button type="button" onclick="hideAddDialogProducts()"
                             class="bg-gray-200 text-sm text-black rounded-lg h-[40px] w-[350px] hover:bg-gray-300 mt-2 font-bold">
                             Cancel
                         </button>
@@ -165,7 +167,7 @@
     </div>
 
     <!-- Successfully item add Modal -->
-    <div id="added-dialog"
+    <div id="added-dialog-products"
         class="hidden modal p-10 fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50"
         aria-hidden="true">
         <div class="bg-white shadow-md p-8 flex flex-col items-center w-[500px] h-[370px] rounded-[20px] overflow-hidden">
@@ -173,7 +175,7 @@
             <h1 class="text-center text-2xl font-bold mb-4">Item Added Successfully</h1>
             <h2 class="text-center mb-2 font-barlow text-sm">The product has been successfully added to
                 the list and is now available for viewing.</h2>
-            <button onclick="hideAddedDialog()"
+            <button onclick="hideAddedDialogProducts()"
                 class="mt-4 bg-yellow-600 text-sm text-white px-4 py-2 hover:bg-yellow-200 w-[200px] rounded-full">
                 Close
             </button>
@@ -181,7 +183,7 @@
     </div>
 
     <!-- Edit Modal -->
-    <div id="edit-dialog"
+    <div id="edit-dialog-products"
         class="hidden fixed p-10 inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50"
         aria-hidden="true">
         <div class="bg-white rounded shadow-md p-8 flex flex-col items-center" style="width: 455px; height: 814px;">
@@ -260,7 +262,7 @@
                             class="bg-[#45A834] text-sm text-white rounded-lg h-[40px] w-[350px] hover:bg-amber-700 mt-8 font-bold">
                             Save Changes
                         </button>
-                        <button type="button" onclick="hideEditDialog()"
+                        <button type="button" onclick="hideEditDialogProducts()"
                             class="bg-gray-200 text-sm text-black rounded-lg h-[40px] w-[350px] hover:bg-gray-300 mt-2 font-bold">
                             Cancel
                         </button>
@@ -271,7 +273,7 @@
     </div>
 
     <!-- Item Updated Successfully Modal -->
-    <div id="updated-dialog"
+    <div id="updated-dialog-products"
         class="hidden modal fixed p-10 inset-0 bg-black bg-opacity-75 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50"
         aria-hidden="true">
         <div class="bg-white shadow-md p-8 flex flex-col items-center w-[500px] h-[350px] rounded-[20px] overflow-hidden">
@@ -280,7 +282,7 @@
             </h1>
             <h2 class="text-center mb-4 font-barlow text-sm">The product has been successfully added to
                 the list</h2>
-            <button onclick="hideItemUpdatedDialog()"
+            <button onclick="hideItemUpdatedDialogProducts()"
                 class="mt-4 bg-yellow-600 text-sm text-white px-4 py-2  hover:bg-amber-700 w-[200px] rounded-full">
                 Close
             </button>
@@ -288,36 +290,34 @@
     </div>
 
     <!-- Delete Modal -->
-    <div id="delete-dialog"
+    <div id="delete-dialog-products"
         class="hidden fixed p-10 inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50"
         aria-hidden="true">
-        <div
-            class="bg-white p-4 shadow-md text-center w-[500px] h-[420px] rounded-[20px] overflow-hidden flex flex-col items-center">
-            <img src="{{ asset('Assets/icons-password.png') }}" alt="Password Icon" class="w-[150px] h-[150px] mb-6">
-            <h2 class="text-lg font-semibold">Confirm Delete</h2>
-            <p class="mt-1 mb-5">Enter your password below:</p>
-            <!-- Password input section -->
-            <div class="relative mt-4">
-                <input type="password" id="password"
-                    class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
-                    type="text" placeholder="Item name " name="product_name" required>
-                <label class="text-sm absolute left-2 -top-6 scale-75 text-gray-500 origin-left"
-                    for="itemName">Password</label>
+        <div class="bg-white p-4 shadow-md text-center w-[500px] h-[420px] rounded-[20px] overflow-hidden flex flex-col items-center">
+            <img src="{{ asset('Assets/icons-delete.png') }}" alt="deleteIcon" class="w-[150px] h-[150px]">
+            <h1 class="text-center text-xl font-bold mb-4">Delete Product</h1>
+            <p class="text-center">Are you sure you want to delete this product?</p>
+            <div class="flex space-x-4 mt-4">
+                <button onclick="showConfirmDeleteModalProducts()"
+                    class="rounded-full flex items-center justify-center text-center text-white hover:text-red-700 bg-red-600 px-4 py-2 h-[40px] w-[140px]">
+                    Delete
+                </button>
+                <button onclick="hideDeleteDialogProducts()"
+                    class="bg-gray-200 text-sm text-black rounded-full h-[40px] w-[140px] hover:bg-gray-300 font-bold">
+                    Cancel
+                </button>
             </div>
-            <button id="confirmButton" onclick="hideConfirmDelete"
-                class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded-full hover:bg-gray-100 w-[200px]">Confirm</button>
         </div>
     </div>
 
     <!--Confirm Delete-->
-    <div id="confirm-delete-modal"
+    <div id="confirm-delete-modal-products"
         class="fixed inset-0 p-10 flex items-center justify-center bg-gray-500 bg-opacity-75 hidden" aria-hidden="true">
         <div
             class="bg-white p-4 shadow-md text-center w-[500px] h-[380px] rounded-[20px] overflow-hidden flex flex-col items-center">
             <img src="{{ asset('Assets/icons-password.png') }}" alt="Password Icon" class="w-[150px] h-[150px] mb-4">
             <h2 class="text-lg font-semibold">Confirm Delete</h2>
             <p class="mt-1 mb-1">Enter your password below:</p>
-
             <!-- Password input section -->
             <div class="relative mt-4">
                 <input type="password" id="password"
@@ -327,15 +327,13 @@
                     class="text-sm absolute left-2 top-2 transform transition-transform duration-300 ease-in-out scale-100 text-gray-500 origin-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-focus:-top-5 peer-focus:left-2 peer-focus:scale-75"
                     for="password">Input Password</label>
             </div>
-
-
-            <button id="confirmButton"
+            <button id="confirmButtonProduct" onclick="hideConfirmDeleteModalProducts()"
                 class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded-full hover:bg-gray-100 w-[200px]">Confirm</button>
         </div>
     </div>
 
     <!-- Success Message Deleted Modal -->
-    <div id="item-deleted-modal"
+    <div id="item-deleted-modal-products"
         class="fixed inset-0 flex items-center justify-center p-10 bg-gray-500 bg-opacity-75 hidden" aria-hidden="true">
         <div
             class="bg-white p-4 shadow-md text-center w-[500px] h-[350px] rounded-[20px] overflow-hidden flex flex-col items-center">
@@ -353,12 +351,12 @@
 
             // success add modal
             @if (session('status_add'))
-                handleSaveChanges();
+                handleSaveChangesProducts();
             @endif
 
 
             @if (session('status_edit'))
-                showItemUpdatedDialog();
+            showItemUpdatedDialogProducts();
             @endif
 
 
