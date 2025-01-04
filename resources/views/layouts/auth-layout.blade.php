@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> {{ env('APP_NAME') }} </title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <script defer src="{{ asset('js/login.js') }}"></script>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-cover bg-center min-h-screen" style="background-image: url('{{ asset('Assets/background.png') }}'); font-family:Poppins">
 

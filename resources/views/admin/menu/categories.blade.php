@@ -124,7 +124,7 @@
             <h1 class="text-center text-2xl font-bold mb-4">Item Added Successfully</h1>
             <h2 class="text-center mb-2 font-barlow text-sm">The category has been successfully added
                 to the list and is now available for viewing.</h2>
-            <button id="close-modal"
+            <button onclick="hideAddedDialog()"
                 class="mt-4 bg-yellow-600 text-sm text-white px-4 py-2 hover:bg-yellow-200 w-[200px] rounded-full">
                 Close
             </button>
@@ -258,16 +258,22 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const modal = document.getElementById('added-dialog');
-            const closeModal = document.getElementById('close-modal');
 
-            @if (session('status'))
-                modal.classList.remove('hidden');
+            // success add modal
+            @if (session('status_add'))
+                showAddedDialog();
             @endif
 
-            closeModal.addEventListener('click', () => {
-                modal.classList.add('hidden');
-            });
+
+            @if (session('status_edit'))
+                showEditedDialog();
+            @endif
+
+
+            @if (session('status_deleted'))
+                showDeletedDialog();
+            @endif
+
         });
     </script>
 @endsection

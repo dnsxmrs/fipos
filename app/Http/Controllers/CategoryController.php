@@ -51,7 +51,7 @@ class CategoryController extends Controller
         $this->syncWithOos('POST', $category);
 
         // Redirect back with success message
-        return redirect()->back()->with('status', 'Category added successfully!');
+        return redirect()->back()->with('status_add', 'Category added successfully!');
     }
 
 
@@ -89,7 +89,7 @@ class CategoryController extends Controller
         // Sync with OOS after category update
         $this->syncWithOos('PUT', $category);
 
-        return redirect()->back()->with('success', 'Category updated successfully!');
+        return redirect()->back()->with('status_edit', 'Category updated successfully!');
     }
 
     public function delete($id)

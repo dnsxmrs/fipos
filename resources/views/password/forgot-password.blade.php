@@ -40,6 +40,8 @@
                     Send Password Reset Link
                 </button>
             </div>
+
+            <a href="{{ route('login') }}" class="hover:underline italic text-xs font-medium text-green-800 text-opacity-70">Go back to Login</a>
         </form>
     </div>
 

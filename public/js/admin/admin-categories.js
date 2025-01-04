@@ -38,6 +38,7 @@ function showAddDialog() {
     dialog.classList.remove("hidden");
     setTimeout(() => dialog.classList.remove("opacity-0"), 0); // Use a timeout for the transition
 }
+
 // Hide the add dialog
 function hideAddDialog() {
     const dialog = document.getElementById("add-dialog");
@@ -46,6 +47,7 @@ function hideAddDialog() {
         dialog.classList.add("hidden");
     }, 300); // Match the transition duration
 }
+
 // Show the added item dialog
 function showAddedDialog() {
     // Hide the Add Dialog
@@ -112,6 +114,7 @@ function showEditDialog(button) {
     dialog.classList.remove("hidden");
     setTimeout(() => dialog.classList.remove("opacity-0"), 0);
 }
+
 // Hide the edit dialog
 function hideEditDialog() {
     const dialog = document.getElementById("edit-dialog");
@@ -176,6 +179,8 @@ document.getElementById("confirmButton").addEventListener("click", function () {
     // Assuming the password is always correct, directly call the delete function
     deleteItem();
 });
+
+
 
 function deleteItem() {
     fetch(`/admin/menu/categories/${categoryIdToDelete}`, {

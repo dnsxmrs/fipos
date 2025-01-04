@@ -13,7 +13,8 @@
     <div class="bg-white shadow-sm h-auto mb-10 py-5 px-7 rounded-lg ">
         <div class="flex items-center justify-between">
             <input type="text" placeholder="Search products..."
-                class="p-3 h-10 w-64 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100 border border-gray-200 text-sm text-gray-500 rounded-lg">
+                class="p-3 h-10 w-64 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100 border border-gray-200 text-sm text-gray-500 rounded-lg"
+                name="product_search" id="product_search" autocomplete="off" onkeyup="filterProducts()" />
 
             <!--ADD BUTTON-->
             <button onclick="showAddDialog()"
@@ -30,6 +31,7 @@
                         <tr>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">No.</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Product Name</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Description</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Category</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Price</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Status</th>
@@ -42,6 +44,7 @@
                                 <td class="py-3 px-5">
                                     {{ ($products->currentPage() - 1) * $products->perPage() + $loop->iteration }} </td>
                                 <td class="py-3 px-5"> {{ ucfirst($product->product_name) }} </td>
+                                <td class="py-3 px-5"> {{ ucfirst($product->product_description) }} </td>
                                 <td class="p-3">{{ $product->category ? $product->category->category_name : 'N/A' }}</td>
                                 <td class="py-3 px-5">{{ $product->product_price }}</td>
                                 <td class="py-3 px-5">
@@ -101,12 +104,14 @@
                             <span class="block mt-2 mb-5">Upload Image</span>
                         </div>
                     </label>
-                    <select class="w-[350px] h-[42px] text-gray-500 border hover:bg-slate-100 border-gray-300 rounded-md p-2 mb-2 mt-3"
+                    <select
+                        class="w-[350px] h-[42px] text-gray-500 border hover:bg-slate-100 border-gray-300 rounded-md p-2 mb-2 mt-3"
                         name="category_id" required>
                         <option value="" disabled selected>Select a category</option>
                         <!-- Display categories from the model/db 'categories' -->
                         @foreach ($categories as $category)
-                            <option class="text-gray-500 " value="{{ $category->category_id }}">{{ $category->category_name }}</option>
+                            <option class="text-gray-500 " value="{{ $category->category_id }}">
+                                {{ $category->category_name }}</option>
                         @endforeach
                     </select>
                     <div class="flex flex-col items-center mt-4">
@@ -145,7 +150,7 @@
                         </div>
 
 
-                        <button type="submit" onclick="handleSaveChanges()"
+                        <button type="submit"
                             class="bg-[#45A834] text-sm text-white rounded-lg h-[40px] w-[350px] hover:bg-amber-700 mt-8">
                             Add Item
                         </button>
@@ -251,7 +256,7 @@
                             </div>
                         </div>
 
-                        <button onclick="showItemUpdatedDialog()" type="submit"
+                        <button type="submit"
                             class="bg-[#45A834] text-sm text-white rounded-lg h-[40px] w-[350px] hover:bg-amber-700 mt-8 font-bold">
                             Save Changes
                         </button>
@@ -305,8 +310,8 @@
     </div>
 
     <!--Confirm Delete-->
-    <div id="confirm-delete-modal" class="fixed inset-0 p-10 flex items-center justify-center bg-gray-500 bg-opacity-75 hidden"
-        aria-hidden="true">
+    <div id="confirm-delete-modal"
+        class="fixed inset-0 p-10 flex items-center justify-center bg-gray-500 bg-opacity-75 hidden" aria-hidden="true">
         <div
             class="bg-white p-4 shadow-md text-center w-[500px] h-[380px] rounded-[20px] overflow-hidden flex flex-col items-center">
             <img src="{{ asset('Assets/icons-password.png') }}" alt="Password Icon" class="w-[150px] h-[150px] mb-4">
@@ -330,8 +335,8 @@
     </div>
 
     <!-- Success Message Deleted Modal -->
-    <div id="item-deleted-modal" class="fixed inset-0 flex items-center justify-center p-10 bg-gray-500 bg-opacity-75 hidden"
-        aria-hidden="true">
+    <div id="item-deleted-modal"
+        class="fixed inset-0 flex items-center justify-center p-10 bg-gray-500 bg-opacity-75 hidden" aria-hidden="true">
         <div
             class="bg-white p-4 shadow-md text-center w-[500px] h-[350px] rounded-[20px] overflow-hidden flex flex-col items-center">
             <img src="{{ asset('Assets/icon-success.png') }}" alt="deleteIcon" class="w-[150px] h-[150px] mb-4">
@@ -341,4 +346,26 @@
                 class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded-full hover:bg-gray-100 w-[258px]">Ok</button>
         </div>
     </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // success add modal
+            @if (session('status_add'))
+                handleSaveChanges();
+            @endif
+
+
+            @if (session('status_edit'))
+                showItemUpdatedDialog();
+            @endif
+
+
+            @if (session('status_deleted'))
+                showSuccessMessage();
+            @endif
+
+        });
+    </script>
 @endsection

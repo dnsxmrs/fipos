@@ -11,10 +11,11 @@
     <meta lang="en">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ env('APP_NAME') }}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="{{ asset('js/cashier/cashier-order.js') }}"></script>
     <script defer src="{{ asset('js/cashier/orders.js') }}"></script>
     <script defer src="{{ asset('js/cashier/cashier-header.js') }}"></script>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
         body {

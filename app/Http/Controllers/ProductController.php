@@ -47,7 +47,7 @@ class ProductController extends Controller
         // Sync with OOS after product creation
         $this->syncWithOos('POST', $product);
 
-        return redirect()->back()->with('success', 'Product added successfully!');
+        return redirect()->back()->with('session_add', 'Product added successfully!');
     }
 
     // Update an existing product in the database
@@ -90,7 +90,7 @@ class ProductController extends Controller
             // Sync with OOS after product update
             $this->syncWithOos('PUT', $product);
 
-            return redirect()->route('admin.menu.products')->with('success', 'Product updated successfully!');
+            return redirect()->route('admin.menu.products')->with('session_edit', 'Product updated successfully!');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Validation failed: ', $e->validator->errors()->toArray());
