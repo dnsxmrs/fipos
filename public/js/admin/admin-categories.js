@@ -8,7 +8,7 @@ function filterCategories() {
     const input = document.getElementById("category_search");
     const filter = input.value.toLowerCase();
     const table = document.getElementById("category_table");
-    const rows = table.getElementsByClassName("category-row");
+    const rows = table.getElementsByClassName("category_row");
     const noCategoriesMessage = document.getElementById(
         "no-categories-message"
     );
@@ -33,15 +33,15 @@ function filterCategories() {
 }
 
 // Show the add dialog
-function showAddDialog() {
-    const dialog = document.getElementById("add-dialog");
+function showAddDialogCategories() {
+    const dialog = document.getElementById("add-dialog-categories");
     dialog.classList.remove("hidden");
     setTimeout(() => dialog.classList.remove("opacity-0"), 0); // Use a timeout for the transition
 }
 
 // Hide the add dialog
-function hideAddDialog() {
-    const dialog = document.getElementById("add-dialog");
+function hideAddDialogCategories() {
+    const dialog = document.getElementById("add-dialog-categories");
     dialog.classList.add("opacity-0");
     setTimeout(() => {
         dialog.classList.add("hidden");
@@ -49,18 +49,18 @@ function hideAddDialog() {
 }
 
 // Show the added item dialog
-function showAddedDialog() {
+function showAddedDialogCategories() {
     // Hide the Add Dialog
-    hideAddDialog();
+    hideAddDialogCategories();
     // Show the Item Updated Dialog
-    const dialog = document.getElementById("added-dialog");
+    const dialog = document.getElementById("added-dialog-categories");
     dialog.classList.remove("hidden");
     setTimeout(() => dialog.classList.remove("opacity-0"), 0);
 }
 
 // Hide the added item dialog
-function hideAddedDialog() {
-    const dialog = document.getElementById("added-dialog");
+function hideAddedDialogCategories() {
+    const dialog = document.getElementById("added-dialog-categories");
     dialog.classList.add("opacity-0");
     setTimeout(() => {
         dialog.classList.add("hidden");
@@ -68,7 +68,7 @@ function hideAddedDialog() {
 }
 
 // Show Edit Dialog
-function showEditDialog(button) {
+function showEditDialogCategories(button) {
     const id = button.getAttribute("data-id");
     const name = button.getAttribute("data-name");
     const imagePath = button.getAttribute("data-image");
@@ -110,31 +110,31 @@ function showEditDialog(button) {
         }
     }
 
-    const dialog = document.getElementById("edit-dialog");
+    const dialog = document.getElementById("edit-dialog-categories");
     dialog.classList.remove("hidden");
     setTimeout(() => dialog.classList.remove("opacity-0"), 0);
 }
 
 // Hide the edit dialog
-function hideEditDialog() {
-    const dialog = document.getElementById("edit-dialog");
+function hideEditDialogCategories() {
+    const dialog = document.getElementById("edit-dialog-categories");
     dialog.classList.add("opacity-0");
     setTimeout(() => {
         dialog.classList.add("hidden");
     }, 300);
 }
 
-function showEditedDialog() {
+function showEditedDialogCategories() {
     // Hide the Edit Dialog
-    hideEditDialog();
+    hideEditDialogCategories();
     // Show the Item Updated Dialog
-    const dialog = document.getElementById("edited-dialog");
+    const dialog = document.getElementById("edited-dialog-categories");
     dialog.classList.remove("hidden");
     setTimeout(() => dialog.classList.remove("opacity-0"), 0);
 }
 
-function hideEditedDialog() {
-    const dialog = document.getElementById("edited-dialog");
+function hideEditedDialogCategories() {
+    const dialog = document.getElementById("edited-dialog-categories");
     dialog.classList.add("opacity-0");
     setTimeout(() => {
         dialog.classList.add("hidden");
@@ -143,77 +143,73 @@ function hideEditedDialog() {
 
 let categoryIdToDelete = null;
 
-function showDeleteDialog(cateogryId) {
+function showDeleteDialogCategories(cateogryId) {
     categoryIdToDelete = cateogryId; // Store the ID of the product to delete
     document
-        .getElementById("delete-dialog")
+        .getElementById("delete-dialog-categories")
         .classList.remove("hidden", "opacity-0");
-    document.getElementById("delete-dialog").classList.add("opacity-100");
+    document.getElementById("delete-dialog-categories").classList.add("opacity-100");
 }
 
-function hideDeleteDialog() {
+function hideDeleteDialogCategories() {
     document
-        .getElementById("delete-dialog")
+        .getElementById("delete-dialog-categories")
         .classList.add("hidden", "opacity-0");
 }
 
-function showConfirmDelete() {
-    hideDeleteDialog();
-    document.getElementById("confirm-delete-dialog").classList.remove("hidden");
+
+//button sa first delete modal- confirm
+function showConfirmDeleteCategories() {
+    hideDeleteDialogCategories();
+    document.getElementById("confirm-delete-dialog-categories").classList.remove("hidden");
 }
 
-function hideConfirmDelete() {
-    document.getElementById("confirm-delete-dialog").classList.add("hidden");
+// button sa confirm delete pagka input ng password - confirm
+function hideConfirmDeleteCategories() {
+    document.getElementById("confirm-delete-dialog-categories").classList.add("hidden");
 }
 
-function showDeletedDialog() {
-    hideConfirmDelete();
-    document.getElementById("deleted-dialog").classList.remove("hidden");
+// shows success popup kapag category is deleted
+function showDeletedDialogCategories() {
+    hideConfirmDeleteCategories();
+    document.getElementById("deleted-dialog-categories").classList.remove("hidden");
 }
 
-function hideDeletedDialog() {
-    document.getElementById("deleted-dialog").classList.add("hidden");
+// button sa popup na success
+function hideDeletedDialogCategories() {
+    document.getElementById("deleted-dialog-categories").classList.add("hidden");
     window.location.reload(); // Reload the page to reflect deletion
 }
-document.getElementById("confirmButton").addEventListener("click", function () {
+document.getElementById("confirmButtonCategory").addEventListener("click", function () {
     // Assuming the password is always correct, directly call the delete function
-    deleteItem();
+    deleteItemCategory();
 });
 
 
+function deleteItemCategory() {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-function deleteItem() {
     fetch(`/admin/menu/categories/${categoryIdToDelete}`, {
         method: "DELETE",
         headers: {
-            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+            "X-CSRF-TOKEN": csrfToken,
+            "Content-Type": "application/json",
         },
     })
         .then((response) => {
-            if (response.ok || response.status === 204) {
-                showDeletedDialog(); // Show success modal if deletion was successful
-            } else if (response.status === 400) {
-                // Parse the JSON response to extract the error message
-                response.json().then((data) => {
-                    alert(
-                        data.message ||
-                            "A product is linked in the category; cannot delete the category."
-                    );
-                });
-                hideConfirmDelete(); // Hide the confirm delete dialog
+            if (response.status === 204) {
+                // No Content response, deletion successful
+                showDeletedDialogCategories(); // Show success modal
+            } else if (response.status === 200) {
+                showDeletedDialogCategories(); // Show success modal
             } else {
-                response.json().then((data) => {
-                    alert(
-                        data.message ||
-                            "Failed to delete the category. Please try again."
-                    );
-                });
-                hideConfirmDelete(); // Hide the confirm delete dialog
+                alert(`Failed to delete category. Please try again. Status Code: ${response.status}`);
             }
         })
         .catch((error) => {
-            console.error("Error:", error);
-            alert("An unexpected error occurred. Please try again.");
-            hideConfirmDelete();
+            console.error("Error:", error.message);
+            alert(error.message || "catch An unexpected error occurred. Please try again.");
+            alert(`An unexpected error occurred. Please try again. Status Code: ${response.status}`);
+            hideConfirmDeleteCategories(); // Hide confirmation dialog
         });
 }

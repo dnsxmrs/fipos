@@ -4,7 +4,7 @@ function filterProducts() {
     const input = document.getElementById("product_search");
     const filter = input.value.toLowerCase();
     const table = document.getElementById("products_table");
-    const rows = table.getElementsByClassName("product-row");
+    const rows = table.getElementsByClassName("product_row");
     const noProductsMessage = document.getElementById("no-products-message");
     let hasVisibleRows = false;
 
@@ -13,11 +13,8 @@ function filterProducts() {
         const productName = rows[i]
             .getElementsByTagName("td")[1]
             .textContent.toLowerCase();
-        const categoryName = rows[i]
-            .getElementsByTagName("td")[2]
-            .textContent.toLowerCase();
 
-        if (productName.includes(filter) || categoryName.includes(filter)) {
+        if (productName.includes(filter)) {
             rows[i].style.display = ""; // Show the row
             hasVisibleRows = true; // There are visible rows
         } else {
@@ -30,33 +27,33 @@ function filterProducts() {
 }
 
 // Show the Add Dialog
-function showAddDialog() {
-    const dialog = document.getElementById("add-dialog");
+function showAddDialogProducts() {
+    const dialog = document.getElementById("add-dialog-products");
     dialog.classList.remove("hidden");
     setTimeout(() => dialog.classList.remove("opacity-0"), 0); // Use a timeout for the transition
 }
 // Show the Item Successfully Added Modal
-function handleSaveChanges() {
-    // Show the "added-dialog" modal
-    const addedDialog = document.getElementById("added-dialog");
+function handleSaveChangesProducts() {
+    // Show the "added-dialog-products" modal
+    const addedDialog = document.getElementById("added-dialog-products");
     addedDialog.classList.remove("hidden");
     setTimeout(() => addedDialog.classList.remove("opacity-0"), 0); // Use a timeout for the transition
 }
 // Hide the Add Dialog
-function hideAddDialog() {
-    const dialog = document.getElementById("add-dialog");
+function hideAddDialogProducts() {
+    const dialog = document.getElementById("add-dialog-products");
     dialog.classList.add("opacity-0");
     setTimeout(() => {
         dialog.classList.add("hidden");
     }, 300); // Match the transition duration
 }
 // Hide the Item Successfully Added Modal
-function hideAddedDialog() {
-    const addedDialog = document.getElementById("added-dialog");
+function hideAddedDialogProducts() {
+    const addedDialog = document.getElementById("added-dialog-products");
     addedDialog.classList.add("hidden");
 }
 
-function showEditDialog(button) {
+function showEditDialogProducts(button) {
     const id = button.getAttribute("data-id");
     const name = button.getAttribute("data-name");
     const description = button.getAttribute("data-description");
@@ -110,30 +107,30 @@ function showEditDialog(button) {
         }
     }
 
-    const dialog = document.getElementById("edit-dialog");
+    const dialog = document.getElementById("edit-dialog-products");
     dialog.classList.remove("hidden");
     setTimeout(() => dialog.classList.remove("opacity-0"), 0);
 }
 
-function hideEditDialog() {
-    const dialog = document.getElementById("edit-dialog");
+function hideEditDialogProducts() {
+    const dialog = document.getElementById("edit-dialog-products");
     dialog.classList.add("opacity-0");
     setTimeout(() => {
         dialog.classList.add("hidden");
     }, 300);
 }
 
-function showItemUpdatedDialog() {
+function showItemUpdatedDialogProducts() {
     // Hide the Add Dialog
-    hideAddDialog();
+    hideAddDialogProducts();
     // Show the Item Updated Dialog
-    const dialog = document.getElementById("updated-dialog");
+    const dialog = document.getElementById("updated-dialog-products");
     dialog.classList.remove("hidden");
     setTimeout(() => dialog.classList.remove("opacity-0"), 0);
 }
 
-function hideItemUpdatedDialog() {
-    const dialog = document.getElementById("updated-dialog");
+function hideItemUpdatedDialogProducts() {
+    const dialog = document.getElementById("updated-dialog-products");
     dialog.classList.add("opacity-0");
     setTimeout(() => {
         dialog.classList.add("hidden");
@@ -142,73 +139,84 @@ function hideItemUpdatedDialog() {
 
 let productIdToDelete = null;
 
-function showDeleteDialog(productId) {
+function showDeleteDialogProducts(productId) {
     productIdToDelete = productId; // Store the ID of the product to delete
     document
-        .getElementById("delete-dialog")
+        .getElementById("delete-dialog-products")
         .classList.remove("hidden", "opacity-0");
-    document.getElementById("delete-dialog").classList.add("opacity-100");
+    document.getElementById("delete-dialog-products").classList.add("opacity-100");
 }
 
-function hideDeleteDialog() {
+function hideDeleteDialogProducts() {
     document
-        .getElementById("delete-dialog")
+        .getElementById("delete-dialog-products")
         .classList.add("hidden", "opacity-0");
 }
 
-function showConfirmDeleteModal() {
-    hideDeleteDialog();
-    document.getElementById("confirm-delete-modal").classList.remove("hidden");
+// button sa first delete modal- confirm
+function showConfirmDeleteModalProducts() {
+    hideDeleteDialogProducts();
+    document.getElementById("confirm-delete-modal-products").classList.remove("hidden");
 }
 
-function hideConfirmDeleteModal() {
-    document.getElementById("confirm-delete-modal").classList.add("hidden");
+// button  sa confirm delete pagka input ng password
+function hideConfirmDeleteModalProducts() {
+    document.getElementById("confirm-delete-modal-products").classList.add("hidden");
 }
 
+// if product is deleted show this
 function showSuccessMessage() {
-    hideConfirmDeleteModal();
-    document.getElementById("item-deleted-modal").classList.remove("hidden");
+    hideConfirmDeleteModalProducts();
+    document.getElementById("item-deleted-modal-products").classList.remove("hidden");
 }
 
 function hideSuccessMessage() {
-    document.getElementById("item-deleted-modal").classList.add("hidden");
+    document.getElementById("item-deleted-modal-products").classList.add("hidden");
     window.location.reload(); // Reload the page to reflect deletion
 }
 
-document.getElementById("confirmButton").addEventListener("click", function () {
+document.getElementById("confirmButtonProduct").addEventListener("click", function () {
     // Assuming the password is always correct, directly call the delete function
-    deleteItem();
+    deleteItemProduct();
 });
 
-function deleteItem() {
+function deleteItemProduct() {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
     fetch(`/admin/menu/products/${productIdToDelete}`, {
         method: "DELETE",
         headers: {
-            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+            "X-CSRF-TOKEN": csrfToken,
+            "Content-Type": "application/json",
         },
     })
         .then((response) => {
-            if (response.ok || response.status === 204) {
-                // Include check for 204 status
-                showSuccessMessage(); // Show success modal if deletion was successful
+            if (response.status === 204) {
+                // No Content response, deletion successful
+                showSuccessMessage(); // Show success modal
+            } else if (response.status === 200) {
+                showSuccessMessage(); // Show success modal
             } else {
-                console.error("Error:", response);
-                alert("Failed to delete the product. Please try again."); // Error handling
-                console.error("Error:", response);
+                alert(`Failed to delete product. Please try again. Status Code: ${response.status}`);
             }
         })
-        .catch((error) => console.error("Error:", error));
+        .catch((error) => {
+            console.error("Error:", error.message);
+            alert(error.message || "catch An unexpected error occurred. Please try again.");
+            alert(`An unexpected error occurred. Please try again. Status Code: ${response.status}`);
+            hideConfirmDeleteModalProducts(); // Hide confirmation dialog
+        });
 }
 
-// Function to hide the confirmation modal and show success modal
-document.getElementById("confirmButton").addEventListener("click", function () {
-    // Close the confirmation modal
-    document.getElementById("confirm-delete-modal").classList.add("hidden");
-    // Show the success modal
-    document.getElementById("item-deleted-modal").classList.remove("hidden");
-});
+// // Function to hide the confirmation modal and show success modal
+// document.getElementById("confirmButton").addEventListener("click", function () {
+//     // Close the confirmation modal
+//     document.getElementById("confirm-delete-modal-products").classList.add("hidden");
+//     // Show the success modal
+//     document.getElementById("item-deleted-modal-products").classList.remove("hidden");
+// });
 
-// Function to hide the success message modal
-function hideSuccessMessage() {
-    document.getElementById("item-deleted-modal").classList.add("hidden"); // Hide success modal
-}
+// // Function to hide the success message modal
+// function hideSuccessMessage() {
+//     document.getElementById("item-deleted-modal-products").classList.add("hidden"); // Hide success modal
+// }
