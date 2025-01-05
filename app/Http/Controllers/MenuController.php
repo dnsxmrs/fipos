@@ -36,7 +36,7 @@ class MenuController extends Controller
     public function showMenu()
     {
         // fetch the products
-        $items = Product::with('category')->get();
+        $items = Product::where('isAvailable', 1)->with('category')->get();
 
         // fetch the category for display in header
         $categories = Category::all();

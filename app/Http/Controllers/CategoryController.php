@@ -29,6 +29,7 @@ class CategoryController extends Controller
         // Validate the request
         $request->validate([
             'category_name' => 'required|string|max:255',
+            'description' => 'nullable',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -42,6 +43,7 @@ class CategoryController extends Controller
         // Create the category
         $category = Category::create([
             'category_name' => $request->input('category_name'),
+            'description' => $request->input('description'),
             'type' => 'beverage',
             'beverage_type' => 'hot',
             'image' => $path, // Save Cloudinary URL or null
@@ -59,8 +61,9 @@ class CategoryController extends Controller
     {
         // Validate the request
         $request->validate([
-            'editCategoryId' => 'required|exists:categories,category_id',
+            'editCategoryId' => 'exists:categories,category_id',
             'category_name' => 'required|string|max:255',
+            'description' => 'nullable',
             'editImage' => 'nullable|image|mimes:jpg,png|max:2048',
         ]);
 
@@ -76,6 +79,7 @@ class CategoryController extends Controller
         // Update the category
         $category->update([
             'category_name' => $request->input('category_name'),
+            'description' => $request->input('description'),
             'type' => 'beverage',
             'beverage_type' => 'hot',
             'image' => $path,

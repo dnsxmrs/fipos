@@ -12,11 +12,13 @@
 
     <div class="bg-white shadow-sm h-auto mb-10 py-5 px-7 rounded-lg ">
         <div class="flex items-center justify-between">
-            <input type="text" placeholder="Search for category..." class="p-3 h-10 w-64 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100 border border-gray-200 text-sm text-gray-500 rounded-lg"
-            id="category_search" autocomplete="off" onkeyup="filterCategories()"/>
+            <input type="text" placeholder="Search for category..."
+                class="p-3 h-10 w-64 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100 border border-gray-200 text-sm text-gray-500 rounded-lg"
+                id="category_search" autocomplete="off" onkeyup="filterCategories()" />
 
             <!--ADD BUTTON-->
-            <button onclick="showAddDialogCategories()" class="bg-green-600 ml-3 text-white px-10 h-10 font-medium text-sm hover:bg-green-700 shadow-sm rounded-full">
+            <button onclick="showAddDialogCategories()"
+                class="bg-green-600 ml-3 text-white px-10 h-10 font-medium text-sm hover:bg-green-700 shadow-sm rounded-full">
                 + Add Category
             </button>
         </div>
@@ -38,15 +40,15 @@
                     <tbody class="text-center text-xs">
                         @foreach ($categories as $index => $category)
                             <tr class="category_row border-b hover:bg-slate-50">
-                                <td class="py-3 px-5"> {{ ($categories->currentPage() - 1) * $categories->perPage() + $loop->iteration }} </td>
+                                <td class="py-3 px-5">
+                                    {{ ($categories->currentPage() - 1) * $categories->perPage() + $loop->iteration }} </td>
                                 <td class="py-3 px-5"> {{ ucfirst($category->category_name) }} </td>
                                 <td class="p-3">{{ ucfirst($category->description) }}</td>
                                 <td class="py-3 px-5">{{ $category->products_count }}</td>
                                 <td class="flex py-3 px-5 space-x-2 items-center justify-end">
-                                    <button onclick="showEditDialogCategories(this)"
-                                        data-id="{{ $category->category_id }}"
+                                    <button onclick="showEditDialogCategories(this)" data-id="{{ $category->category_id }}"
                                         data-name="{{ $category->category_name }}"
-                                        data-image="{{ $category->image }}"
+                                        data-description="{{ $category->description }}" data-image="{{ $category->image }}"
                                         class="flex text-blue-500 transition duration-300 ease-in-out items-right hover:text-blue-700">
                                         <img src="{{ asset('Assets/Edit.png') }}" alt="Edit Icon" class="ml-9">
                                     </button>
@@ -78,41 +80,64 @@
     <div id="add-dialog-categories"
         class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50"
         aria-hidden="true">
-        <div class="bg-white shadow-md p-8 flex flex-col items-center rounded-lg" style="width: 455px; height: 750px;">
-            <h1 class="text-center text-xl font-bold mb-4 text-black">Add New Category</h1>
+        <div class="bg-white shadow-md p-8 flex flex-col items-center justify-center rounded-lg h-auto w-auto">
+            <h1 class="text-center text-xl font-semibold mb-4 text-black">Add New Category</h1>
+            <hr>
             <form action="{{ route('admin.menu.categories.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="flex flex-col items-center justify-center">
-                    <label class="bg-white py-3 px-5 rounded text-black shadow-md text-center mt-4 ml-6 items-center"
-                        style="width: 346px; height: 231px; border: 2px dashed black;">
+                <div class="flex items-center justify-center">
+                    <label
+                        class="bg-white flex flex-col items-center mr-5 justify-center py-3 px-5 rounded text-black shadow-md mt-4"
+                        style="width: 200px; height: 200px; border: 2px dashed gray;">
                         <input type="file" name="image" accept="image/*" class="hidden">
                         <div class="text-center">
                             <div class="text-2xl">+</div>
                             <span class="block mt-2">Upload Image</span>
                         </div>
                     </label>
-                    <div class="flex flex-col items-center mt-4">
+                    <div class="flex flex-col items-center mt-5">
                         <div class="relative w-[350px] mb-4">
+                            <label for="itemName" class="text-sm">Category Name <span class="text-red-500">*</span></label>
                             <input id="itemName"
-                                class="mb-1 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent text-xs"
-                                type="text" placeholder=" " name="category_name" required>
-                            <label
-                                class="text-sm absolute left-2 top-2 transform transition-transform duration-300 ease-in-out scale-100 text-gray-500 origin-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-focus:-top-5 peer-focus:left-2 peer-focus:scale-75"
-                                for="itemName">Category Name</label>
+                                class="mb-1 mt-2 peer w-full h-10 text-gray-600 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:ring-opacity-70 text-xs"
+                                type="text" placeholder="Enter category name" name="category_name">
+
                             @error('category_name')
                                 <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                             @enderror
                         </div>
-                        <button
-                            class="text-sm text-white rounded-lg h-[40px] w-[350px] hover:bg-amber-700 mt-8"
-                            style="background-color: #45A834">
-                            Add Category
-                        </button>
-                        <button type="submit" onclick="hideAddDialogCategories()"
-                            class="bg-gray-200 text-sm text-black rounded-lg h-[40px] w-[350px] hover:bg-gray-300 mt-2 font-bold">
-                            Cancel
-                        </button>
+                        <div class="flex flex-col w-[350px] mb-4">
+                            <label for="type" class="text-sm">Type <span class="text-red-500">*</span></label>
+                            <select name="type" id="type" class="mb-1 mt-2 peer w-1/2 h-10 text-gray-600 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:ring-opacity-70 text-xs">
+                                <option value="food">Food</option>
+                                <option value="beverage">Beverage</option>
+                            </select>
+
+                            @error('category_name')
+                                <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="relative w-[350px] mb-4">
+                            <label for="description" class="text-sm">Category Description </label>
+                            <textarea id="description"
+                                class="mb-1 mt-2 peer w-full h-20 text-gray-600 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:ring-opacity-70 text-xs"
+                                type="text" placeholder="Write short description about the category" name="description"></textarea>
+
+                            @error('description')
+                                <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
+                            @enderror
+                        </div>
+
                     </div>
+                </div>
+                <div class="w-full flex items-center justify-center">
+                    <button type="submit" onclick="hideAddDialogCategories()"
+                        class="bg-gray-200 text-sm text-black rounded-lg h-[40px] ml-4 mr-2 w-1/2 hover:bg-gray-300 font-bold">
+                        Cancel
+                    </button>
+                    <button class="text-sm text-white rounded-lg h-[40px] w-1/2 mr-4 ml-2 hover:bg-green-700 bg-green-600">
+                        Add Category
+                    </button>
                 </div>
             </form>
         </div>
@@ -138,16 +163,17 @@
     <div id="edit-dialog-categories"
         class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50"
         aria-hidden="true">
-        <div class="bg-white shadow-md p-8 flex flex-col items-center rounded-lg" style="width: 455px; height: 750px;">
-            <h1 class="text-center text-xl font-bold mb-4 text-black">Edit Category</h1>
+        <div class="bg-white shadow-md p-8 flex flex-col items-center justify-center rounded-lg h-auto w-auto">
+            <h1 class="text-center text-xl font-semibold mb-4 text-black">Edit Category</h1>
             <form action="{{ route('admin.menu.categories.update') }}" method="POST" enctype="multipart/form-data"
                 id="edit-category">
                 @csrf
                 @method('PUT')
                 <input type="hidden" value="" name="editCategoryId" id="editCategoryId">
                 <div class="flex flex-col items-center justify-center">
-                    <label class="bg-white py-3 px-5 rounded text-black shadow-md text-center mt-4 ml-6 items-center"
-                        style="width: 346px; height: 231px; border: 2px dashed black;" id="editImageLabel">
+                    <label
+                        class="bg-white py-3 px-5 rounded text-black shadow-md text-center mt-4 flex justify-center items-center"
+                        style="width: 346px; height: 200px; border: 2px dashed gray;" id="editImageLabel">
                         <input type="file" value='' id='editImage' name="editImage" accept="image/*"
                             class="hidden">
                         <div class="text-center">
@@ -162,18 +188,29 @@
 
                     <div class="flex flex-col items-center mt-4">
                         <div class="relative w-[350px] mb-4">
+                            <label for="itemName" class="text-sm">Category Name <span
+                                    class="text-red-500">*</span></label>
                             <input id="editCategoryName"
-                                class="mb-1 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent text-xs"
-                                type="text" placeholder=" " name="editCategoryName" required>
-                            <label
-                                class="text-sm absolute left-2 top-2 transform transition-transform duration-300 ease-in-out scale-100 text-gray-500 origin-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-focus:-top-5 peer-focus:left-2 peer-focus:scale-75"
-                                for="editCategoryName">Category Name</label>
+                                class="mb-1 peer w-full h-10 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-70  text-xs"
+                                type="text" placeholder="Enter category name" name="editCategoryName" value="">
+
                             @error('category_name')
                                 <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                             @enderror
                         </div>
-                        <button type="submit" onclick="showEditedDialogCategories()"
-                            class="bg-[#45A834] text-sm text-white rounded-lg h-[40px] w-[350px] hover:bg-amber-700 mt-8">
+                        <div class="relative w-[350px] mb-4">
+                            <label for="editCategoryDescription" class="text-sm">Category Description <span
+                                    class="text-red-500">*</span></label>
+                            <textarea id="editCategoryDescription"
+                                class="mb-1 peer w-full h-10 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-70  text-xs"
+                                type="text" placeholder="Write category description here" name="editCategoryDescription" value=""></textarea>
+
+                            @error('description')
+                                <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <button type="submit"
+                            class="bg-green-600 text-sm text-white rounded-lg h-[40px] w-[350px] hover:bg-green-700">
                             Save Changes
                         </button>
                         <button onclick="hideEditDialogCategories()"
@@ -241,14 +278,14 @@
                     class="text-sm absolute left-2 top-2 transform transition-transform duration-300 ease-in-out scale-100 text-gray-500 origin-left peer-placeholder-shown:top-2 peer-placeholder-shown:left-2 peer-placeholder-shown:scale-100 peer-focus:-top-5 peer-focus:left-2 peer-focus:scale-75"
                     for="password">Input Password</label>
             </div>
-            <button id="confirmButtonCategory" onclick="hideConfirmDeleteCategories()"
+            <button id="confirmButtonCategory"
                 class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded-full hover:bg-gray-100 w-[200px]">Confirm</button>
         </div>
     </div>
 
     <!-- Success Message Modal -->
-    <div id="deleted-dialog-categories" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 hidden"
-        aria-hidden="true">
+    <div id="deleted-dialog-categories"
+        class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 hidden" aria-hidden="true">
         <div
             class="bg-white p-4 shadow-md text-center w-[500px] h-[350px] rounded-[20px] overflow-hidden flex flex-col items-center">
             <img src="{{ asset('Assets/icon-success.png') }}" alt="deleteIcon" class="w-[150px] h-[150px] mb-4">
@@ -260,7 +297,7 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
 
             // success add modal
             @if (session('status_add'))

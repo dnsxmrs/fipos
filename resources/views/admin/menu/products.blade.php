@@ -194,7 +194,7 @@
                 @method('PUT')
                 <input type="hidden" value="" name="editProductId" id="editProductId">
                 <div class="flex flex-col items-center justify-center">
-                    <label class="bg-white py-3 px-5 rounded text-black shadow-md text-center mt-4 ml-6 items-center"
+                    <label class="bg-white py-3 px-5 rounded text-black shadow-md text-center mt-4 items-center"
                         style="width: 346px; height: 231px; border: 2px dashed black;" id="editImageLabel">
                         <input type="file" value='' id='editImage' name="editImage" accept="image/*"
                             class="hidden">

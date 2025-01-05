@@ -71,6 +71,7 @@ function hideAddedDialogCategories() {
 function showEditDialogCategories(button) {
     const id = button.getAttribute("data-id");
     const name = button.getAttribute("data-name");
+    const description = button.getAttribute("data-description");
     const imagePath = button.getAttribute("data-image");
 
     // Debugging: Check values in the console
@@ -82,6 +83,7 @@ function showEditDialogCategories(button) {
 
     document.getElementById("editCategoryId").value = id;
     document.getElementById("editCategoryName").value = name;
+    document.getElementById("editCategoryDescription").value = description;
 
     // Set the image if it exists
     const imageLabel = document.getElementById("editImageLabel");
