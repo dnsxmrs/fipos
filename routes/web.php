@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InventoryCategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StaffController;
@@ -92,6 +93,8 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 
             Route::get('/', [InventoryController::class, 'showItems'])->name('inventory.show');
             Route::get('/category', [InventoryController::class, 'showCategories'])->name('inventory.categories');
+            Route::post('/category/add', [InventoryCategoryController::class, 'store'])->name('inventory.category.add');
+            Route::post('/category/edit', [InventoryCategoryController::class, 'update'])->name('inventory.category.update');
             Route::get('/{name}', [InventoryController::class, 'showCategorizedItems'])->name('inventory.categorized');
         });
 

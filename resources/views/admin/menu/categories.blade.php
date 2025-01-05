@@ -33,6 +33,8 @@
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">No.</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Category Name</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Description</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Type</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Beverage Type</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Total Products</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max"></th>
                         </tr>
@@ -44,11 +46,14 @@
                                     {{ ($categories->currentPage() - 1) * $categories->perPage() + $loop->iteration }} </td>
                                 <td class="py-3 px-5"> {{ ucfirst($category->category_name) }} </td>
                                 <td class="p-3">{{ ucfirst($category->description) }}</td>
+                                <td class="py-3 px-5">{{ ucfirst($category->type) }}</td>
+                                <td class="py-3 px-5">{{ ucfirst($category->beverage_type) }}</td>
                                 <td class="py-3 px-5">{{ $category->products_count }}</td>
                                 <td class="flex py-3 px-5 space-x-2 items-center justify-end">
                                     <button onclick="showEditDialogCategories(this)" data-id="{{ $category->category_id }}"
                                         data-name="{{ $category->category_name }}"
                                         data-description="{{ $category->description }}" data-image="{{ $category->image }}"
+                                        date-type="{{ $category->type }}" data-beverageType="{{ $category->beverage_type }}"
                                         class="flex text-blue-500 transition duration-300 ease-in-out items-right hover:text-blue-700">
                                         <img src="{{ asset('Assets/Edit.png') }}" alt="Edit Icon" class="ml-9">
                                     </button>
@@ -80,12 +85,20 @@
     <div id="add-dialog-categories"
         class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50"
         aria-hidden="true">
-        <div class="bg-white shadow-md p-8 flex flex-col items-center justify-center rounded-lg h-auto w-auto">
+        <div class="bg-white shadow-md p-8 flex flex-col items-center justify-center rounded-lg h-auto w-auto relative">
+            <!-- Close Icon -->
+            <img onclick="hideAddDialogCategories()" src="{{ asset('Assets/close.png') }}" alt="Close"
+                class="absolute top-5 right-5 w-5 cursor-pointer hover:opacity-80">
+
+            <!-- Title -->
             <h1 class="text-center text-xl font-semibold mb-4 text-black">Add New Category</h1>
-            <hr>
+
+            <hr class="text-gray-600 w-full mb-4">
+
+            <!-- Form -->
             <form action="{{ route('admin.menu.categories.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="flex items-center justify-center">
+                <div class="flex items-center justify-center flex-wrap">
                     <label
                         class="bg-white flex flex-col items-center mr-5 justify-center py-3 px-5 rounded text-black shadow-md mt-4"
                         style="width: 200px; height: 200px; border: 2px dashed gray;">
@@ -106,16 +119,36 @@
                                 <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="flex flex-col w-[350px] mb-4">
-                            <label for="type" class="text-sm">Type <span class="text-red-500">*</span></label>
-                            <select name="type" id="type" class="mb-1 mt-2 peer w-1/2 h-10 text-gray-600 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:ring-opacity-70 text-xs">
-                                <option value="food">Food</option>
-                                <option value="beverage">Beverage</option>
-                            </select>
+                        <div class="flex w-[350px] mb-4">
+                            <div class="w-1/2 flex-col mr-2">
+                                <label for="type" class="text-sm">Type <span class="text-red-500">*</span></label>
+                                <select name="type" id="type"
+                                    class="mb-1 mt-2 peer w-full h-10 text-gray-600 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:ring-opacity-70 text-xs"
+                                    onchange="toggleBeverageType(this)">
+                                    <option value="" disabled selected>Select category type</option>
+                                    <option value="food">Food</option>
+                                    <option value="beverage">Beverage</option>
+                                </select>
 
-                            @error('category_name')
-                                <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
-                            @enderror
+                                @error('type')
+                                    <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="w-1/2 flex-col ml-2">
+                                <p class="text-sm mb-1">Beverage Type </p>
+                                <input class="text-sm ml-2 disabled:accent-gray-400 disabled:cursor-not-allowed" type="radio" id="hot"
+                                    name="beverage_type" value="hot" disabled>
+                                <label class="text-sm ml-2 text-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+                                    for="hot">Hot</label><br>
+                                <input class="text-sm ml-2 disabled:accent-gray-400 disabled:cursor-not-allowed" type="radio" id="iced"
+                                    name="beverage_type" value="iced" disabled>
+                                <label class="text-sm ml-2 text-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+                                    for="iced">Iced</label><br>
+
+                                @error('beverage_type')
+                                    <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
                         <div class="relative w-[350px] mb-4">
                             <label for="description" class="text-sm">Category Description </label>
@@ -127,15 +160,11 @@
                                 <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                             @enderror
                         </div>
-
                     </div>
                 </div>
                 <div class="w-full flex items-center justify-center">
-                    <button type="submit" onclick="hideAddDialogCategories()"
-                        class="bg-gray-200 text-sm text-black rounded-lg h-[40px] ml-4 mr-2 w-1/2 hover:bg-gray-300 font-bold">
-                        Cancel
-                    </button>
-                    <button class="text-sm text-white rounded-lg h-[40px] w-1/2 mr-4 ml-2 hover:bg-green-700 bg-green-600">
+                    <button type="submit"
+                        class="text-sm text-white rounded-lg h-[40px] w-1/2 hover:bg-green-700 bg-green-600">
                         Add Category
                     </button>
                 </div>
@@ -159,21 +188,30 @@
         </div>
     </div>
 
+    
     <!-- Edit Modal -->
     <div id="edit-dialog-categories"
         class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50"
         aria-hidden="true">
-        <div class="bg-white shadow-md p-8 flex flex-col items-center justify-center rounded-lg h-auto w-auto">
+        <div class="bg-white shadow-md p-8 flex flex-col items-center justify-center rounded-lg h-auto w-auto relative">
+            <!-- Close Icon -->
+            <img onclick="hideEditDialogCategories()" src="{{ asset('Assets/close.png') }}" alt="Close"
+                class="absolute top-5 right-5 w-5 cursor-pointer hover:opacity-80">
+
+            <!-- Title -->
             <h1 class="text-center text-xl font-semibold mb-4 text-black">Edit Category</h1>
+
+            <hr class="text-gray-600 w-full mb-4">
+
             <form action="{{ route('admin.menu.categories.update') }}" method="POST" enctype="multipart/form-data"
                 id="edit-category">
                 @csrf
                 @method('PUT')
                 <input type="hidden" value="" name="editCategoryId" id="editCategoryId">
-                <div class="flex flex-col items-center justify-center">
+                <div class="flex items-center justify-center flex-wrap">
                     <label
-                        class="bg-white py-3 px-5 rounded text-black shadow-md text-center mt-4 flex justify-center items-center"
-                        style="width: 346px; height: 200px; border: 2px dashed gray;" id="editImageLabel">
+                        class="bg-white py-3 px-5 rounded text-black shadow-md text-center mt-4 mr-5 flex justify-center items-center"
+                        style="width: 200px; height: 200px; border: 2px dashed gray;" id="editImageLabel">
                         <input type="file" value='' id='editImage' name="editImage" accept="image/*"
                             class="hidden">
                         <div class="text-center">
@@ -186,38 +224,65 @@
                         </div>
                     </label>
 
-                    <div class="flex flex-col items-center mt-4">
+                    <div class="flex flex-col items-center mt-5">
                         <div class="relative w-[350px] mb-4">
-                            <label for="itemName" class="text-sm">Category Name <span
-                                    class="text-red-500">*</span></label>
+                            <label for="editCategoryName" class="text-sm">Category Name <span class="text-red-500">*</span></label>
                             <input id="editCategoryName"
-                                class="mb-1 peer w-full h-10 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-70  text-xs"
-                                type="text" placeholder="Enter category name" name="editCategoryName" value="">
+                                class="mb-1 mt-2 peer w-full h-10 text-gray-600 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:ring-opacity-70 text-xs"
+                                type="text" placeholder="Enter category name" name="category_name">
 
                             @error('category_name')
                                 <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                             @enderror
                         </div>
+                        <div class="flex w-[350px] mb-4">
+                            <div class="w-1/2 flex-col mr-2">
+                                <label for="editType" class="text-sm">Type <span class="text-red-500">*</span></label>
+                                <select name="type" id="editType"
+                                    class="mb-1 mt-2 peer w-full h-10 text-gray-600 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:ring-opacity-70 text-xs"
+                                    onchange="toggleBeverageType(this)">
+                                    <option value="" disabled selected>Select category type</option>
+                                    <option value="food">Food</option>
+                                    <option value="beverage">Beverage</option>
+                                </select>
+
+                                @error('type')
+                                    <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="w-1/2 flex-col ml-2">
+                                <p class="text-sm mb-1">Beverage Type </p>
+                                <input class="text-sm ml-2 disabled:accent-gray-400 disabled:cursor-not-allowed" type="radio" id="hot"
+                                    name="beverage_type" value="hot" disabled>
+                                <label class="text-sm ml-2 text-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+                                    for="hot">Hot</label><br>
+                                <input class="text-sm ml-2 disabled:accent-gray-400 disabled:cursor-not-allowed" type="radio" id="iced"
+                                    name="beverage_type" value="iced" disabled>
+                                <label class="text-sm ml-2 text-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+                                    for="iced">Iced</label><br>
+
+                                @error('beverage_type')
+                                    <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
                         <div class="relative w-[350px] mb-4">
-                            <label for="editCategoryDescription" class="text-sm">Category Description <span
-                                    class="text-red-500">*</span></label>
+                            <label for="editCategoryDescription" class="text-sm">Category Description </label>
                             <textarea id="editCategoryDescription"
-                                class="mb-1 peer w-full h-10 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-70  text-xs"
-                                type="text" placeholder="Write category description here" name="editCategoryDescription" value=""></textarea>
+                                class="mb-1 mt-2 peer w-full h-20 text-gray-600 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:ring-opacity-70 text-xs"
+                                type="text" placeholder="Write short description about the category" name="description"></textarea>
 
                             @error('description')
                                 <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                             @enderror
                         </div>
-                        <button type="submit"
-                            class="bg-green-600 text-sm text-white rounded-lg h-[40px] w-[350px] hover:bg-green-700">
-                            Save Changes
-                        </button>
-                        <button onclick="hideEditDialogCategories()"
-                            class="bg-gray-200 text-sm text-black rounded-lg h-[40px] w-[350px] hover:bg-gray-300 mt-2 font-bold">
-                            Cancel
-                        </button>
                     </div>
+                </div>
+                <div class="w-full flex items-center justify-center">
+                    <button type="submit"
+                        class="text-sm text-white rounded-lg h-[40px] w-1/2 hover:bg-green-700 bg-green-600">
+                        Save Changes
+                    </button>
                 </div>
             </form>
         </div>

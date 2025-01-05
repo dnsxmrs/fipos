@@ -17,6 +17,7 @@
     <script defer src="{{ asset('js/admin/admin-sidebar.js') }}"></script>
     <script defer src="{{ asset('js/admin/admin-categories.js') }}"></script>
     <script defer src="{{ asset('js/admin/admin-products.js') }}"></script>
+    <script defer src="{{ asset('js/inventory/inventory-categories.js') }}"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])

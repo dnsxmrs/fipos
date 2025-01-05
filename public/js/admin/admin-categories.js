@@ -67,33 +67,65 @@ function hideAddedDialogCategories() {
     }, 300);
 }
 
+
 // Show Edit Dialog
 function showEditDialogCategories(button) {
     const id = button.getAttribute("data-id");
     const name = button.getAttribute("data-name");
     const description = button.getAttribute("data-description");
     const imagePath = button.getAttribute("data-image");
+    const type = button.getAttribute("data-type");
+    const beverageType = button.getAttribute("data-beverageType");
 
     // Debugging: Check values in the console
     console.log({
         id,
         name,
+        description,
         imagePath,
+        type,
+        beverageType,
     });
 
+    // Set values to the form fields
     document.getElementById("editCategoryId").value = id;
     document.getElementById("editCategoryName").value = name;
     document.getElementById("editCategoryDescription").value = description;
+
+    // Set the dropdown (Type) value
+    const typeDropdown = document.getElementById("editType");
+    if (typeDropdown) {
+        typeDropdown.value = type;  // Set the selected value of the dropdown
+        console.log("Type dropdown value set to:", typeDropdown.value);
+    } else {
+        console.error("Dropdown 'editType' not found");
+    }
+
+    // Set the radio buttons (Beverage Type)
+    const hotRadio = document.getElementById("hot");
+    const icedRadio = document.getElementById("iced");
+
+    if (hotRadio && icedRadio) {
+        // Check the correct radio button based on the beverageType
+        if (beverageType === "hot") {
+            hotRadio.checked = true;  // Check the "Hot" radio button
+            icedRadio.checked = false; // Uncheck the "Iced" radio button
+        } else if (beverageType === "iced") {
+            icedRadio.checked = true;  // Check the "Iced" radio button
+            hotRadio.checked = false; // Uncheck the "Hot" radio button
+        }
+        console.log("Beverage Type selected:", beverageType);
+    } else {
+        console.error("Radio buttons not found");
+    }
 
     // Set the image if it exists
     const imageLabel = document.getElementById("editImageLabel");
     const imgElement = imageLabel.querySelector("img"); // Select the image element
 
-    if (imagePath) {
-        console.log("Image Path:", imagePath); // Check what this logs
-
+    if (imagePath && imgElement) {
         imgElement.src = imagePath; // Set the source of the image
-        imgElement.alt = "Product Image"; // Set an alt text if needed
+        imgElement.alt = "Category Image"; // Set an alt text if needed
         imgElement.classList.remove("hidden"); // Make sure the image is visible
 
         // Hide the "+" and upload message
@@ -102,8 +134,10 @@ function showEditDialogCategories(button) {
             uploadMessage.classList.add("hidden"); // Hide the upload message
         }
     } else {
-        imgElement.src = ""; // Clear the image source if no image path
-        imgElement.classList.add("hidden"); // Hide the image if there's no path
+        if (imgElement) {
+            imgElement.src = ""; // Clear the image source if no image path
+            imgElement.classList.add("hidden"); // Hide the image if there's no path
+        }
 
         // Show the "+" and upload message if needed
         const uploadMessage = imageLabel.querySelector(".upload-message");
@@ -112,10 +146,17 @@ function showEditDialogCategories(button) {
         }
     }
 
+    // Show the modal
     const dialog = document.getElementById("edit-dialog-categories");
-    dialog.classList.remove("hidden");
-    setTimeout(() => dialog.classList.remove("opacity-0"), 0);
+    if (dialog) {
+        dialog.classList.remove("hidden");
+        setTimeout(() => dialog.classList.remove("opacity-0"), 0);
+    } else {
+        console.error("Dialog 'edit-dialog-categories' not found");
+    }
 }
+
+
 
 // Hide the edit dialog
 function hideEditDialogCategories() {
@@ -125,6 +166,7 @@ function hideEditDialogCategories() {
         dialog.classList.add("hidden");
     }, 300);
 }
+
 
 function showEditedDialogCategories() {
     // Hide the Edit Dialog
@@ -214,4 +256,25 @@ function deleteItemCategory() {
             alert(`An unexpected error occurred. Please try again. Status Code: ${response.status}`);
             hideConfirmDeleteCategories(); // Hide confirmation dialog
         });
+}
+
+
+function toggleBeverageType(selectElement) {
+    // Get the selected value
+    const selectedValue = selectElement.value;
+
+    // Get the beverage type radio buttons
+    const hotRadio = document.getElementById('hot');
+    const icedRadio = document.getElementById('iced');
+
+    // Enable or disable the radio buttons based on the selected value
+    if (selectedValue === 'beverage') {
+        hotRadio.disabled = false;
+        icedRadio.disabled = false;
+    } else {
+        hotRadio.disabled = true;
+        icedRadio.disabled = true;
+        hotRadio.checked = false;
+        icedRadio.checked = false;
+    }
 }

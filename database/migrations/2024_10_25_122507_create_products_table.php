@@ -15,7 +15,7 @@ class CreateProductsTable extends Migration
             $table->text('product_description')->nullable(); // Nullable description
             $table->decimal('product_price', 10, 2); // Price with 2 decimal places
             $table->boolean('isAvailable')->default(true); // Availability flag (default: true)
-            // $table->boolean('has_customization')->default(false); // Customization flag (default: false)
+            $table->boolean('has_customization')->default(false); // Customization flag (default: false)
             $table->string('image')->nullable(); // Nullable image for the product
             $table->unsignedBigInteger('category_id')->nullable(); // Foreign key to category
             $table->timestamps();
