@@ -9,7 +9,7 @@
     <title> {{ env('APP_NAME') }} </title>
     <link rel="icon" href="{{ asset('Assets/logo.png') }}" type="image/png">
     <!-- Link to your admin CSS -->
-    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <link rel="stylesheet" href="https://fipos-production.up.railway.app/css/admin.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -20,8 +20,9 @@
     <script defer src="{{ asset('js/admin/admin-products.js') }}"></script>
     <script defer src="{{ asset('js/inventory/inventory-categories.js') }}"></script>
 
-    <script src="public/js/admin/admin-sidebar.js"> </script>
-    <script src="public/js/admin/admin-categories.js"> </script>
+    <script src="https://fipos-production.up.railway.app/js/admin/admin-sidebar.js"> </script>
+    <script src="https://fipos-production.up.railway.app/js/admin/admin-categories.js"> </script>
+<!--     <script src="public/js/admin/admin-categories.js"> </script> -->
 
     <script src="https://cdn.tailwindcss.com"></script>
     
