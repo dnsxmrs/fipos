@@ -120,7 +120,7 @@ class ProductController extends Controller
     // Sync with OOS after product operation (create, update, delete)
     protected function syncWithOos(string $method, $product)
     {
-        $url = env('OOS_PRODUCT_URL'); // Change to your OOS API endpoint
+        $url = env('PRODUCT_OOS_URL'); // Change to your OOS API endpoint
 
         // Prepare the data to send to OOS
         $data = [
