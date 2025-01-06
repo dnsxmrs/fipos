@@ -151,8 +151,12 @@ class CategoryController extends Controller
 
         // Perform the HTTP request to sync with OOS
         try {
-            $response = Http::send($method, $url, [
-                'json' => $data,
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . env('POS_API_KEY'), // Include the Authorization Bearer token
+                // 'X-CSRF-TOKEN' => $csrfToken, // Include the CSRF token if necessary
+                'Content-Type' => 'application/json', // Specify JSON content type
+            ])->send($method, $url, [
+                'json' => $data, // Send data as JSON
             ]);
 
             if ($response->failed()) {
