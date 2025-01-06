@@ -16,7 +16,8 @@
     <script defer src="{{ asset('js/cashier/orders.js') }}"></script>
     <script defer src="{{ asset('js/cashier/cashier-header.js') }}"></script>
 
-
+    <script src="https://cdn.tailwindcss.com"></script>
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
