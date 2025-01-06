@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title> {{ env('APP_NAME') }} </title>
+    <link rel="icon" href="{{ asset('Assets/logo.png') }}" type="image/png">
     <!-- Link to your admin CSS -->
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
