@@ -128,7 +128,7 @@ class CategoryController extends Controller
     // Sync with OOS after category operation (create, update, delete)
     protected function syncWithOos(string $method, $category)
     {
-        $url = 'http://127.0.0.1:8000/api/webhook/category-update'; // Change to your OOS API endpoint
+        $url = env('OOS_CATEGORY_URL'); // Change to your OOS API endpoint
 
         // Prepare the data to send to OOS
         $data = [
@@ -173,7 +173,7 @@ class CategoryController extends Controller
 
         } catch (\Exception $e) {
             Log::error('Error syncing with OOS', [
-                'error' => $e->getMessage(),
+                 'error' => $e->getMessage(),
                 'method' => $method,
                 'url' => $url,
             ]);

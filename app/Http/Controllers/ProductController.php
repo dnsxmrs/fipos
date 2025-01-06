@@ -120,7 +120,7 @@ class ProductController extends Controller
     // Sync with OOS after product operation (create, update, delete)
     protected function syncWithOos(string $method, $product)
     {
-        $url = 'http://127.0.0.1:8000/api/webhook/product-update'; // Change to your OOS API endpoint
+        $url = env('OOS_PRODUCT_URL'); // Change to your OOS API endpoint
 
         // Prepare the data to send to OOS
         $data = [
