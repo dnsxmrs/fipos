@@ -166,7 +166,7 @@ class PaymentController extends Controller
 
         // Perform the HTTP request to push order to KDS
         try {
-            $response = Http::send('post', env('KDS_PUSH_ORDER_URL'), [
+            $response = Http::send('post', env('KDS_URL'), [
                 'json' => $pushOrder,
             ]);
 
