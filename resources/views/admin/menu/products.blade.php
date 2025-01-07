@@ -366,12 +366,7 @@
             @endif
 
         });
-    </script>
-@endsection
 
-
-@section('script')
-    <script>
         // dynamic table for searching
         function filterProducts() {
             // Get the value of the search bar

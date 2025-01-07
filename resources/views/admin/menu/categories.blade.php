@@ -370,6 +370,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
+            filterCategories();
+
             // success add modal
             @if (session('status_add'))
                 showAddedDialogCategories();
@@ -385,14 +387,6 @@
                 showDeletedDialogCategories();
             @endif
 
-        });
-    </script>
-@endsection
-
-@section('script')
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            filterCategories();
         });
 
         // dynamic table for searching
