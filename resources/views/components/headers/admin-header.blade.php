@@ -12,6 +12,9 @@
         </button>
     </div>
 
+    {{-- PROFILE --}}
+
+
     {{-- PROFILE INFO --}}
     <div class="flex items-center justify-start">
         <img class="cursor-pointer mr-3 h-9 object-cover hover:bg-gray-100 p-2 rounded-lg"
@@ -19,7 +22,7 @@
 
         <span onclick="showDropdown()" class="cursor-pointer">
             <img class="h-8 rounded-full border border-green-700 object-cover" src="{{ asset('Assets/avatar.png') }}"
-                alt="profile icon">
+            alt="profile icon">
         </span>
     </div>
 </nav>
@@ -32,13 +35,11 @@
     </div>
 
     <div class="border-t border-t-gray-100 mt-3 w-full">
-        <a class="hover:bg-gray-100 text-xs text-gray-600 flex items-center justify-start px-12 py-2 mt-5"
-            href="#">
+        <a class="hover:bg-gray-100 text-xs text-gray-600 flex items-center justify-start px-12 py-2 mt-5" href="#">
             <img class="h-5 object-cover opacity-60 mr-2" src="{{ asset('Assets/profile-icon.png') }}" alt="">
             Profile
         </a>
-        <a class="hover:bg-gray-100 text-xs text-gray-600 flex items-center justify-start px-12 py-2"
-            href="{{ route('admin.settings') }}">
+        <a class="hover:bg-gray-100 text-xs text-gray-600 flex items-center justify-start px-12 py-2" href="#">
             <img class="h-5 object-cover opacity-60 mr-2" src="{{ asset('Assets/settings-black.png') }}" alt="">
             Settings
         </a>
@@ -89,3 +90,4 @@
         </div>
     </div>
 </div>
+

@@ -41,7 +41,7 @@
 <body class="bg-gray-100">
     {{-- Header --}}
     <div class="">
-        @include('components.headers.cashier-header')
+        @include('components.headers.admin-header')
     </div>
 
     <!-- Main content -->
