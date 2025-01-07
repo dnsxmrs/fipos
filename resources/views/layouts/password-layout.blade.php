@@ -6,7 +6,7 @@
     <title> {{ env('APP_NAME') }} </title>
     <link rel="icon" href="{{ asset('Assets/logo.png') }}" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <script defer src="{{ asset('js/change-password.js') }}"></script>
+    <script defer src="{{ asset('Assets/js/change-password.js') }}"></script>
 
     {{-- {{-- <script src="https://fipos-production.up.railway.app/js/change-password.js"> </script> --}}
 

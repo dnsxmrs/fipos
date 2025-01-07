@@ -12,9 +12,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ env('APP_NAME') }}</title>
     <link rel="icon" href="{{ asset('Assets/logo.png') }}" type="image/png">
-    <script defer src="{{ asset('js/cashier/cashier-order.js') }}"></script>
-    <script defer src="{{ asset('js/cashier/orders.js') }}"></script>
-    <script defer src="{{ asset('js/cashier/cashier-header.js') }}"></script>
+    <script defer src="{{ asset('Assets/js/cashier/cashier-order.js') }}"></script>
+    <script defer src="{{ asset('Assets/js/cashier/orders.js') }}"></script>
+    <script defer src="{{ asset('Assets/js/cashier/cashier-header.js') }}"></script>
 
     {{-- <script src="https://fipos-production.up.railway.app/js/cashier/cashier-order.js"> </script>
     <script src="https://fipos-production.up.railway.app/js/cashier/orders.js"> </script>

@@ -53,8 +53,7 @@
                                     <button onclick="showEditDialogCategories(this)" data-id="{{ $category->category_id }}"
                                         data-name="{{ $category->category_name }}"
                                         data-description="{{ $category->description }}" data-image="{{ $category->image }}"
-                                        date-type="{{ $category->type }}"
-                                        data-beverageType="{{ $category->beverage_type }}"
+                                        date-type="{{ $category->type }}" data-beverageType="{{ $category->beverage_type }}"
                                         class="flex text-blue-500 transition duration-300 ease-in-out items-right hover:text-blue-700">
                                         <img src="{{ asset('Assets/Edit.png') }}" alt="Edit Icon" class="ml-9">
                                     </button>
@@ -137,15 +136,13 @@
                             </div>
                             <div class="w-1/2 flex-col ml-2">
                                 <p class="text-sm mb-1">Beverage Type </p>
-                                <input class="text-sm ml-2 disabled:accent-gray-400 disabled:cursor-not-allowed"
-                                    type="radio" id="hot" name="beverage_type" value="hot" disabled>
-                                <label
-                                    class="text-sm ml-2 text-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+                                <input class="text-sm ml-2 disabled:accent-gray-400 disabled:cursor-not-allowed" type="radio" id="hot"
+                                    name="beverage_type" value="hot" disabled>
+                                <label class="text-sm ml-2 text-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
                                     for="hot">Hot</label><br>
-                                <input class="text-sm ml-2 disabled:accent-gray-400 disabled:cursor-not-allowed"
-                                    type="radio" id="iced" name="beverage_type" value="iced" disabled>
-                                <label
-                                    class="text-sm ml-2 text-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+                                <input class="text-sm ml-2 disabled:accent-gray-400 disabled:cursor-not-allowed" type="radio" id="iced"
+                                    name="beverage_type" value="iced" disabled>
+                                <label class="text-sm ml-2 text-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
                                     for="iced">Iced</label><br>
 
                                 @error('beverage_type')
@@ -229,8 +226,7 @@
 
                     <div class="flex flex-col items-center mt-5">
                         <div class="relative w-[350px] mb-4">
-                            <label for="editCategoryName" class="text-sm">Category Name <span
-                                    class="text-red-500">*</span></label>
+                            <label for="editCategoryName" class="text-sm">Category Name <span class="text-red-500">*</span></label>
                             <input id="editCategoryName"
                                 class="mb-1 mt-2 peer w-full h-10 text-gray-600 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:ring-opacity-70 text-xs"
                                 type="text" placeholder="Enter category name" name="category_name">
@@ -256,15 +252,13 @@
                             </div>
                             <div class="w-1/2 flex-col ml-2">
                                 <p class="text-sm mb-1">Beverage Type </p>
-                                <input class="text-sm ml-2 disabled:accent-gray-400 disabled:cursor-not-allowed"
-                                    type="radio" id="hot" name="beverage_type" value="hot" disabled>
-                                <label
-                                    class="text-sm ml-2 text-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+                                <input class="text-sm ml-2 disabled:accent-gray-400 disabled:cursor-not-allowed" type="radio" id="hot"
+                                    name="beverage_type" value="hot" disabled>
+                                <label class="text-sm ml-2 text-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
                                     for="hot">Hot</label><br>
-                                <input class="text-sm ml-2 disabled:accent-gray-400 disabled:cursor-not-allowed"
-                                    type="radio" id="iced" name="beverage_type" value="iced" disabled>
-                                <label
-                                    class="text-sm ml-2 text-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+                                <input class="text-sm ml-2 disabled:accent-gray-400 disabled:cursor-not-allowed" type="radio" id="iced"
+                                    name="beverage_type" value="iced" disabled>
+                                <label class="text-sm ml-2 text-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
                                     for="iced">Iced</label><br>
 
                                 @error('beverage_type')
@@ -370,8 +364,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            filterCategories();
-
             // success add modal
             @if (session('status_add'))
                 showAddedDialogCategories();
@@ -388,282 +380,7 @@
             @endif
 
         });
-
-        // dynamic table for searching
-        function filterCategories() {
-            // Get the value of the search bar
-            const input = document.getElementById("category_search");
-            const filter = input.value.toLowerCase();
-            const table = document.getElementById("category_table");
-            const rows = table.getElementsByClassName("category_row");
-            const noCategoriesMessage = document.getElementById(
-                "no-categories-message"
-            );
-            let hasVisibleRows = false;
-
-            // Loop through all table rows and hide those that don't match the search query
-            for (let i = 0; i < rows.length; i++) {
-                const categoryName = rows[i]
-                    .getElementsByTagName("td")[1]
-                    .textContent.toLowerCase();
-
-                if (categoryName.includes(filter)) {
-                    rows[i].style.display = ""; // Show the row
-                    hasVisibleRows = true; // There are visible rows
-                } else {
-                    rows[i].style.display = "none"; // Hide the row
-                }
-            }
-
-            // Show or hide the no categories message based on whether any rows are visible
-            noCategoriesMessage.style.display = hasVisibleRows ? "none" : "block";
-        }
-
-        // Show the add dialog
-        function showAddDialogCategories() {
-            const dialog = document.getElementById("add-dialog-categories");
-            dialog.classList.remove("hidden");
-            setTimeout(() => dialog.classList.remove("opacity-0"), 0); // Use a timeout for the transition
-        }
-
-        // Hide the add dialog
-        function hideAddDialogCategories() {
-            const dialog = document.getElementById("add-dialog-categories");
-            dialog.classList.add("opacity-0");
-            setTimeout(() => {
-                dialog.classList.add("hidden");
-            }, 300); // Match the transition duration
-        }
-
-        // Show the added item dialog
-        function showAddedDialogCategories() {
-            // Hide the Add Dialog
-            hideAddDialogCategories();
-            // Show the Item Updated Dialog
-            const dialog = document.getElementById("added-dialog-categories");
-            dialog.classList.remove("hidden");
-            setTimeout(() => dialog.classList.remove("opacity-0"), 0);
-        }
-
-        // Hide the added item dialog
-        function hideAddedDialogCategories() {
-            const dialog = document.getElementById("added-dialog-categories");
-            dialog.classList.add("opacity-0");
-            setTimeout(() => {
-                dialog.classList.add("hidden");
-            }, 300);
-        }
-
-
-        // Show Edit Dialog
-        function showEditDialogCategories(button) {
-            const id = button.getAttribute("data-id");
-            const name = button.getAttribute("data-name");
-            const description = button.getAttribute("data-description");
-            const imagePath = button.getAttribute("data-image");
-            const type = button.getAttribute("data-type");
-            const beverageType = button.getAttribute("data-beverageType");
-
-            // Debugging: Check values in the console
-            console.log({
-                id,
-                name,
-                description,
-                imagePath,
-                type,
-                beverageType,
-            });
-
-            // Set values to the form fields
-            document.getElementById("editCategoryId").value = id;
-            document.getElementById("editCategoryName").value = name;
-            document.getElementById("editCategoryDescription").value = description;
-
-            // Set the dropdown (Type) value
-            const typeDropdown = document.getElementById("editType");
-            if (typeDropdown) {
-                typeDropdown.value = type; // Set the selected value of the dropdown
-                console.log("Type dropdown value set to:", typeDropdown.value);
-            } else {
-                console.error("Dropdown 'editType' not found");
-            }
-
-            // Set the radio buttons (Beverage Type)
-            const hotRadio = document.getElementById("hot");
-            const icedRadio = document.getElementById("iced");
-
-            if (hotRadio && icedRadio) {
-                // Check the correct radio button based on the beverageType
-                if (beverageType === "hot") {
-                    hotRadio.checked = true; // Check the "Hot" radio button
-                    icedRadio.checked = false; // Uncheck the "Iced" radio button
-                } else if (beverageType === "iced") {
-                    icedRadio.checked = true; // Check the "Iced" radio button
-                    hotRadio.checked = false; // Uncheck the "Hot" radio button
-                }
-                console.log("Beverage Type selected:", beverageType);
-            } else {
-                console.error("Radio buttons not found");
-            }
-
-            // Set the image if it exists
-            const imageLabel = document.getElementById("editImageLabel");
-            const imgElement = imageLabel.querySelector("img"); // Select the image element
-
-            if (imagePath && imgElement) {
-                imgElement.src = imagePath; // Set the source of the image
-                imgElement.alt = "Category Image"; // Set an alt text if needed
-                imgElement.classList.remove("hidden"); // Make sure the image is visible
-
-                // Hide the "+" and upload message
-                const uploadMessage = imageLabel.querySelector(".upload-message");
-                if (uploadMessage) {
-                    uploadMessage.classList.add("hidden"); // Hide the upload message
-                }
-            } else {
-                if (imgElement) {
-                    imgElement.src = ""; // Clear the image source if no image path
-                    imgElement.classList.add("hidden"); // Hide the image if there's no path
-                }
-
-                // Show the "+" and upload message if needed
-                const uploadMessage = imageLabel.querySelector(".upload-message");
-                if (uploadMessage) {
-                    uploadMessage.classList.remove("hidden"); // Show the upload message
-                }
-            }
-
-            // Show the modal
-            const dialog = document.getElementById("edit-dialog-categories");
-            if (dialog) {
-                dialog.classList.remove("hidden");
-                setTimeout(() => dialog.classList.remove("opacity-0"), 0);
-            } else {
-                console.error("Dialog 'edit-dialog-categories' not found");
-            }
-        }
-
-
-
-        // Hide the edit dialog
-        function hideEditDialogCategories() {
-            const dialog = document.getElementById("edit-dialog-categories");
-            dialog.classList.add("opacity-0");
-            setTimeout(() => {
-                dialog.classList.add("hidden");
-            }, 300);
-        }
-
-
-        function showEditedDialogCategories() {
-            // Hide the Edit Dialog
-            hideEditDialogCategories();
-            // Show the Item Updated Dialog
-            const dialog = document.getElementById("edited-dialog-categories");
-            dialog.classList.remove("hidden");
-            setTimeout(() => dialog.classList.remove("opacity-0"), 0);
-        }
-
-        function hideEditedDialogCategories() {
-            const dialog = document.getElementById("edited-dialog-categories");
-            dialog.classList.add("opacity-0");
-            setTimeout(() => {
-                dialog.classList.add("hidden");
-            }, 300);
-        }
-
-        let categoryIdToDelete = null;
-
-        function showDeleteDialogCategories(cateogryId) {
-            categoryIdToDelete = cateogryId; // Store the ID of the product to delete
-            document
-                .getElementById("delete-dialog-categories")
-                .classList.remove("hidden", "opacity-0");
-            document.getElementById("delete-dialog-categories").classList.add("opacity-100");
-        }
-
-        function hideDeleteDialogCategories() {
-            document
-                .getElementById("delete-dialog-categories")
-                .classList.add("hidden", "opacity-0");
-        }
-
-
-        //button sa first delete modal- confirm
-        function showConfirmDeleteCategories() {
-            hideDeleteDialogCategories();
-            document.getElementById("confirm-delete-dialog-categories").classList.remove("hidden");
-        }
-
-        // button sa confirm delete pagka input ng password - confirm
-        function hideConfirmDeleteCategories() {
-            document.getElementById("confirm-delete-dialog-categories").classList.add("hidden");
-        }
-
-        // shows success popup kapag category is deleted
-        function showDeletedDialogCategories() {
-            hideConfirmDeleteCategories();
-            document.getElementById("deleted-dialog-categories").classList.remove("hidden");
-        }
-
-        // button sa popup na success
-        function hideDeletedDialogCategories() {
-            document.getElementById("deleted-dialog-categories").classList.add("hidden");
-            window.location.reload(); // Reload the page to reflect deletion
-        }
-        document.getElementById("confirmButtonCategory").addEventListener("click", function() {
-            // Assuming the password is always correct, directly call the delete function
-            deleteItemCategory();
-        });
-
-
-        function deleteItemCategory() {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-            fetch(`/admin/menu/categories/${categoryIdToDelete}`, {
-                    method: "DELETE",
-                    headers: {
-                        "X-CSRF-TOKEN": csrfToken,
-                        "Content-Type": "application/json",
-                    },
-                })
-                .then((response) => {
-                    if (response.status === 204) {
-                        // No Content response, deletion successful
-                        showDeletedDialogCategories(); // Show success modal
-                    } else if (response.status === 200) {
-                        showDeletedDialogCategories(); // Show success modal
-                    } else {
-                        alert(`Failed to delete category. Please try again. Status Code: ${response.status}`);
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error:", error.message);
-                    alert(error.message || "catch An unexpected error occurred. Please try again.");
-                    alert(`An unexpected error occurred. Please try again. Status Code: ${response.status}`);
-                    hideConfirmDeleteCategories(); // Hide confirmation dialog
-                });
-        }
-
-
-        function toggleBeverageType(selectElement) {
-            // Get the selected value
-            const selectedValue = selectElement.value;
-
-            // Get the beverage type radio buttons
-            const hotRadio = document.getElementById('hot');
-            const icedRadio = document.getElementById('iced');
-
-            // Enable or disable the radio buttons based on the selected value
-            if (selectedValue === 'beverage') {
-                hotRadio.disabled = false;
-                icedRadio.disabled = false;
-            } else {
-                hotRadio.disabled = true;
-                icedRadio.disabled = true;
-                hotRadio.checked = false;
-                icedRadio.checked = false;
-            }
-        }
     </script>
 @endsection
+
+
