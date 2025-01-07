@@ -20,7 +20,7 @@
     <script defer src="{{ asset('Assets/js/admin/admin-products.js') }}"></script>
     <script defer src="{{ asset('Assets/js/inventory/inventory-categories.js') }}"></script> --}}
 
-    <script defer src="https://fipos-production.up.railway.app/Assets/js/cashier/cashier-order.js"> </script>
+    <script defer src="https://fipos-production.up.railway.app/Assets/js/cashier/cashier-header.js"> </script>
     <script defer src="https://fipos-production.up.railway.app/Assets/js/admin/admin-sidebar.js"> </script>
     <script defer src="https://fipos-production.up.railway.app/Assets/js/admin/admin-categories.js"> </script>
     <script defer src="https://fipos-production.up.railway.app/Assets/js/admin/admin-products.js"> </script>
