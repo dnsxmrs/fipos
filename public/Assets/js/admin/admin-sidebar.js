@@ -31,9 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
     links.forEach(link => {
         // Match the link href with the current URL
         if (link.href === currentURL) {
-            link.classList.remove('opacity-70'); // Remove the default opacity
             link.classList.add('bg-green-900'); // Highlight the active link
-            link.classList.add('bg-green-900'); // Ensure text and icon are also fully visible
+            link.classList.remove('opacity-70'); // Remove default opacity
+        } else {
+            link.classList.remove('bg-green-900'); // Remove highlight from non-active links
         }
     });
 });
