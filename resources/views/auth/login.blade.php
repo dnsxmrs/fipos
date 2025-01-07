@@ -60,7 +60,7 @@
 
                 {{-- Error message for invalid credentials --}}
                 @error('failed')
-                    <p class="text-sm text-red-500">{{ $message }}</p>
+                    <p class="text-xs mt-2 text-red-500">{{ $message }}</p>
                 @enderror
 
                 <button
