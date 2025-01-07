@@ -8,9 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <script defer src="{{ asset('js/change-password.js') }}"></script>
 
-    {{-- <script src="https://fipos-production.up.railway.app/js/change-password.js"> </script>
+    {{-- {{-- <script src="https://fipos-production.up.railway.app/js/change-password.js"> </script> --}}
 
-    <script src="https://cdn.tailwindcss.com"></script> --}}
+    <script src="https://cdn.tailwindcss.com"></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>

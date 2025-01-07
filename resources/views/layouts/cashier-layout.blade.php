@@ -20,7 +20,7 @@
     <script src="https://fipos-production.up.railway.app/js/cashier/orders.js"> </script>
     <script src="https://fipos-production.up.railway.app/js/cashier/cashier-header.js"> </script> --}}
 
-    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
+    <script src="https://cdn.tailwindcss.com"></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
