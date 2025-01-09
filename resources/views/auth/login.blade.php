@@ -19,7 +19,7 @@
 
                 <div class="mt-10">
                     <input type="text" id="email" name="email" value="{{ old('email') }}"
-                        class="border w-80 p-3 text-xs font-normal border-gray-300 bg-gray-100 rounded-lg focus:outline-blue-400 outline-1 text-gray-500"
+                        class="border w-80 p-3 text-xs font-normal border-gray-300 bg-gray-100 rounded-lg text-gray-500"
                         placeholder="Email" @error('email') style="border-color: red" @enderror>
                     @error('email')
                         <p class="text-xs pl-1 mt-1 text-red-500">{{ $message }}</p>
@@ -28,7 +28,7 @@
                 </div>
                 <div class="mt-5 relative">
                     <input type="password" id="password" name="password"
-                        class="border w-80 p-3 text-xs font-normal border-gray-200 bg-gray-100 rounded-lg focus:outline-blue-400 outline-1 text-gray-500"
+                        class="border w-80 p-3 text-xs font-normal border-gray-200 bg-gray-100 rounded-lg text-gray-500"
                         placeholder="Password" @error('password') style="border-color: red" @enderror>
 
                     <span class="absolute inset-y-0 flex items-center cursor-pointer right-3" id="toggle-password">
