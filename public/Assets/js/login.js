@@ -68,21 +68,19 @@ function validateEmail() {
 
     if (emailValue === "") {
         errorDisplay.innerText = "Email field is required"; // Populate error message
-        emailField.classList.add("focus:outline-red-500");
         emailField.classList.add("border-red-500");
-        emailField.classList.remove("focus:outline-green-500");
+        emailField.classList.remove("focus:border-blue-400");
         return false;
     } else if (!emailRegex.test(emailValue)) {
         errorDisplay.innerText = "Provide a valid email address"; // Populate error message
-        emailField.classList.add("focus:outline-red-500");
         emailField.classList.add("border-red-500");
-        emailField.classList.remove("focus:outline-green-500");
+        emailField.classList.remove("focus:border-blue-400");
         return false;
     } else {
         errorDisplay.innerText = ""; // Clear error message
-        emailField.classList.remove("focus:outline-red-500");
         emailField.classList.remove("border-red-500");
-        emailField.classList.add("focus:outline-green-500");
+        emailField.classList.remove("focus:border-blue-400");
+        emailField.classList.add("focus:border-green-500");
         return true;
     }
 }
@@ -97,15 +95,14 @@ function validatePassword() {
 
     if (passwordValue === "") {
         errorDisplay.innerText = "Password field is required"; // Populate error message
-        passwordField.classList.add("focus:outline-red-500");
         passwordField.classList.add("border-red-500");
-        passwordField.classList.remove("focus:outline-green-500");
+        passwordField.classList.remove("focus:border-blue-400");
         return false;
     } else {
         errorDisplay.innerText = ""; // Clear error message
-        passwordField.classList.remove("focus:outline-red-500");
         passwordField.classList.remove("border-red-500");
-        passwordField.classList.add("focus:outline-green-500");
+        passwordField.classList.remove("focus:border-blue-400");
+        passwordField.classList.add("focus:border-green-500");
         return true;
     }
 }
