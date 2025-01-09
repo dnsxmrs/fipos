@@ -8,12 +8,12 @@ use App\Models\User;
 class UserController extends Controller
 {
     // method to display user
-    public function display()
+    public function showUsers()
     {
         // retrieve all users
-        $users = User::all();
+        $users = User::paginate(10);
 
         // return the view
-        return view('user management.list-user', ['users' => $users]);
+        return view('admin.users.index', ['users' => $users]);
     }
 }

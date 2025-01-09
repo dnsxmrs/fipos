@@ -95,6 +95,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
             Route::get('/category', [InventoryController::class, 'showCategories'])->name('inventory.categories');
             Route::post('/category/add', [InventoryCategoryController::class, 'store'])->name('inventory.category.add');
             Route::post('/category/edit', [InventoryCategoryController::class, 'update'])->name('inventory.category.update');
+            Route::get('/category/{id}', [InventoryCategoryController::class, 'showEdit'])->name('inventory.category.edit');
             Route::get('/{name}', [InventoryController::class, 'showCategorizedItems'])->name('inventory.categorized');
         });
 
@@ -102,6 +103,14 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
         Route::prefix('staffs')->group(function() {
 
             Route::get('/', [StaffController::class, 'index'])->name('staffs.show');
+
+        });
+
+        // User Management routes
+        Route::prefix('users')->group(function() {
+
+            Route::get('/', [UserController::class, 'showUsers'])->name('users.show');
+            Route::post('/add', [UserController::class, 'addUser'])->name('user.add');
 
         });
 
@@ -118,7 +127,6 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 
         Route::view('/list-user', 'user management.list-user')->name('list.user');
         Route::view('/role-management', 'user management.role-management')->name('role-management');
-        Route::get('/users', [UserController::class, 'display'])->name('users.index');
     });
 });
 

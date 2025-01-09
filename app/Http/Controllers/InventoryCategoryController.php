@@ -30,6 +30,14 @@ class InventoryCategoryController extends Controller
         }
     }
 
+    public function showEdit($id) {
+
+        $category = InventoryCategory::find($id)->first();
+
+        return view('admin.inventory.category.modals.edit-modal', compact('category'));
+
+    }
+
 
     /**
      * Update category
