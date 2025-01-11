@@ -16,6 +16,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ItemController;
 
 // only authenticated users can access these pages
 Route::middleware(['auth'])->group(function () {
@@ -27,7 +28,7 @@ Route::middleware(['auth'])->group(function () {
 
     // ROUTES FOR CASHIER
     Route::prefix('cashier')->group(function () {
-        // Redirect to the admin categories page when url is localhost:8000/cashier
+
         Route::get('/', function () {
             return redirect()->route('menu.show');
         });
@@ -91,27 +92,40 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
         // Inventory routes
         Route::prefix('inventory')->group(function () {
 
-            Route::get('/', [InventoryController::class, 'showItems'])->name('inventory.show');
-            Route::get('/category', [InventoryController::class, 'showCategories'])->name('inventory.categories');
-            Route::post('/category/add', [InventoryCategoryController::class, 'store'])->name('inventory.category.add');
-            Route::post('/category/edit', [InventoryCategoryController::class, 'update'])->name('inventory.category.update');
-            Route::get('/category/{id}', [InventoryCategoryController::class, 'showEdit'])->name('inventory.category.edit');
-            Route::get('/{name}', [InventoryController::class, 'showCategorizedItems'])->name('inventory.categorized');
+            Route::get('/', function () {
+                return redirect()->route('admin.inventory.show');
+            });
+
+            // Categories
+            Route::prefix('categories')->group(function () {
+
+                Route::get('/', [InventoryController::class, 'showCategories'])->name('inventory.categories');
+                Route::post('/add', [InventoryCategoryController::class, 'store'])->name('inventory.category.add');
+                Route::post('/edit', [InventoryCategoryController::class, 'update'])->name('inventory.category.update');
+                Route::get('/{id}', [InventoryCategoryController::class, 'showEdit'])->name('inventory.category.edit');
+            });
+
+            // Items
+            Route::prefix('items')->group(function () {
+
+                Route::get('/', [InventoryController::class, 'showItems'])->name('inventory.show');
+                Route::post('/add', [ItemController::class, 'store'])->name('inventory.item.store');
+                Route::post('/update', [ItemController::class, 'update'])->name('inventory.item.update');
+                Route::post('/delete', [ItemController::class, 'destroy'])->name('inventory.item.destroy');
+            });
         });
 
         // Staff Management routes
-        Route::prefix('staffs')->group(function() {
+        Route::prefix('staffs')->group(function () {
 
             Route::get('/', [StaffController::class, 'index'])->name('staffs.show');
-
         });
 
         // User Management routes
-        Route::prefix('users')->group(function() {
+        Route::prefix('users')->group(function () {
 
             Route::get('/', [UserController::class, 'showUsers'])->name('users.show');
             Route::post('/add', [UserController::class, 'addUser'])->name('user.add');
-
         });
 
 

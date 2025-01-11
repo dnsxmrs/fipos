@@ -12,7 +12,7 @@
         </button>
     </div>
 
-    {{-- Success Message --}}
+    {{-- Success Message
     @if (session('status'))
         <div id="success-message" class="flex items-center justify-center">
             <div class="relative px-4 py-2 w-[500px] text-center mt-3 text-green-700 bg-green-100 border border-green-400 rounded"
@@ -22,7 +22,7 @@
         </div>
     @endif
 
-    {{-- Error Message --}}
+    Error Message
     @if (session('error'))
         <div id="error-message" class="flex items-center justify-center">
             <div class="relative px-4 py-2 w-[500px] text-center mt-3 text-red-700 bg-red-100 border border-red-400 rounded"
@@ -59,7 +59,7 @@
                                     class="flex text-blue-500 transition duration-300 ease-in-out items-right hover:text-blue-700">
                                     <img src="{{ asset('Assets/Edit.png') }}" alt="Edit Icon" class="ml-9">
                                 </button>
-                                <button onclick="showDeleteDialog({{ $category->id }})"
+                                <button onclick="showDeleteModal()"
                                     class="flex ml-2 text-red-500 transition duration-300 ease-in-out items-right hover:text-red-700">
                                     <img src="{{ asset('Assets/Delete.png') }}" alt="Delete Icon" class="ml-5 mr-5">
                                 </button>
@@ -77,5 +77,29 @@
 
     @include('admin.inventory.category.modals.add-category')
     @include('admin.inventory.category.modals.edit-category')
+    @include('admin.inventory.category.modals.delete-category')
+    @include('admin.inventory.category.modals.success-add')
+    @include('admin.inventory.category.modals.success-delete')
+    @include('admin.inventory.category.modals.success-edit')
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            @if (session('status_add'))
+                showSuccessAddModal();
+            @endif
+
+
+            @if (session('status_edit'))
+                showSuccessEditModal();
+            @endif
+
+
+            @if (session('status_deleted'))
+                showSuccessDeleteModal();
+            @endif
+
+        });
+    </script>
 
 @endsection

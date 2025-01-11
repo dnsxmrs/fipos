@@ -14,12 +14,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     <script defer src="{{ asset('Assets/js/cashier/cashier-header.js') }}"></script>
     <script defer src="{{ asset('Assets/js/admin/admin-sidebar.js') }}"></script>
     <script defer src="{{ asset('Assets/js/admin/admin-categories.js') }}"></script>
     <script defer src="{{ asset('Assets/js/admin/admin-products.js') }}"></script>
     <script defer src="{{ asset('Assets/js/inventory/inventory-categories.js') }}"></script>
     <script defer src="{{ asset('Assets/js/admin/user.js') }}"></script>
+    <script defer src="{{ asset('Assets/js/inventory/inventory-items.js') }}"></script>
+
 {{--
     <script defer src="https://fipos-production.up.railway.app/Assets/js/cashier/cashier-header.js"> </script>
     <script defer src="https://fipos-production.up.railway.app/Assets/js/admin/admin-sidebar.js"> </script>

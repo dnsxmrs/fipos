@@ -1,13 +1,12 @@
 @extends('admin.inventory.index')
 
 @section('inventory_table')
-
     <div class="flex items-center justify-between mt-5">
         <input type="text" placeholder="Search items..."
             class="p-3 h-10 w-64 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100 border border-gray-200 text-sm text-gray-500 rounded-lg">
 
         <!--ADD BUTTON-->
-        <button onclick="showAddDialog()"
+        <button onclick="showAddItemModal()"
             class="bg-green-600 ml-3 text-white px-10 h-10 font-medium text-sm hover:bg-green-700 shadow-sm rounded-full">
             + Add Item
         </button>
@@ -24,6 +23,7 @@
                         <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Category</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Stocks</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Unit</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Reorder Level</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Last Restocked</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Expiry Date</th>
                         <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Status</th>
@@ -57,6 +57,7 @@
                             <td class="p-3">{{ $item->category->category_name }}</td>
                             <td class="py-3 px-5">{{ $item->stock }}</td>
                             <td class="py-3 px-5">{{ $item->unit }}</td>
+                            <td class="py-3 px-5">{{ $item->reorder_level }}</td>
                             <td class="py-3 px-5">{{ $item->last_restocked }}</td>
                             <td class="py-3 px-5">{{ $item->expiry_date }}</td>
                             <td class="text-center p-3">
@@ -66,11 +67,15 @@
                                 </span>
                             </td>
                             <td class="flex py-3 px-5 space-x-2 items-center justify-end">
-                                <button onclick="showEditDialog(this)" data-id="{{ $item->id }}"
+                                <button onclick="showEditItemModal(this)" data-id="{{ $item->id }}"
+                                    data-name="{{ $item->item_name }}" data-category="{{ $item->category_id }}"
+                                    data-stock="{{ $item->stock }}" data-unit="{{ $item->unit }}"
+                                    data-reorder_level="{{ $item->reorder_level }}"
+                                    data-expiry_date="{{ $item->expiry_date }}"
                                     class="flex text-blue-500 transition duration-300 ease-in-out items-right hover:text-blue-700">
                                     <img src="{{ asset('Assets/Edit.png') }}" alt="Edit Icon" class="ml-9">
                                 </button>
-                                <button onclick="showDeleteDialog({{ $item->category_id }})"
+                                <button onclick="showDeleteItemModal()"
                                     class="flex ml-2 text-red-500 transition duration-300 ease-in-out items-right hover:text-red-700">
                                     <img src="{{ asset('Assets/Delete.png') }}" alt="Delete Icon" class="ml-5 mr-5">
                                 </button>
@@ -86,13 +91,32 @@
         </div>
     </div>
 
-    {{-- ADD MODAL --}}
-    <div id="add-dialog"
-        class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50">
 
-        <div class="">
+    {{-- MODALS --}}
+    @include('admin.inventory.item.modals.add-item')
+    @include('admin.inventory.item.modals.delete-item')
+    @include('admin.inventory.item.modals.edit-item')
+    @include('admin.inventory.item.modals.success-add')
+    @include('admin.inventory.item.modals.success-delete')
+    @include('admin.inventory.item.modals.success-edit')
 
-        </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
 
-    </div>
+            @if (session('status_add'))
+                showSuccessAddModal();
+            @endif
+
+
+            @if (session('status_edit'))
+                showSuccessEditModal();
+            @endif
+
+
+            @if (session('status_deleted'))
+                showSuccessDeleteModal();
+            @endif
+
+        });
+    </script>
 @endsection

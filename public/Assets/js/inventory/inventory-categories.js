@@ -137,3 +137,16 @@ function hideEditDialog() {
         dialog.classList.add("hidden");
     }, 300); // Match the transition duration
 }
+
+// Show the delete dialog
+function showDeleteModal() {
+    const dialog = document.getElementById("delete-dialog-categories");
+    dialog.classList.remove("hidden");
+    setTimeout(() => dialog.classList.remove("opacity-0"), 0); // Use a timeout for the transition
+}
+
+function hideDeleteModal() {
+    const dialog = document.getElementById("delete-dialog-categories");
+    dialog.classList.add("opacity-0");
+    setTimeout(() => dialog.classList.add("hidden"), 300); // Match the transition duration
+}

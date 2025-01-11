@@ -31,19 +31,19 @@ class InventoryController extends Controller
     }
 
 
-    /**
-     *  Get the categorized items
-     */
-    public function showCategorizedItems($name)
-    {
-        // get the category with the given name
-        $category = InventoryCategory::where('category_name', $name)->first();
+    // /**
+    //  *  Get the categorized items
+    //  */
+    // public function showCategorizedItems($name)
+    // {
+    //     // get the category with the given name
+    //     $category = InventoryCategory::where('category_name', $name)->first();
 
-        $categories = InventoryCategory::all();
-        $categorizedItems = Item::where('category_id', $category->id)
-            ->with('category')
-            ->get();
+    //     $categories = InventoryCategory::all();
+    //     $categorizedItems = Item::where('category_id', $category->id)
+    //         ->with('category')
+    //         ->get();
 
-        return view('admin.inventory.categorized', compact('categorizedItems', 'categories'));
-    }
+    //     return view('admin.inventory.categorized', compact('categorizedItems', 'categories'));
+    // }
 }
