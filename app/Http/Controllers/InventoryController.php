@@ -15,7 +15,7 @@ class InventoryController extends Controller
     public function showItems()
     {
         $categories = InventoryCategory::all();
-        $items = Item::with('category')->paginate(10);
+        $items = Item::with('category')->withoutTrashed()->paginate(10);
 
         return view('admin.inventory.item.items', compact('items', 'categories'));
     }

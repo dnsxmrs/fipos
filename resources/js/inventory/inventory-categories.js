@@ -1,13 +1,22 @@
 // FORM VALIDATION
 const addForm = document.getElementById("add-form");
 const editForm = document.getElementById("edit-form");
-const categoryNameField = document.getElementById("itemName");
+const categoryNameField = document.getElementById("category_name");
 const editCategoryNameField = document.getElementById("categoryName");
 const errorDisplay = document.getElementById("error-name");
 const editErrorDisplay = document.getElementById("edit-error-name");
 
+// MODALS
 
-// // Real-time Validation
+const editModal = document.getElementById("edit-modal-categories");
+const deleteModal = document.getElementById("delete-dialog-categories");
+const successAddModal = document.getElementById("success_category_add");
+const successEditModal = document.getElementById("success_category_edit");
+const successDeleteModal = document.getElementById("success_category_delete");
+const confirmDeleteModal = document.getElementById("confirm_delete_category_modal");
+let categoryIdToDelete = null;
+
+// Real-time Validation
 categoryNameField.addEventListener("input", () => validateAddCategoryInputs());
 editCategoryNameField.addEventListener("input", () => validateEditCategoryInputs());
 
@@ -86,37 +95,33 @@ function validateEditCategoryInputs() {
     return valid;
 }
 
-// Check if the success message exists and hide it after 3 seconds
-window.onload = function() {
-    const successMessage = document.getElementById("success-message");
 
-    if (successMessage) {
-        setTimeout(function() {
-            successMessage.style.display = 'none'; // Hide the success message after 3 seconds
+// Check if the success message exists and hide it after 3 seconds
+window.onload = function () {
+    const errorMessage = document.getElementById("error-message");
+
+    if (errorMessage) {
+        setTimeout(function () {
+            errorMessage.style.display = "none"; // Hide the success message after 3 seconds
         }, 3000); // 3000 milliseconds = 3 seconds
     }
 };
 
 // Show the add dialog
-function showAddDialog() {
-    const dialog = document.getElementById("add-dialog-categories");
-    dialog.classList.remove("hidden");
-    setTimeout(() => dialog.classList.remove("opacity-0"), 0); // Use a timeout for the transition
+function showAddCategoryModal() {
+    addModal.classList.remove("hidden");
+    setTimeout(() => addModal.classList.remove("opacity-0"), 0); // Use a timeout for the transition
 }
 
-
-function hideAddModal() {
-    const dialog = document.getElementById("add-dialog-categories");
-    dialog.classList.add("opacity-0");
+function hideAddCategoryModal() {
+    addModal.classList.add("opacity-0");
     setTimeout(() => {
-        dialog.classList.add("hidden");
+        addModal.classList.add("hidden");
     }, 300); // Match the transition duration
 }
 
-
 // show edit dialog
-function showEditDialog(button) {
-
+function showEditCategoryModal(button) {
     const id = button.getAttribute("data-id");
     const name = button.getAttribute("data-name");
     const description = button.getAttribute("data-description");
@@ -126,98 +131,80 @@ function showEditDialog(button) {
     document.getElementById("categoryName").value = name;
     document.getElementById("editDescription").value = description;
 
-    const dialog = document.getElementById("edit-modal-categories");
-    dialog.classList.remove("hidden");
-    setTimeout(() => dialog.classList.remove("opacity-0"), 0); // Use a timeout for the transition
-
+    editModal.classList.remove("hidden");
+    setTimeout(() => editModal.classList.remove("opacity-0"), 0); // Use a timeout for the transition
 }
 
 // hide edit dialog
-function hideEditDialog() {
-
-    const dialog = document.getElementById("edit-modal-categories");
-    dialog.classList.add("opacity-0");
-    setTimeout(() => {
-        dialog.classList.add("hidden");
-    }, 300); // Match the transition duration
-
-}
-
-
-// Show the delete dialog
-function showDeleteCategoryDialog(categoryId) {
-    categoryIdToDelete = categoryId;
-
-    const dialog = document.getElementById("delete-dialog-categories");
-    dialog.classList.remove("hidden");
-    setTimeout(() => dialog.classList.remove("opacity-0"), 0); // Use a timeout for the transition
-}
-
-
-function hideDeleteCategoryDialog() {
-    const dialog = document.getElementById("delete-dialog-categories");
+function hideEditCategoryModal() {
     dialog.classList.add("opacity-0");
     setTimeout(() => {
         dialog.classList.add("hidden");
     }, 300); // Match the transition duration
 }
 
+// Show delete modal
+function showDeleteCategoryModal($categoryId) {
+    categoryIdToDelete = $categoryId
+
+    deleteModal.classList.remove("hidden");
+    setTimeout(() => deleteModal.classList.remove("opacity-0"), 0);
+}
+
+// Hide delete modal
+function hideDeleteCategoryModal() {
+    deleteModal.classList.add("opacity-0");
+    setTimeout(() => deleteModal.classList.add("hidden"), 300);
+}
 
 // Show add success modal
 function showSuccessAddCategoryModal() {
-    const dialog = document.getElementById("success_category_add");
-    dialog.classList.remove("hidden");
-    setTimeout(() => dialog.classList.remove("opacity-0"), 0);
+    successAddModal.classList.remove("hidden");
+    setTimeout(() => successAddModal.classList.remove("opacity-0"), 0);
 }
 
 // Hide add success modal
 function hideSuccessAddCategoryModal() {
-    const dialog = document.getElementById("success_category_add");
-    dialog.classList.add("opacity-0");
-    setTimeout(() => dialog.classList.add("hidden"), 300);
+    successAddModal.classList.add("opacity-0");
+    setTimeout(() => successAddModal.classList.add("hidden"), 300);
 }
 
 // Show edit success modal
 function showSuccessEditCategoryModal() {
-    const dialog = document.getElementById("success_category_edit");
-    dialog.classList.remove("hidden");
-    setTimeout(() => dialog.classList.remove("opacity-0"), 0);
+    successEditModal.classList.remove("hidden");
+    setTimeout(() => successEditModal.classList.remove("opacity-0"), 0);
 }
 
 // Hide edit success modal
 function hideSuccessEditCategoryModal() {
-    const dialog = document.getElementById("success_category_edit");
-    dialog.classList.add("opacity-0");
-    setTimeout(() => dialog.classList.add("hidden"), 300);
+    successEditModal.classList.add("opacity-0");
+    setTimeout(() => successEditModal.classList.add("hidden"), 300);
 }
 
 // Show delete success modal
 function showSuccessDeleteCategoryModal() {
-    const dialog = document.getElementById("success_category_delete");
-    dialog.classList.remove("hidden");
-    setTimeout(() => dialog.classList.remove("opacity-0"), 0);
+    successDeleteModal.classList.remove("hidden");
+    setTimeout(() => successDeleteModal.classList.remove("opacity-0"), 0);
 }
 
 // Hide delete success modal
 function hideSuccessDeleteCategoryModal() {
-    const dialog = document.getElementById("success_category_delete");
-    dialog.classList.add("opacity-0");
-    setTimeout(() => dialog.classList.add("hidden"), 300);
+    successDeleteModal.classList.add("opacity-0");
+    setTimeout(() => successDeleteModal.classList.add("hidden"), 300);
 }
 
 // Show confirm delete  modal
 function showConfirmDeleteCategoryModal() {
-    const dialog = document.getElementById("confirm_delete_category_modal");
-    hideDeleteCategoryDialog();
+    hideDeleteCategoryModal();
     document.getElementById('delete_category_id').value = categoryIdToDelete;
-    dialog.classList.remove("hidden");
-    setTimeout(() => dialog.classList.remove("opacity-0"), 100);
+    confirmDeleteModal.classList.remove("hidden");
+    setTimeout(() => confirmDeleteModal.classList.remove("opacity-0"), 100);
 }
 
 // Hide confirm delete  modal
 function hideConfirmDeleteCategoryModal() {
-    const dialog = document.getElementById("confirm_delete_category_modal");
     document.getElementById('password').value = "";
-    dialog.classList.add("opacity-0");
-    setTimeout(() => dialog.classList.add("hidden"), 300);
+    confirmDeleteModal.classList.add("opacity-0");
+    setTimeout(() => confirmDeleteModal.classList.add("hidden"), 300);
 }
+

@@ -23,7 +23,7 @@
             <!-- Modal body -->
             <form class="p-4 md:p-5" id="edit_item_form" action="{{route('admin.inventory.item.update')}}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" value="" name="edit_item_id" id="edit_item_id" name="edit_item_id">
+                <input type="hidden" value="" name="edit_item_id" id="edit_item_id" >
                 <div class="grid gap-4 mb-4 grid-cols-2">
                     <div class="col-span-2">
                         <label for="edit_item_name" class="block mb-2 text-sm font-medium text-gray-900">Item Name <span

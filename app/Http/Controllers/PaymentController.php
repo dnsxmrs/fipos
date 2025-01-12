@@ -71,8 +71,6 @@ class PaymentController extends Controller
                 Log::error("orderItems is missing or null in the request data.");
             }
 
-
-
             // store the order
             $storeOrder = new OrderController();
             $orderCreated = $storeOrder->storeOrder(new Request($orders));

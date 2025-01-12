@@ -21,7 +21,8 @@
                 </button>
             </div>
             <!-- Modal body -->
-            <form class="p-4 md:p-5" id="add_item_form" action="{{route('admin.inventory.item.store')}}" method="POST" enctype="multipart/form-data">
+            <form class="p-4 md:p-5" id="add_item_form" action="{{ route('admin.inventory.item.store') }}"
+                method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="grid gap-4 mb-4 grid-cols-2">
                     <div class="col-span-2">
@@ -79,8 +80,8 @@
                                         d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                                 </svg>
                             </div>
-                            <input id="expiration_date" name="expiration_date" datepicker datepicker-autohide data-date-format="yyyy-mm-dd"
-                                type="text"
+                            <input id="expiration_date" name="expiration_date" datepicker datepicker-autohide
+                                data-date-format="yyyy-mm-dd" type="text"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 "
                                 placeholder="Select date">
                         </div>

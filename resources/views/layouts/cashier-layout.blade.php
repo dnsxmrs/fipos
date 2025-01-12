@@ -33,7 +33,7 @@
 
 <body class="bg-gray-100">
     {{-- Header --}}
-    @include('components.headers.cashier-header')
+    @include('components.headers.header')
 
     <!-- Main content -->
     <div class="flex">

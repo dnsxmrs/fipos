@@ -22,6 +22,7 @@
     <script defer src="{{ asset('Assets/js/inventory/inventory-categories.js') }}"></script>
     <script defer src="{{ asset('Assets/js/admin/user.js') }}"></script>
     <script defer src="{{ asset('Assets/js/inventory/inventory-items.js') }}"></script>
+    <script defer src="{{ asset('Assets/js/password-toggle.js') }}"></script>
 
 {{--
     <script defer src="https://fipos-production.up.railway.app/Assets/js/cashier/cashier-header.js"> </script>
@@ -45,7 +46,7 @@
 <body class="bg-gray-100">
     {{-- Header --}}
     <div class="">
-        @include('components.headers.admin-header')
+        @include('components.headers.header')
     </div>
 
     <!-- Main content -->

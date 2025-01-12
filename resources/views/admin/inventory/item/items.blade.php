@@ -7,10 +7,21 @@
 
         <!--ADD BUTTON-->
         <button onclick="showAddItemModal()"
-            class="bg-green-600 ml-3 text-white px-10 h-10 font-medium text-sm hover:bg-green-700 shadow-sm rounded-full">
+            class="block text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            type="button">
             + Add Item
         </button>
     </div>
+
+    {{-- Error Message --}}
+    @if (session('error'))
+        <div id="error-message" class="flex items-center justify-center">
+            <div class="relative px-4 py-2 w-[500px] text-center mt-3 text-red-700 bg-red-100 border border-red-400 rounded"
+                role="alert">
+                <span class="block sm:inline text-sm">{{ session('error') }}</span>
+            </div>
+        </div>
+    @endif
 
     {{-- ITEMS TABLE --}}
     <div class="flex items-start my-7  justify-center rounded-lg w-full">
@@ -54,10 +65,9 @@
                             <td class="py-3 px-5">
                                 {{ ($items->currentPage() - 1) * $items->perPage() + $loop->iteration }} </td>
                             <td class="py-3 px-5"> {{ ucfirst($item->item_name) }} </td>
-                            <td class="p-3">{{ $item->category->category_name }}</td>
+                            <td class="py-3 px-5">{{ ucfirst($item->category->category_name) }}</td>
                             <td class="py-3 px-5">{{ $item->stock }}</td>
                             <td class="py-3 px-5">{{ $item->unit }}</td>
-                            <td class="py-3 px-5">{{ $item->reorder_level }}</td>
                             <td class="py-3 px-5">{{ $item->last_restocked }}</td>
                             <td class="py-3 px-5">{{ $item->expiry_date }}</td>
                             <td class="text-center p-3">
@@ -67,15 +77,11 @@
                                 </span>
                             </td>
                             <td class="flex py-3 px-5 space-x-2 items-center justify-end">
-                                <button onclick="showEditItemModal(this)" data-id="{{ $item->id }}"
-                                    data-name="{{ $item->item_name }}" data-category="{{ $item->category_id }}"
-                                    data-stock="{{ $item->stock }}" data-unit="{{ $item->unit }}"
-                                    data-reorder_level="{{ $item->reorder_level }}"
-                                    data-expiry_date="{{ $item->expiry_date }}"
+                                <button onclick="showEditDialog(this)" data-id="{{ $item->id }}"
                                     class="flex text-blue-500 transition duration-300 ease-in-out items-right hover:text-blue-700">
                                     <img src="{{ asset('Assets/Edit.png') }}" alt="Edit Icon" class="ml-9">
                                 </button>
-                                <button onclick="showDeleteItemModal()"
+                                <button onclick="showDeleteDialog({{ $item->category_id }})"
                                     class="flex ml-2 text-red-500 transition duration-300 ease-in-out items-right hover:text-red-700">
                                     <img src="{{ asset('Assets/Delete.png') }}" alt="Delete Icon" class="ml-5 mr-5">
                                 </button>
@@ -99,6 +105,7 @@
     @include('admin.inventory.item.modals.success-add')
     @include('admin.inventory.item.modals.success-delete')
     @include('admin.inventory.item.modals.success-edit')
+    @include('admin.inventory.item.modals.confirm-delete')
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

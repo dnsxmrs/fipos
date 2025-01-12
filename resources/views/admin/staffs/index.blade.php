@@ -12,10 +12,13 @@
 
     <div class="bg-white shadow-sm h-auto mb-10 py-5 px-7 rounded-lg ">
         <div class="flex items-center justify-between">
-            <input type="text" placeholder="Search staff..." class="p-3 h-10 w-64 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100 border border-gray-200 text-sm text-gray-500 rounded-lg">
+            <input type="text" placeholder="Search staff..."
+                class="p-3 h-10 w-64 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100 border border-gray-200 text-sm text-gray-500 rounded-lg">
 
             <!--ADD BUTTON-->
-            <button onclick="showAddDialog()" class="bg-green-600 ml-3 text-white px-10 h-10 font-medium text-sm hover:bg-green-700 shadow-sm rounded-full">
+            <button onclick="showAddDialog()"
+                class="block text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                type="button">
                 + Add Staff
             </button>
         </div>
@@ -37,7 +40,8 @@
                     <tbody class="text-center text-xs">
                         @foreach ($staffs as $staff)
                             <tr class="border-b hover:bg-slate-50">
-                                <td class="py-3 px-5"> {{ ($staffs->currentPage() - 1) * $staffs->perPage() + $loop->iteration }} </td>
+                                <td class="py-3 px-5">
+                                    {{ ($staffs->currentPage() - 1) * $staffs->perPage() + $loop->iteration }} </td>
                                 <td class="py-3 px-5"> {{ ucfirst($staff->first_name) . ucfirst($staff->last_name) }} </td>
                                 <td class="p-3">{{ $staff->email }}</td>
                                 <td class="py-3 px-5">{{ $staff->phone_number }}</td>
@@ -64,5 +68,4 @@
         </div>
 
     </div>
-
 @endsection

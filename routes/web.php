@@ -98,16 +98,14 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 
             // Categories
             Route::prefix('categories')->group(function () {
-
                 Route::get('/', [InventoryController::class, 'showCategories'])->name('inventory.categories');
                 Route::post('/add', [InventoryCategoryController::class, 'store'])->name('inventory.category.add');
                 Route::post('/edit', [InventoryCategoryController::class, 'update'])->name('inventory.category.update');
-                Route::get('/{id}', [InventoryCategoryController::class, 'showEdit'])->name('inventory.category.edit');
+                Route::post('/delete', [InventoryCategoryController::class, 'destroy'])->name('inventory.category.destroy');
             });
 
             // Items
             Route::prefix('items')->group(function () {
-
                 Route::get('/', [InventoryController::class, 'showItems'])->name('inventory.show');
                 Route::post('/add', [ItemController::class, 'store'])->name('inventory.item.store');
                 Route::post('/update', [ItemController::class, 'update'])->name('inventory.item.update');
@@ -117,7 +115,6 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 
         // Staff Management routes
         Route::prefix('staffs')->group(function () {
-
             Route::get('/', [StaffController::class, 'index'])->name('staffs.show');
         });
 

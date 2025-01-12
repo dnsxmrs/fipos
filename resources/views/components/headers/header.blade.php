@@ -1,18 +1,4 @@
-<nav class="flex items-center justify-between w-full px-5 py-3 bg-white shadow fixed top-0 min-h-16">
-
-    {{-- SEARCH BAR --}}
-    <div class="flex items-center justify-center">
-        <span class="flex w-72 h-9 bg-gray-100 px-3 py-2 rounded-sm ml-64 items-center justify-center">
-            <img class="h-4 opacity-50" src="{{ asset('images/search.png') }}" alt="search icon">
-            <input type="text" placeholder="Search..."
-                class=" border-none focus:ring-0 focus:outline-none text-gray-500 text-xs bg-transparent w-full ">
-        </span>
-        <button class="px-3 bg-green-500 hover:bg-green-600 h-9 text-white text-xs font-normal rounded-e-sm">
-            Search
-        </button>
-    </div>
-
-    {{-- PROFILE --}}
+<nav class="flex items-center justify-end w-full px-5 py-3 bg-white shadow fixed top-0 min-h-16">
 
 
     {{-- PROFILE INFO --}}
@@ -20,7 +6,7 @@
         <img class="cursor-pointer mr-3 h-9 object-cover hover:bg-gray-100 p-2 rounded-lg"
             src="{{ asset('Assets/notification.png') }}" alt="notification">
 
-        <span onclick="showDropdown()" class="cursor-pointer">
+        <span onclick="showDropdown()">
             <img class="h-8 rounded-full border border-green-700 object-cover" src="{{ asset('Assets/avatar.png') }}"
             alt="profile icon">
         </span>

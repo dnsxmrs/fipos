@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class ItemController extends Controller
@@ -85,21 +87,22 @@ class ItemController extends Controller
      */
     public function destroy(Request $request)
     {
-
-        $item = $request->validate([
-            'item_id' => 'required|exists:items,id'
+        $request->validate([
+            'delete_item_id' => 'required|exists:items,id',
+            'password' => 'required'
         ]);
 
-        $itemToDelete = Item::find($item['item_id']);
+        if (Hash::check($request->password, Auth::user()->password)) {
+            $itemToDelete = Item::find($request->delete_item_id);
 
-        $isDeleted = $itemToDelete->update([
-            'deleted_at' => now()
-        ]);
+            if ($itemToDelete) {
+                $itemToDelete->delete();
+                return redirect()->back()->with('status_deleted', 'Item deleted successfully');
+            }
 
-        if ($isDeleted) {
-            return redirect()->back()->with('success_delete', 'Item successfully deleted.');
-        } else {
             return redirect()->back()->with('error', 'Failed to delete the item');
         }
+
+        return redirect()->back()->with('error', 'Password don\'t match.');
     }
 }
