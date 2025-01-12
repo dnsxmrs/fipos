@@ -1,65 +1,77 @@
 <!-- Add Modal -->
-<div id="add-dialog-user"
-    class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50"
-    aria-hidden="true">
-    <div class="bg-white shadow-md p-8 flex flex-col items-center justify-center rounded-lg h-auto w-auto relative">
-        <!-- Close Icon -->
-        <img onclick="hideAddUserModal()" src="{{ asset('Assets/close.png') }}" alt="Close"
-            class="absolute top-5 right-5 w-5 cursor-pointer hover:opacity-80">
-
-        <!-- Title -->
-        <h1 class="text-center text-xl font-semibold mb-4 text-black">Register New User</h1>
-
-        <hr class="text-gray-600 w-full mb-4">
-
-        <!-- Form -->
-        <form id="add-user-form" action="{{ route('admin.user.add') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="flex flex-col items-center mt-5 flex-wrap">
-                <div class="flex items-center justify-center w-full space-x-3 flex-wrap">
-                    <div class="relative w-[350px] mb-4">
-                        <label for="firstname" class="text-sm">First Name <span class="text-red-500">*</span></label>
-                        <input id="firstname"
-                            class="mb-1 mt-2 peer w-full h-10 text-gray-600 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:ring-opacity-70 text-xs"
-                            type="text" placeholder="Enter first name" name="firstname">
+<div id="add-dialog-user" tabindex="-1" aria-hidden="true"
+class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50">
+    <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+        <!-- Modal content -->
+        <div class="relative p-4 bg-white rounded-lg shadow sm:p-5">
+            <!-- Modal header -->
+            <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 ">
+                <h3 class="text-lg font-semibold text-gray-900 ">
+                    Register New User
+                </h3>
+                <button type="button" onclick="hideAddUserModal()"
+                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                    data-modal-toggle="defaultModal">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form id="add-user-form" action="{{ route('admin.user.add') }}" method="POST"
+                enctype="multipart/form-data">
+                @csrf
+                <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                    <div>
+                        <label for="firstname"
+                            class="block mb-2 text-sm font-medium text-gray-900 ">First Name <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" name="firstname" id="firstname"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                            placeholder="Type first name" required="">
 
                         @error('firstname')
                             <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                         @enderror
                         <div id="error-name" class=" text-red-500 w-80 text-xs mt-2 ml-1 block"></div>
                     </div>
-
-                    <div class="relative w-[350px] mb-4">
-                        <label for="lastname" class="text-sm">Last Name <span class="text-red-500">*</span></label>
-                        <input id="lastname"
-                            class="mb-1 mt-2 peer w-full h-10 text-gray-600 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:ring-opacity-70 text-xs"
-                            type="text" placeholder="Enter last name" name="lastname">
+                    <div>
+                        <label for="lastname"
+                            class="block mb-2 text-sm font-medium text-gray-900 ">Last Name <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" name="lastname" id="lastname"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                            placeholder="Type last name" required="">
 
                         @error('lastname')
                             <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                         @enderror
                         <div id="error-name" class=" text-red-500 w-80 text-xs mt-2 ml-1 block"></div>
                     </div>
-                </div>
-
-                <div class="flex items-center justify-center w-full space-x-3 flex-wrap ">
-                    <div class="relative w-[350px] mb-4">
-                        <label for="email" class="text-sm">Email <span class="text-red-500">*</span></label>
-                        <input id="email"
-                            class="mb-1 mt-2 peer w-full h-10 text-gray-600 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:ring-opacity-70 text-xs"
-                            type="text" placeholder="Enter email" name="email">
+                    <div>
+                        <label for="email"
+                            class="block mb-2 text-sm font-medium text-gray-900 ">Email <span
+                            class="text-red-500">*</span></label>
+                        <input type="email" name="email" id="email"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                            placeholder="Type email here" required="">
 
                         @error('email')
                             <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                         @enderror
                         <div id="error-name" class=" text-red-500 w-80 text-xs mt-2 ml-1 block"></div>
                     </div>
-
-                    <div class="relative w-[350px] mb-4">
-                        <label for="role" class="text-sm">Role <span class="text-red-500">*</span></label>
-                        <select name="role" id="role"
-                            class="mb-1 mt-2 peer w-full h-10 text-gray-600 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:ring-opacity-70 text-xs">
-                            <option value="" disabled selected>Select user role</option>
+                    <div>
+                        <label for="role"
+                            class="block mb-2 text-sm font-medium text-gray-900 ">Role <span
+                            class="text-red-500">*</span></label>
+                        <select id="role" name="role"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
+                            <option value="" selected="">Select user role</option>
                             <option value="admin">Admin</option>
                             <option value="staff">Staff</option>
                         </select>
@@ -70,13 +82,11 @@
                         <div id="error-name" class=" text-red-500 w-80 text-xs mt-2 ml-1 block"></div>
                     </div>
                 </div>
-            </div>
-            <div class="w-full flex items-center justify-center">
                 <button type="submit"
-                    class="text-sm text-white rounded-lg h-[40px] w-1/2 hover:bg-green-700 bg-green-600">
-                    Add Category
+                class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                    Register
                 </button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>

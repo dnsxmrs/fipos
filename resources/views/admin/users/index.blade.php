@@ -56,16 +56,15 @@
                                     </span>
                                 </td>
                                 <td class="flex py-3 px-5 space-x-2 items-center justify-end">
-                                    <button onclick="" data-id="{{ $user->id }}"
+                                    <button onclick="showEditUserModal(this)" data-id="{{ $user->id }}"
                                         data-lastName="{{ $user->last_name }}" data-firstName="{{ $user->first_name }}"
                                         data-email="{{ $user->email }}" data-role="{{ $user->role }}"
-                                        date-status="{{ $user->is_activated }}"
                                         class="flex text-blue-500 transition duration-300 ease-in-out items-right hover:text-blue-700">
-                                        <img src="{{ asset('Assets/Edit.png') }}" alt="Edit Icon" class="ml-9">
+                                        <img src="{{ asset('Assets/Edit.png') }}" alt="Edit Icon">
                                     </button>
                                     <button onclick=""
                                         class="flex ml-2 text-red-500 transition duration-300 ease-in-out items-right hover:text-red-700">
-                                        <img src="{{ asset('Assets/Delete.png') }}" alt="Delete Icon" class="ml-5 mr-5">
+                                        <img src="{{ asset('Assets/Delete.png') }}" alt="Delete Icon">
                                     </button>
                                 </td>
                             </tr>
