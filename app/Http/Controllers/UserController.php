@@ -60,7 +60,6 @@ class UserController extends Controller
     public function update(Request $request)
     {
         try{
-            dd($request);
             $request->validate([
                 'user_id' => 'required|exists:users,id',
                 'lastname' => 'required|max:255|regex:/^[A-Za-z\s.-]+$/',
