@@ -24,59 +24,59 @@ class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-cen
             <form id="edit-user-form" action="{{ route('admin.user.update') }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" value="" name="edit_user_id" id="user_id" >
+                <input type="hidden" value="" name="user_id" id="user_id" >
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
                     <div>
-                        <label for="edit_firstname"
+                        <label for="first_name"
                             class="block mb-2 text-sm font-medium text-gray-900 ">First Name <span
                                 class="text-red-500">*</span></label>
-                        <input type="text" name="edit_firstname" id="edit_firstname"
+                        <input type="text" name="first_name" id="edit_firstname"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                             placeholder="Type first name" required="">
 
-                        @error('edit_firstname')
+                        @error('first_name')
                             <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                         @enderror
                         <div id="error-name" class=" text-red-500 w-80 text-xs mt-2 ml-1 block"></div>
                     </div>
                     <div>
-                        <label for="edit_lastname"
+                        <label for="last_name"
                             class="block mb-2 text-sm font-medium text-gray-900 ">Last Name <span
                                 class="text-red-500">*</span></label>
-                        <input type="text" name="edit_lastname" id="edit_lastname"
+                        <input type="text" name="last_name" id="edit_lastname"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                             placeholder="Type last name" required="">
 
-                        @error('edit_lastname')
+                        @error('last_name')
                             <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                         @enderror
                         <div id="error-name" class=" text-red-500 w-80 text-xs mt-2 ml-1 block"></div>
                     </div>
                     <div>
-                        <label for="edit_email"
+                        <label for="email"
                             class="block mb-2 text-sm font-medium text-gray-900 ">Email <span
                             class="text-red-500">*</span></label>
-                        <input type="email" name="edit_email" id="edit_email"
+                        <input type="email" name="email" id="edit_email"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                             placeholder="Type email here" required="">
 
-                        @error('edit_email')
+                        @error('email')
                             <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                         @enderror
                         <div id="error-name" class=" text-red-500 w-80 text-xs mt-2 ml-1 block"></div>
                     </div>
                     <div>
-                        <label for="edit_role"
+                        <label for="role"
                             class="block mb-2 text-sm font-medium text-gray-900 ">Role <span
                             class="text-red-500">*</span></label>
-                        <select id="edit_role" name="edit_role"
+                        <select id="edit_role" name="role"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
                             <option value="" selected="">Select user role</option>
                             <option value="admin">Admin</option>
                             <option value="staff">Staff</option>
                         </select>
 
-                        @error('edit_role')
+                        @error('role')
                             <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                         @enderror
                         <div id="error-name" class=" text-red-500 w-80 text-xs mt-2 ml-1 block"></div>

@@ -27,27 +27,27 @@ class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-cen
                 @csrf
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
                     <div>
-                        <label for="firstname"
+                        <label for="first_name"
                             class="block mb-2 text-sm font-medium text-gray-900 ">First Name <span
                                 class="text-red-500">*</span></label>
-                        <input type="text" name="firstname" id="firstname"
+                        <input type="text" name="first_name" id="first_name"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                             placeholder="Type first name" required="">
 
-                        @error('firstname')
+                        @error('first_name')
                             <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                         @enderror
                         <div id="error-name" class=" text-red-500 w-80 text-xs mt-2 ml-1 block"></div>
                     </div>
                     <div>
-                        <label for="lastname"
+                        <label for="last_name"
                             class="block mb-2 text-sm font-medium text-gray-900 ">Last Name <span
                                 class="text-red-500">*</span></label>
-                        <input type="text" name="lastname" id="lastname"
+                        <input type="text" name="last_name" id="last_name"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                             placeholder="Type last name" required="">
 
-                        @error('lastname')
+                        @error('last_name')
                             <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
                         @enderror
                         <div id="error-name" class=" text-red-500 w-80 text-xs mt-2 ml-1 block"></div>

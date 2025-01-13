@@ -24,6 +24,27 @@
             </button>
         </div>
 
+
+        {{-- Success Message --}}
+        @if (session('success'))
+            <div id="success-message" class="flex items-center justify-center">
+                <div class="relative px-4 py-2 w-[500px] text-center mt-3 text-green-700 bg-green-100 border border-green-400 rounded"
+                    role="alert">
+                    <span class="block sm:inline text-sm">{{ session('success') }}</span>
+                </div>
+            </div>
+        @endif
+
+        {{-- Error Message --}}
+        @if (session('error'))
+            <div id="error-message" class="flex items-center justify-center">
+                <div class="relative px-4 py-2 w-[500px] text-center mt-3 text-red-700 bg-red-100 border border-red-400 rounded"
+                    role="alert">
+                    <span class="block sm:inline text-sm">{{ session('error') }}</span>
+                </div>
+            </div>
+        @endif
+
         {{-- USERS TABLE --}}
         <div class="flex items-start my-7  justify-center rounded-lg w-full">
             <div class="w-full h-auto">

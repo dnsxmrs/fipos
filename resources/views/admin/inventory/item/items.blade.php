@@ -65,7 +65,7 @@
                             <td class="py-3 px-5">
                                 {{ ($items->currentPage() - 1) * $items->perPage() + $loop->iteration }} </td>
                             <td class="py-3 px-5"> {{ ucfirst($item->item_name) }} </td>
-                            <td class="py-3 px-5">{{ ucfirst($item->category->category_name) }}</td>
+                            <td class="py-3 px-5">{{ $item->category->category_name ?? 'No Category' }}</td>
                             <td class="py-3 px-5">{{ $item->stock }}</td>
                             <td class="py-3 px-5">{{ $item->unit }}</td>
                             <td class="py-3 px-5">{{ $item->last_restocked }}</td>
@@ -77,11 +77,14 @@
                                 </span>
                             </td>
                             <td class="flex py-3 px-5 space-x-2 items-center justify-end">
-                                <button onclick="showEditDialog(this)" data-id="{{ $item->id }}"
+                                <button onclick="showEditItemModal(this)" data-id="{{ $item->id }}" data-name="{{ $item->item_name }}"
+                                    data-category="{{ $item->category_id }}" data-stock="{{ $item->stock }}"
+                                    data-unit="{{ $item->unit }}" data-reorder_level="{{ $item->reorder_level }}"
+                                    data-expiry_date="{{ $item->expiry_date }}"
                                     class="flex text-blue-500 transition duration-300 ease-in-out items-right hover:text-blue-700">
                                     <img src="{{ asset('Assets/Edit.png') }}" alt="Edit Icon" class="ml-9">
                                 </button>
-                                <button onclick="showDeleteDialog({{ $item->category_id }})"
+                                <button onclick="showDeleteItemModal({{ $item->id }})"
                                     class="flex ml-2 text-red-500 transition duration-300 ease-in-out items-right hover:text-red-700">
                                     <img src="{{ asset('Assets/Delete.png') }}" alt="Delete Icon" class="ml-5 mr-5">
                                 </button>
