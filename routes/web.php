@@ -17,6 +17,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\OrderTrackingController;
 
 // only authenticated users can access these pages
 Route::middleware(['auth'])->group(function () {
@@ -78,7 +79,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
             // Route to update a category
             Route::put('/categories', [CategoryController::class, 'update'])->name('categories.update');
             // Route to delete a category
-            Route::delete('/categories/{id}', [CategoryController::class, 'delete'])->name('categories.delete');
+            Route::post('/delete', [CategoryController::class, 'delete'])->name('categories.delete');
 
             // Route to store a new product
             Route::post('/products', [ProductController::class, 'store'])->name('products.store');
@@ -116,6 +117,13 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
         // Staff Management routes
         Route::prefix('staffs')->group(function () {
             Route::get('/', [StaffController::class, 'index'])->name('staffs.show');
+        });
+
+        // Order Tracking
+        Route::prefix('order-tracking')->group(function () {
+            Route::get('/', [OrderTrackingController::class, 'index'])->name('orders.all');
+            Route::get('/walk-in-orders', [OrderTrackingController::class, 'showWalkInOrders'])->name('orders.walk-in');
+            Route::get('/online-orders', [OrderTrackingController::class, 'showOnlineOrders'])->name('orders.online-orders');
         });
 
         // User Management routes

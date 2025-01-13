@@ -24,6 +24,16 @@
             </button>
         </div>
 
+        {{-- Error Message --}}
+        @if (session('error'))
+            <div id="error-message" class="flex items-center justify-center">
+                <div class="relative px-4 py-2 w-[500px] text-center mt-3 text-red-700 bg-red-100 border border-red-400 rounded"
+                    role="alert">
+                    <span class="block sm:inline text-sm">{{ session('error') }}</span>
+                </div>
+            </div>
+        @endif
+
         {{-- ORDERS TABLE --}}
         <div class="flex items-start my-7  justify-center rounded-lg w-full">
             <div class="w-full ">
@@ -54,14 +64,14 @@
                                     <button onclick="showEditDialogCategories(this)" data-id="{{ $category->category_id }}"
                                         data-name="{{ $category->category_name }}"
                                         data-description="{{ $category->description }}" data-image="{{ $category->image }}"
-                                        date-type="{{ $category->type }}"
+                                        data-type="{{ $category->type }}"
                                         data-beverageType="{{ $category->beverage_type }}"
                                         class="flex text-blue-500 transition duration-300 ease-in-out items-right hover:text-blue-700">
-                                        <img src="{{ asset('Assets/Edit.png') }}" alt="Edit Icon" class="ml-9">
+                                        <img src="{{ asset('Assets/Edit.png') }}" alt="Edit Icon" class="mr-5">
                                     </button>
                                     <button onclick="showDeleteDialogCategories({{ $category->category_id }})"
                                         class="flex ml-2 text-red-500 transition duration-300 ease-in-out items-right hover:text-red-700">
-                                        <img src="{{ asset('Assets/Delete.png') }}" alt="Delete Icon" class="ml-5 mr-5">
+                                        <img src="{{ asset('Assets/Delete.png') }}" alt="Delete Icon" class="mr-5">
                                     </button>
                                 </td>
                             </tr>

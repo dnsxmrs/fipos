@@ -51,6 +51,7 @@ function hideAddDialogProducts() {
 function hideAddedDialogProducts() {
     const addedDialog = document.getElementById("added-dialog-products");
     addedDialog.classList.add("hidden");
+    window.location.reload();
 }
 
 function showEditDialogProducts(button) {
@@ -132,6 +133,7 @@ function showItemUpdatedDialogProducts() {
 function hideItemUpdatedDialogProducts() {
     const dialog = document.getElementById("updated-dialog-products");
     dialog.classList.add("opacity-0");
+    window.location.reload();
     setTimeout(() => {
         dialog.classList.add("hidden");
     }, 300);

@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Http;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class CategoryController extends Controller
 {
@@ -26,36 +27,40 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the request
-        $request->validate([
-            'category_name' => 'required|string|max:255',
-            'description' => 'nullable',
-            'type' => 'required|in:food,beverage',
-            'beverage_type' => 'nullable|in:hot,iced',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        try {
+            // Validate the request
+            $request->validate([
+                'category_name' => 'required|string|max:255',
+                'description' => 'nullable',
+                'type' => 'required|in:food,beverage',
+                'beverage_type' => 'nullable|in:hot,iced',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
 
-        // Upload image to Cloudinary if present
-        if ($request->hasFile('image')) {
-            $path = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
-        } else {
-            $path = null;
+            // Upload image to Cloudinary if present
+            if ($request->hasFile('image')) {
+                $path = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+            } else {
+                $path = null;
+            }
+
+            // Create the category
+            $category = Category::create([
+                'category_name' => $request->input('category_name'),
+                'description' => $request->input('description'),
+                'type' => $request->input('type'),
+                'beverage_type' => $request->input('beverage_type'),
+                'image' => $path, // Save Cloudinary URL or null
+            ]);
+
+            // Sync with OOS after category creation
+            $this->syncWithOos('POST', $category);
+
+            // Redirect back with success message
+            return redirect()->back()->with('status_add', 'Category added successfully!');
+        } catch (\Throwable $th) {
+            dd($th);
         }
-
-        // Create the category
-        $category = Category::create([
-            'category_name' => $request->input('category_name'),
-            'description' => $request->input('description'),
-            'type' => $request->input('type'),
-            'beverage_type' => $request->input('beverage_type'),
-            'image' => $path, // Save Cloudinary URL or null
-        ]);
-
-        // Sync with OOS after category creation
-        $this->syncWithOos('POST', $category);
-
-        // Redirect back with success message
-        return redirect()->back()->with('status_add', 'Category added successfully!');
     }
 
 
@@ -100,29 +105,39 @@ class CategoryController extends Controller
         return redirect()->back()->with('status_edit', 'Category updated successfully!');
     }
 
-    public function delete($id)
+
+    public function delete(Request $request)
     {
-        $category = Category::findOrFail($id);
+        try {
+            $request->validate([
+                'delete_category_id' => 'required|exists:categories,category_id',
+                'password' => 'required'
+            ]);
 
-        // Check if there are any products associated with this category
-        if ($category->products()->exists()) {
-            return response()->json([
-                'message' => 'Cannot delete category as it has associated products.'
-            ], 400);
+            if (Hash::check($request->password, Auth::user()->password)) {
+                $category = Category::find($request->delete_category_id);
+
+                if ($category) {
+
+                    // Check if there are any products associated with this category
+                    if ($category->products()->exists()) {
+                        return redirect()->back()->with('error', 'Cannot delete category as it has associated products.');
+                    }
+
+                    $category->delete();
+                    // Sync with OOS after category deletion
+                    $this->syncWithOos('DELETE', $category);
+
+                    return redirect()->back()->with('status_deleted', 'Category deleted successfully');
+                }
+
+                return redirect()->back()->with('error', 'Failed to delete category');
+            }
+
+            return redirect()->back()->with('error', 'Password don\'t match.');
+        } catch (\Throwable $th) {
+            dd($th);
         }
-
-        // Optionally delete the category image from storage
-        if ($category->image) {
-            Storage::disk('public')->delete($category->image);
-        }
-
-        // Delete the category
-        $category->delete();
-
-        // Sync with OOS after category deletion
-        $this->syncWithOos('DELETE', $category);
-
-        return response()->json(['message' => 'Category deleted successfully!'], 200);
     }
 
     // Sync with OOS after category operation (create, update, delete)
@@ -179,10 +194,9 @@ class CategoryController extends Controller
                     'message' => $response->body(),
                 ]);
             }
-
         } catch (\Exception $e) {
             Log::error('Error syncing with OOS', [
-                 'error' => $e->getMessage(),
+                'error' => $e->getMessage(),
                 'method' => $method,
                 'url' => $url,
             ]);

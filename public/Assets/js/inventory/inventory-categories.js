@@ -175,6 +175,7 @@ function hideSuccessAddCategoryModal() {
     const dialog = document.getElementById("success_category_add");
     dialog.classList.add("opacity-0");
     setTimeout(() => dialog.classList.add("hidden"), 300);
+    window.location.reload();
 }
 
 // Show edit success modal
@@ -189,6 +190,7 @@ function hideSuccessEditCategoryModal() {
     const dialog = document.getElementById("success_category_edit");
     dialog.classList.add("opacity-0");
     setTimeout(() => dialog.classList.add("hidden"), 300);
+    window.location.reload();
 }
 
 // Show delete success modal
@@ -203,6 +205,7 @@ function hideSuccessDeleteCategoryModal() {
     const dialog = document.getElementById("success_category_delete");
     dialog.classList.add("opacity-0");
     setTimeout(() => dialog.classList.add("hidden"), 300);
+    window.location.reload();
 }
 
 // Show confirm delete  modal

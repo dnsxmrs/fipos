@@ -90,34 +90,10 @@ function showEditDialogCategories(button) {
     // Set values to the form fields
     document.getElementById("editCategoryId").value = id;
     document.getElementById("editCategoryName").value = name;
+    document.getElementById("editType").value = type;
+    document.getElementById("edit_beverage_type").value = beverageType;
     document.getElementById("editCategoryDescription").value = description;
 
-    // Set the dropdown (Type) value
-    const typeDropdown = document.getElementById("editType");
-    if (typeDropdown) {
-        typeDropdown.value = type;  // Set the selected value of the dropdown
-        console.log("Type dropdown value set to:", typeDropdown.value);
-    } else {
-        console.error("Dropdown 'editType' not found");
-    }
-
-    // Set the radio buttons (Beverage Type)
-    const hotRadio = document.getElementById("hot");
-    const icedRadio = document.getElementById("iced");
-
-    if (hotRadio && icedRadio) {
-        // Check the correct radio button based on the beverageType
-        if (beverageType === "hot") {
-            hotRadio.checked = true;  // Check the "Hot" radio button
-            icedRadio.checked = false; // Uncheck the "Iced" radio button
-        } else if (beverageType === "iced") {
-            icedRadio.checked = true;  // Check the "Iced" radio button
-            hotRadio.checked = false; // Uncheck the "Hot" radio button
-        }
-        console.log("Beverage Type selected:", beverageType);
-    } else {
-        console.error("Radio buttons not found");
-    }
 
     // Set the image if it exists
     const imageLabel = document.getElementById("editImageLabel");
@@ -183,6 +159,7 @@ function hideEditedDialogCategories() {
     setTimeout(() => {
         dialog.classList.add("hidden");
     }, 300);
+    window.location.reload();
 }
 
 let categoryIdToDelete = null;
@@ -204,6 +181,7 @@ function hideDeleteDialogCategories() {
 
 //button sa first delete modal- confirm
 function showConfirmDeleteCategories() {
+    document.getElementById('delete_category_id').value = categoryIdToDelete;
     hideDeleteDialogCategories();
     document.getElementById("confirm-delete-dialog-categories").classList.remove("hidden");
 }
@@ -224,39 +202,40 @@ function hideDeletedDialogCategories() {
     document.getElementById("deleted-dialog-categories").classList.add("hidden");
     window.location.reload(); // Reload the page to reflect deletion
 }
-document.getElementById("confirmButtonCategory").addEventListener("click", function () {
-    // Assuming the password is always correct, directly call the delete function
-    deleteItemCategory();
-});
+
+// document.getElementById("confirmButtonCategory").addEventListener("click", function () {
+//     // Assuming the password is always correct, directly call the delete function
+//     deleteItemCategory();
+// });
 
 
-function deleteItemCategory() {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+// function deleteItemCategory() {
+//     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    fetch(`/admin/menu/categories/${categoryIdToDelete}`, {
-        method: "DELETE",
-        headers: {
-            "X-CSRF-TOKEN": csrfToken,
-            "Content-Type": "application/json",
-        },
-    })
-        .then((response) => {
-            if (response.status === 204) {
-                // No Content response, deletion successful
-                showDeletedDialogCategories(); // Show success modal
-            } else if (response.status === 200) {
-                showDeletedDialogCategories(); // Show success modal
-            } else {
-                alert(`Failed to delete category. Please try again. Status Code: ${response.status}`);
-            }
-        })
-        .catch((error) => {
-            console.error("Error:", error.message);
-            alert(error.message || "catch An unexpected error occurred. Please try again.");
-            alert(`An unexpected error occurred. Please try again. Status Code: ${response.status}`);
-            hideConfirmDeleteCategories(); // Hide confirmation dialog
-        });
-}
+//     fetch(`/admin/menu/categories/${categoryIdToDelete}`, {
+//         method: "DELETE",
+//         headers: {
+//             "X-CSRF-TOKEN": csrfToken,
+//             "Content-Type": "application/json",
+//         },
+//     })
+//         .then((response) => {
+//             if (response.status === 204) {
+//                 // No Content response, deletion successful
+//                 showDeletedDialogCategories(); // Show success modal
+//             } else if (response.status === 200) {
+//                 showDeletedDialogCategories(); // Show success modal
+//             } else {
+//                 alert(`Failed to delete category. Please try again. Status Code: ${response.status}`);
+//             }
+//         })
+//         .catch((error) => {
+//             console.error("Error:", error.message);
+//             alert(error.message || "catch An unexpected error occurred. Please try again.");
+//             alert(`An unexpected error occurred. Please try again. Status Code: ${response.status}`);
+//             hideConfirmDeleteCategories(); // Hide confirmation dialog
+//         });
+// }
 
 
 function toggleBeverageType(selectElement) {
@@ -264,17 +243,30 @@ function toggleBeverageType(selectElement) {
     const selectedValue = selectElement.value;
 
     // Get the beverage type radio buttons
-    const hotRadio = document.getElementById('hot');
-    const icedRadio = document.getElementById('iced');
+    const beverageTypeDropdown = document.getElementById('beverage_type');
 
     // Enable or disable the radio buttons based on the selected value
     if (selectedValue === 'beverage') {
-        hotRadio.disabled = false;
-        icedRadio.disabled = false;
+        beverageTypeDropdown.disabled = false;
     } else {
-        hotRadio.disabled = true;
-        icedRadio.disabled = true;
-        hotRadio.checked = false;
-        icedRadio.checked = false;
+        beverageTypeDropdown.disabled = true;
+        beverageTypeDropdown.value = ""
+    }
+}
+
+// toggle for edit
+function editToggleBeverageType(selectElement) {
+    // Get the selected value
+    const selectedValue = selectElement.value;
+
+    // Get the beverage type radio buttons
+    const beverageTypeDropdown = document.getElementById('edit_beverage_type');
+
+    // Enable or disable the radio buttons based on the selected value
+    if (selectedValue === 'beverage') {
+        beverageTypeDropdown.disabled = false;
+    } else {
+        beverageTypeDropdown.disabled = true;
+        beverageTypeDropdown.value = ""
     }
 }
