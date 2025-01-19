@@ -33,16 +33,16 @@
 
 <body class="bg-gray-100">
     {{-- Header --}}
-    @include('components.headers.header')
+    @include('components.headers.cashier-header')
 
     <!-- Main content -->
     <div class="flex">
-        <div class="fixed">
+        {{-- <div class="fixed"> --}}
             {{-- Sidebar --}}
-            <x-sidebar.cashier-sidebar />
-        </div>
+            {{-- <x-sidebar.cashier-sidebar />
+        </div> --}}
 
-        <div class="flex w-full px-5 mt-20 ml-24 ">
+        <div class="flex w-full px-5 mt-20 mx-10">
             <!-- Scrollable Cashier Content -->
             <div class="overflow-y-auto">
                 @yield('cashier_content')

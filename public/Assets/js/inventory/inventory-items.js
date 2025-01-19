@@ -84,6 +84,7 @@ function showSuccessAddModal() {
 function hideSuccessAddModal() {
     successAddModal.classList.add("opacity-0");
     setTimeout(() => successAddModal.classList.add("hidden"), 300);
+    window.location.reload();
 }
 
 // Show edit success modal
@@ -96,6 +97,7 @@ function showSuccessEditModal() {
 function hideSuccessEditModal() {
     successEditModal.classList.add("opacity-0");
     setTimeout(() => successEditModal.classList.add("hidden"), 300);
+    window.location.reload();
 }
 
 // Show delete success modal
@@ -108,6 +110,7 @@ function showSuccessDeleteModal() {
 function hideSuccessDeleteModal() {
     successDeleteModal.classList.add("opacity-0");
     setTimeout(() => successDeleteModal.classList.add("hidden"), 300);
+    window.location.reload();
 }
 
 // Show confirm delete  modal

@@ -75,8 +75,8 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.order-tracking') }}"
-                    class="sidebar-link flex items-center p-2 text-sm font-normal  rounded-lg {{ Route::is('admin.order-tracking') ? 'bg-gray-700' : 'text-white hover:bg-gray-700' }} text-white hover:bg-gray-700 group">
+                <a href="{{ route('admin.orders.all') }}"
+                    class="sidebar-link flex items-center p-2 text-sm font-normal  rounded-lg {{ Route::is('admin.orders.all') ? 'bg-gray-700' : 'text-white hover:bg-gray-700' }} {{ Route::is('admin.orders.walk-in') ? 'bg-gray-700' : 'text-white hover:bg-gray-700' }} {{ Route::is('admin.orders.online-orders') ? 'bg-gray-700' : 'text-white hover:bg-gray-700' }} text-white hover:bg-gray-700 group">
                     <img src="{{ asset('Assets/order-track.png') }}" alt="Order Tracking Icon" class="h-5 opacity-60 hover:opacity-100">
                     <span class="ml-3">Order Tracking</span>
                 </a>
