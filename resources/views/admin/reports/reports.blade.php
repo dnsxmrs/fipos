@@ -5,26 +5,26 @@
     <!-- Top Header -->
     <div class="flex items-center justify-between">
         <div class="my-3 mb-7">
-            <p class="text-xl font-medium text-gray-700">Audit logs</p>
-            <p class="text-sm text-gray-500">Records of activities within the system</p>
+            <p class="text-xl font-medium text-gray-700">Invoice</p>
+            <p class="text-sm text-gray-500">Receipts and record for payments</p>
         </div>
     </div>
 
-    <div class="bg-white shadow-sm h-auto mb-10 py-5 px-7 rounded-lg ">
+    <div class="h-auto py-5 mb-10 bg-white rounded-lg shadow-sm px-7 ">
         <div class="flex items-center justify-between">
             <form autocomplete="off">
                 <input type="text" placeholder="Search for category..."
-                    class="p-3 h-10 w-64 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100 border border-gray-200 text-sm text-gray-500 rounded-lg"
+                    class="w-64 h-10 p-3 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                     id="category_search" onkeyup="filterCategories()" />
             </form>
         </div>
 
         {{-- ORDERS TABLE --}}
-        <div class="flex items-start my-7  justify-center rounded-lg w-full">
+        <div class="flex items-start justify-center w-full rounded-lg my-7">
             <div class="w-full ">
-                {{-- <table id="category_table" class="category_table w-full shadow rounded-lg table-auto"> --}}
-                <table id="category_table" class="category_table w-full shadow rounded-lg table-auto">
-                    <thead class="bg-slate-100 border-b-2 rounded-lg">
+                {{-- <table id="category_table" class="w-full rounded-lg shadow table-auto category_table"> --}}
+                <table id="category_table" class="w-full rounded-lg shadow table-auto category_table">
+                    <thead class="border-b-2 rounded-lg bg-slate-100">
                         <tr>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Reference</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Customer</th>
@@ -36,7 +36,7 @@
 
                 </table>
                 <!-- No Categories Found Message -->
-                <div id="no-categories-message" class="hidden text-center text-red-500 mt-4">
+                <div id="no-categories-message" class="hidden mt-4 text-center text-red-500">
                     No record found matching your search criteria.
                 </div>
 

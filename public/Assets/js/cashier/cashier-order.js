@@ -315,10 +315,19 @@ function populateCashModal() {
  * Success Message
  */
 function success() {
-    cashModal.classList.add("hidden"); // Hide cash modal
-    paymentSuccessModal.classList.remove("hidden"); // Show success modal
-    reloadPage();
+    Swal.fire({
+        title: "Successful Payment!",
+        text: "Successfully processed the payment and placed the order.",
+        icon: "success"
+    }).then(() => {
+        reloadPage(); // Reload the page after the Swal alert
+    });
+
+    // cashModal.classList.add("hidden"); // Hide cash modal
+    // paymentSuccessModal.classList.remove("hidden"); // Show success modal
+    // reloadPage();
 }
+
 
 /**
  * Reload the page
