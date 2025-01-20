@@ -1,5 +1,5 @@
 <!-- Confirm Delete Modal -->
-<div id="confirm-delete-modal-users" tabindex="-1"
+<div id="confirm-delete-modal-user" tabindex="-1"
     class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center transition-opacity duration-300 z-50 overflow-y-auto overflow-x-hidden top-0 right-0 left-0 w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative w-full max-w-md max-h-full p-4">
         <div class="relative bg-white rounded-lg shadow">

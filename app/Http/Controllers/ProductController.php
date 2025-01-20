@@ -126,13 +126,14 @@ class ProductController extends Controller
                 return redirect()->back()->with('error', 'Failed to delete product');
             }
 
-            return redirect()->back()->with('error', 'Password don\'t match.');
+            return redirect()->back()->with('error', "Password dont match.");
+
         } catch (\Throwable $th) {
             dd($th);
         }
     }
 
-    
+
     // public function delete($id)
     // {
     //     // Get the product ID from the request body

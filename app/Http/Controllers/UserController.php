@@ -117,6 +117,7 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Failed to delete user');
         }
 
-        return redirect()->back()->with('error', 'Password don\'t match.');
+        return redirect()->back()->with('error', "Password dont match.");
+
     }
 }

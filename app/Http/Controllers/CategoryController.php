@@ -134,7 +134,8 @@ class CategoryController extends Controller
                 return redirect()->back()->with('error', 'Failed to delete category');
             }
 
-            return redirect()->back()->with('error', 'Password don\'t match.');
+            return redirect()->back()->with('error', "Password dont match.");
+
         } catch (\Throwable $th) {
             dd($th);
         }

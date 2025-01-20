@@ -62,7 +62,7 @@
                                         class="flex text-blue-500 transition duration-300 ease-in-out items-right hover:text-blue-700">
                                         <img src="{{ asset('Assets/Edit.png') }}" alt="Edit Icon" class="h-9"> <!-- Fixed icon size -->
                                     </button>
-                                    <button onclick="showDeleteDialogUser({{ $user->id }})"
+                                    <button onclick="showDeleteDialogUsers({{ $user->id }})"
                                         class="flex ml-2 text-red-500 transition duration-300 ease-in-out items-right hover:text-red-700">
                                         <img src="{{ asset('Assets/Delete.png') }}" alt="Delete Icon" class="h-9 w-9"> <!-- Fixed icon size -->
                                     </button>
@@ -89,6 +89,7 @@
     @include('admin.users.modals.add-user')
     @include('admin.users.modals.delete-user')
     @include('admin.users.modals.edit-user')
+    @include('admin.users.modals.confirm-delete')
 
 
     <script>

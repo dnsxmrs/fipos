@@ -139,7 +139,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
             Route::get('/', [UserController::class, 'showUsers'])->name('users.show');
             Route::post('/add', [UserController::class, 'store'])->name('user.add');
             Route::post('/edit', [UserController::class, 'update'])->name('user.update');
-            Route::post('/delete', [UserController::class, 'deactivate'])->name('user.delete');
+            Route::post('/delete', [UserController::class, 'delete'])->name('user.delete');
         });
 
 

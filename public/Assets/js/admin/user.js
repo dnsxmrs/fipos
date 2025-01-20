@@ -52,30 +52,33 @@ function hideEditUserModal() {
     }, 300); // Match the transition duration
 }
 
-let userIdToDelete = null;
+let userId = null;
 
-function showDeleteDialogUser(userId) {
-    userIdToDelete = userId; // Store the ID of the user to delete
-    document.getElementById("delete-dialog-users").classList.remove("hidden");
+function showDeleteDialogUsers(userIdToDelete) {
+    userId = userIdToDelete; // Store the ID of the product to delete
+    document
+        .getElementById("delete-dialog-users")
+        .classList.remove("hidden", "opacity-0");
     document.getElementById("delete-dialog-users").classList.add("opacity-100");
 }
 
-function hideDeleteDialogUser() {
-    document.getElementById("delete-dialog-users").classList.add("hidden");
-    document.getElementById("delete-dialog-users").classList.remove("opacity-100");
+function hideDeleteDialogUsers() {
+    document
+        .getElementById("delete-dialog-users")
+        .classList.add("hidden", "opacity-0");
 }
 
 // button sa first delete modal- confirm
 function showConfirmDeleteModalUsers() {
-    document.getElementById('delete_user_id').value = userIdToDelete;
-    hideDeleteDialogProducts();
-    document.getElementById("confirm-delete-modal-users").classList.remove("hidden");
+    console.log(userId);
+    document.getElementById('delete_user_id').value = userId;
+    hideDeleteDialogUsers();
+    document.getElementById("confirm-delete-modal-user").classList.remove("hidden");
 }
 
 
 // button  sa confirm delete pagka input ng password
 function hideConfirmDeleteModalUsers() {
     document.getElementById('password').value = "";
-    document.getElementById("confirm-delete-modal-users").classList.add("hidden");
+    document.getElementById("confirm-delete-modal-user").classList.add("hidden");
 }
-
