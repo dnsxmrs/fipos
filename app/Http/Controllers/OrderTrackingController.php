@@ -34,36 +34,37 @@ class OrderTrackingController extends Controller
      */
     public function showOnlineOrders()
     {
+        return view('admin.order-tracking.online-orders');
 
-        try {
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . env('WEB_API_KEY'), // Include the Authorization Bearer token
-                // 'X-CSRF-TOKEN' => $csrfToken, // Include the CSRF token if necessary
-            ])->get('');
+        // try {
+        //     $response = Http::withHeaders([
+        //         'Authorization' => 'Bearer ' . env('WEB_API_KEY'), // Include the Authorization Bearer token
+        //         // 'X-CSRF-TOKEN' => $csrfToken, // Include the CSRF token if necessary
+        //     ])->get('');
 
-            if ($response->successful()) {
-                $responseData = $response->getData()->data; // Get the response as an array
+        //     if ($response->successful()) {
+        //         $responseData = $response->getData()->data; // Get the response as an array
 
-                dd($responseData);
+        //         dd($responseData);
 
-                return view('admin.order-tracking.online-orders');
-                // Process the response data
-            } else {
-                // Handle the error
-                $errorMessage = $response->body(); // Get the raw response body
-                // Log the error or take appropriate action
-            }
-        } catch (\Exception $e) {
-            // Handle exceptions
-            Log::error('HTTP GET request failed: ' . $e->getMessage());
+        //         return view('admin.order-tracking.online-orders');
+        //         // Process the response data
+        //     } else {
+        //         // Handle the error
+        //         $errorMessage = $response->body(); // Get the raw response body
+        //         // Log the error or take appropriate action
+        //     }
+        // } catch (\Exception $e) {
+        //     // Handle exceptions
+        //     Log::error('HTTP GET request failed: ' . $e->getMessage());
 
-            dd($e->getMessage());
-        }
-
-
-
-
-
-
+        //     dd($e->getMessage());
     }
+
+
+
+
+
+
 }
+
