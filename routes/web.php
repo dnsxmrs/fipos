@@ -20,7 +20,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrderTrackingController;
 
 // only authenticated users can access these pages
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'preventBackHistory'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/notice-change-password', [ResetPasswordController::class, 'noticeToChangePassword'])->name('notice.change.password');
     Route::get('/notice-change-password/skip', [ResetPasswordController::class, 'skipChangePassword'])->name('password.skip');
@@ -47,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // only authenticated users and admin can access this page
-Route::middleware(['auth', 'isAdmin'])->group(function () {
+Route::middleware(['auth', 'isAdmin', 'preventBackHistory'])->group(function () {
     // Admin Routes
     Route::prefix('admin')->name('admin.')->group(function () {
         // Redirect to the admin categories page when url is localhost:8000/admin
@@ -159,7 +159,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 });
 
 // only guests can access these pages
-Route::middleware(['guest'])->group(function () {
+Route::middleware(['guest', 'preventBackHistory'])->group(function () {
     Route::get('/', [AuthController::class, 'displayLoginForm'])->name('login');
     Route::post('/', [AuthController::class, 'login']);
     // routes for password
