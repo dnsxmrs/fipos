@@ -100,7 +100,17 @@
                 </div>
             </div>
 
-            
+            <div class="flex justify-between mt-8 ml-6 mr-8 text-sm">
+                <p>Add a Discount: </p>
+                <select
+                    class="w-50 h-[40px] text-center font-regular text-green-500 bg-white border border-green-500 hover:bg-gray-100 px-4 py-2 rounded-lg focus:outline-none focus:ring-0 focus:ring-green-500"
+                    id="discount-dropdown">
+                    <option value="none" selected>None</option>
+                    <option value="senior citizen">Senior Citizen</option>
+                    <option value="pwd">PWD</option>
+                </select>
+            </div>
+
             <div class="flex justify-between mt-8 ml-6 mr-8 text-sm text-gray-200">
                 <button id="openModal"
                     class="w-full px-4 py-2 mb-5 text-center text-white bg-green-900 rounded-full font-regular hover:bg-green-600">
@@ -184,13 +194,9 @@
             <p class="mt-6 text-sm text-center text-gray-600">Enter the cash amount.</p>
 
             <div class="mt-4">
-                <input class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
-                    type="text" placeholder="Item price" name="product_price" required
-                    oninput="this.value = this.value.replace(/[^0-9.]/g, '')" />
+                <input id="cash-amount" type="number" required placeholder="Enter amount"
+                    class="w-full px-4 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
-
-
-
             <div class="flex justify-between mt-6">
                 <button id="closeCashModal" onclick="backToPaymentMethod()"
                     class="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600">
