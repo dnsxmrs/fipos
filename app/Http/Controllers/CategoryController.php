@@ -31,11 +31,12 @@ class CategoryController extends Controller
             // Validate the request
             $request->validate([
                 'category_name' => 'required|string|max:255',
-                'description' => 'nullable',
+                'description' => 'nullable|string|max:255',
                 'type' => 'required|in:food,beverage',
                 'beverage_type' => 'nullable|in:hot,iced',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
+
 
             // Upload image to Cloudinary if present
             if ($request->hasFile('image')) {
@@ -70,7 +71,7 @@ class CategoryController extends Controller
         $request->validate([
             'editCategoryId' => 'exists:categories,category_id',
             'category_name' => 'required|string|max:255',
-            'description' => 'nullable',
+            'description' => 'nullable|string|max:255',
             'type' => 'required|in:food,beverage',
             'beverage_type' => 'nullable|in:hot,iced',
             'editImage' => 'nullable|image|mimes:jpg,png|max:2048',

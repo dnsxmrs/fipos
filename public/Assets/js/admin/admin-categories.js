@@ -255,19 +255,20 @@ function toggleBeverageType(selectElement) {
     }
 }
 
-// toggle for edit
+// Toggle for edit
 function editToggleBeverageType(selectElement) {
     // Get the selected value
     const selectedValue = selectElement.value;
 
-    // Get the beverage type radio buttons
+    // Get the beverage type dropdown
     const beverageTypeDropdown = document.getElementById('edit_beverage_type');
 
-    // Enable or disable the radio buttons based on the selected value
+    // Enable or disable the dropdown based on the selected value
     if (selectedValue === 'beverage') {
         beverageTypeDropdown.disabled = false;
     } else {
         beverageTypeDropdown.disabled = true;
-        beverageTypeDropdown.value = ""
+        // If it’s not beverage, clear the value
+        beverageTypeDropdown.value = ""; // or set to the default option if desired
     }
 }
