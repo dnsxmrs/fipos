@@ -12,10 +12,11 @@
 
     <div class="h-auto py-5 mb-10 bg-white rounded-lg shadow-sm px-7 ">
         <div class="flex items-center justify-between">
+            <form autocomplete="off">
             <input type="text" placeholder="Search for category..."
                 class="w-64 h-10 p-3 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                 id="category_search" autocomplete="off" onkeyup="filterCategories()" />
-
+            </form>
             <!--ADD BUTTON-->
             <button onclick="showAddDialogCategories()"
                 class="block text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
