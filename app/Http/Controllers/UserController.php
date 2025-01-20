@@ -54,7 +54,7 @@ class UserController extends Controller
                 return redirect()->back()->with('error', 'Creation of account failed.');
             }
         } catch (Throwable $th) {
-            dd($th);
+            return redirect()->back()->with('error',  $th->getMessage());
         }
     }
 

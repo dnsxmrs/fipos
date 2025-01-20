@@ -87,7 +87,7 @@ class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opa
                         </label>
                         <div class="flex items-center space-x-4">
                             <label class="inline-flex items-center">
-                                <input type="radio" id="status_active" name="status" value="active" required
+                                <input type="radio" id="status_active" name="status" value="activated" required
                                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                                 <span class="ml-2 text-sm text-gray-900">Active</span>
                             </label>

@@ -59,7 +59,7 @@ class CategoryController extends Controller
             // Redirect back with success message
             return redirect()->back()->with('status_add', 'Category added successfully!');
         } catch (\Throwable $th) {
-            dd($th);
+            return redirect()->back()->with('error', $th->getMessage());
         }
     }
 
@@ -137,7 +137,7 @@ class CategoryController extends Controller
             return redirect()->back()->with('error', "Password dont match.");
 
         } catch (\Throwable $th) {
-            dd($th);
+            return redirect()->back()->with('error', $th->getMessage());
         }
     }
 

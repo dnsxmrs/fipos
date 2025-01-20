@@ -1,16 +1,16 @@
 <!-- Edit Modal -->
 <div id="edit-dialog-categories" tabindex="-1" aria-hidden="true"
     class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center transition-opacity duration-200 z-50 overflow-y-auto overflow-x-hidden top-0 right-0 left-0 w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-lg max-h-full min-w-fit">
+    <div class="relative w-full max-w-lg max-h-full p-4 min-w-fit">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow">
             <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+            <div class="flex items-center justify-between p-4 border-b rounded-t md:p-5">
                 <h3 class="text-lg font-semibold text-gray-900">
                     Edit Category
                 </h3>
                 <button type="button" onclick="hideEditDialogCategories()"
-                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
+                    class="inline-flex items-center justify-center w-8 h-8 text-sm text-gray-400 bg-transparent rounded-lg hover:bg-gray-200 hover:text-gray-900 ms-auto">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -25,21 +25,38 @@
                 @csrf
                 @method('PUT')
                 <input type="hidden" value="" name="editCategoryId" id="editCategoryId">
-                <div class="grid gap-4 mb-4 grid-cols-2">
-                    <div class="col-span-2 flex items-center justify-center">
-                        <div class="bg-gray-50 w-1/2 flex flex-col items-center justify-center  cursor-pointer py-3 px-5 rounded text-black shadow-md"
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="flex items-center justify-center col-span-2">
+                        <div class="flex flex-col items-center justify-center w-1/2 px-5 py-3 text-black rounded shadow-md cursor-pointer bg-gray-50"
                             style=" border: 2px dashed gray;" id="editImageLabel">
                             <input type="file" value='' id='editImage' name="editImage" accept="image/*"
                                 class="hidden">
                             <div class="text-center">
                                 <img id="categoryImage" src="" alt="Category Image"
-                                    class="w-full h-full object-cover rounded hidden" />
+                                    class="hidden object-cover w-full h-full rounded" />
                                 <div class="upload-message">
                                     <div class="text-2xl">+</div>
                                     <span class="block mt-2">Upload Image</span>
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="flex items-center justify-center col-span-2">
+                        <label
+                            class="flex flex-col items-center justify-center px-5 py-3 mt-4 text-center text-black bg-white rounded shadow-md "
+                            style="width: 346px; height: 231px; border: 2px dashed gray;" id="editImageLabel">
+                            <input type="file" value='' id='editImage' name="editImage" accept="image/*"
+                                class="hidden">
+                            <div class="text-center">
+                                <img id="productImage" src="" alt="Product Image"
+                                    class="hidden object-cover rounded" />
+                                <div class="upload-message">
+                                    <div class="text-2xl">+</div>
+                                    <span class="block mt-2">Upload Image</span>
+                                </div>
+                            </div>
+                        </label>
                     </div>
 
                     <div class="col-span-2">
@@ -50,7 +67,7 @@
                             placeholder="Type category name" required="">
 
                         @error('category_name')
-                            <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
+                            <span class="mt-1 text-xs text-red-600">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="col-span-2 sm:col-span-1">
@@ -64,7 +81,7 @@
                         </select>
 
                         @error('type')
-                            <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
+                            <span class="mt-1 text-xs text-red-600">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="col-span-2 sm:col-span-1">
@@ -78,7 +95,7 @@
                         </select>
 
                         @error('beverage_type')
-                            <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
+                            <span class="mt-1 text-xs text-red-600">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="col-span-2">
@@ -89,7 +106,7 @@
                             placeholder="Write category description here"></textarea>
 
                         @error('description')
-                            <span class="text-red-600 text-xs mt-1">{{ $message }}</span>
+                            <span class="mt-1 text-xs text-red-600">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
