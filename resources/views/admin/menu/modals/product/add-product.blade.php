@@ -48,17 +48,20 @@
                             <span class="mt-1 text-xs text-red-600">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="col-span-2 sm:col-span-1">
-                        <label for="product_price" class="block mb-2 text-sm font-medium text-gray-900">Price <span
-                                class="text-red-500">*</span></label>
-                        <input type="number" name="product_price" id="itemPrice"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                            placeholder="Type product price" value="" required="">
 
+                    <div class="relative w-[350px] mb-4">
+                        <input id="itemPrice"
+                            class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
+                            type="text" placeholder="Item price" name="product_price" required
+                            oninput="this.value = this.value.replace(/[^0-9.]/g, '')">
+                        <label class="text-sm absolute left-2 -top-4 scale-75 text-gray-500 origin-left"
+                            for="itemPrice">Item Price</label>
                         @error('product_price')
-                            <span class="mt-1 text-xs text-red-600">{{ $message }}</span>
+                            <div class="text-red-600 text-xs mt-1">{{ $message }}</div>
                         @enderror
                     </div>
+
+
                     <div class="col-span-2 sm:col-span-1">
                         <label for="type" class="block mb-2 text-sm font-medium text-gray-900">Category <span
                                 class="text-red-500">*</span></label>
