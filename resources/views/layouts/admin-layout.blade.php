@@ -65,13 +65,6 @@
 
         </div>
     </div>
-
-    <script>
-        // reload the page everytime
-        window.addEventListener('load', function() {
-            window.location.reload();
-            });
-    </script>
 </body>
 
 </html>
