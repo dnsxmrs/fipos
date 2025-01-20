@@ -44,119 +44,120 @@ Route::middleware(['auth', 'preventBackHistory'])->group(function () {
         Route::get('/orders/take-out', [OrderController::class, 'showTakeOutOrders'])->name('orders.take-out');
         Route::get('/orders-online', [OrderController::class, 'showOnlineOrders'])->name('online.orders.show');
     });
-});
 
-// only authenticated users and admin can access this page
-Route::middleware(['auth', 'isAdmin', 'preventBackHistory'])->group(function () {
     // Admin Routes
-    Route::prefix('admin')->name('admin.')->group(function () {
-        // Redirect to the admin categories page when url is localhost:8000/admin
-        Route::get('/', function () {
-            return redirect()->route('admin.dashboard');
-        })->name('landing');
-
-        // routes for sidebar
-        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-        Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
-        Route::get('/order-tracking', [AdminController::class, 'orders'])->name('order-tracking');
-        Route::get('/audit-trails', [AdminController::class, 'audit'])->name('audit-trails');
-        Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
-
-        // Menu Management Routes
-        Route::prefix('menu')->name('menu.')->group(function () {
-            // Redirect to the admin categories page when url is localhost:8000/admin/menu
+    Route::middleware(['isAdmin'])->group(function () {
+        // Admin Routes
+        Route::prefix('admin')->name('admin.')->group(function () {
+            // Redirect to the admin categories page when url is localhost:8000/admin
             Route::get('/', function () {
-                return redirect()->route('admin.menu.categories');
-            })->name('menu.categories');
+                return redirect()->route('admin.dashboard');
+            })->name('landing');
 
-            // Categories Routes
-            Route::prefix('categories')->group(function () {
+            // routes for sidebar
+            Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+            Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
+            Route::get('/order-tracking', [AdminController::class, 'orders'])->name('order-tracking');
+            Route::get('/audit-trails', [AdminController::class, 'audit'])->name('audit-trails');
+            Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
 
-                Route::get('/', [MenuController::class, 'showCategories'])->name('categories');
-                // Route to store a new category
-                Route::post('/add', [CategoryController::class, 'store'])->name('categories.store');
-                // Route to update a category
-                Route::put('/edit', [CategoryController::class, 'update'])->name('categories.update');
-                // Route to delete a category
-                Route::post('/delete', [CategoryController::class, 'delete'])->name('categories.delete');
+            // Menu Management Routes
+            Route::prefix('menu')->name('menu.')->group(function () {
+                // Redirect to the admin categories page when url is localhost:8000/admin/menu
+                Route::get('/', function () {
+                    return redirect()->route('admin.menu.categories');
+                })->name('menu.categories');
+
+                // Categories Routes
+                Route::prefix('categories')->group(function () {
+
+                    Route::get('/', [MenuController::class, 'showCategories'])->name('categories');
+                    // Route to store a new category
+                    Route::post('/add', [CategoryController::class, 'store'])->name('categories.store');
+                    // Route to update a category
+                    Route::put('/edit', [CategoryController::class, 'update'])->name('categories.update');
+                    // Route to delete a category
+                    Route::post('/delete', [CategoryController::class, 'delete'])->name('categories.delete');
+                });
+
+
+                // Products Routes
+                Route::prefix('products')->group(function () {
+
+                    Route::get('/', [MenuController::class, 'showProducts'])->name('products');
+                    // Route to store a new product
+                    Route::post('/add', [ProductController::class, 'store'])->name('products.store');
+                    // Route to update a product
+                    Route::put('/edit', [ProductController::class, 'update'])->name('products.update');
+                    // Route to delete a product
+                    // Route::delete('/products/{id}', [ProductController::class, 'delete'])->name('products.delete');
+                    Route::post('/delete', [ProductController::class, 'delete'])->name('products.delete');
+                });
             });
 
 
-            // Products Routes
-            Route::prefix('products')->group(function () {
+            // Inventory routes
+            // Route::prefix('inventory')->group(function () {
 
-                Route::get('/', [MenuController::class, 'showProducts'])->name('products');
-                // Route to store a new product
-                Route::post('/add', [ProductController::class, 'store'])->name('products.store');
-                // Route to update a product
-                Route::put('/edit', [ProductController::class, 'update'])->name('products.update');
-                // Route to delete a product
-                // Route::delete('/products/{id}', [ProductController::class, 'delete'])->name('products.delete');
-                Route::post('/delete', [ProductController::class, 'delete'])->name('products.delete');
+            //     Route::get('/', function () {
+            //         return redirect()->route('admin.inventory.show');
+            //     });
+
+            //     // Categories
+            //     Route::prefix('categories')->group(function () {
+            //         Route::get('/', [InventoryController::class, 'showCategories'])->name('inventory.categories');
+            //         Route::post('/add', [InventoryCategoryController::class, 'store'])->name('inventory.category.add');
+            //         Route::post('/edit', [InventoryCategoryController::class, 'update'])->name('inventory.category.update');
+            //         Route::post('/delete', [InventoryCategoryController::class, 'destroy'])->name('inventory.category.destroy');
+            //     });
+
+            //     // Items
+            //     Route::prefix('items')->group(function () {
+            //         Route::get('/', [InventoryController::class, 'showItems'])->name('inventory.show');
+            //         Route::post('/add', [ItemController::class, 'store'])->name('inventory.item.store');
+            //         Route::post('/update', [ItemController::class, 'update'])->name('inventory.item.update');
+            //         Route::post('/delete', [ItemController::class, 'destroy'])->name('inventory.item.destroy');
+            //     });
+            // });
+
+            // // Staff Management routes
+            // Route::prefix('staffs')->group(function () {
+            //     Route::get('/', [StaffController::class, 'index'])->name('staffs.show');
+            // });
+
+            // Order Tracking
+            Route::prefix('order-tracking')->group(function () {
+                Route::get('/', [OrderTrackingController::class, 'index'])->name('orders.all');
+                Route::get('/walk-in-orders', [OrderTrackingController::class, 'showWalkInOrders'])->name('orders.walk-in');
+                Route::get('/online-orders', [OrderTrackingController::class, 'showOnlineOrders'])->name('orders.online-orders');
             });
+
+            // User Management routes
+            Route::prefix('users')->group(function () {
+
+                Route::get('/', [UserController::class, 'showUsers'])->name('users.show');
+                Route::post('/add', [UserController::class, 'store'])->name('user.add');
+                Route::post('/edit', [UserController::class, 'update'])->name('user.update');
+                Route::post('/delete', [UserController::class, 'delete'])->name('user.delete');
+            });
+
+
+            // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+            Route::view('/add-user', 'user management.add-user')->name('add.user');
+            Route::post('/add-user', [AuthController::class, 'registerUser']);
+
+            Route::view('/edit-profile', 'user management.edit-profile')->name('update.profile');
+            Route::post('/edit-profile', [ProfileController::class, 'updateProfile']);
+
+            Route::view('/success-add-user', 'user management.success-add')->name('success.add.user');
+            Route::view('/success-update-profile', 'user management.success-edit')->name('success.update.profile');
+
+            Route::view('/list-user', 'user management.list-user')->name('list.user');
+            Route::view('/role-management', 'user management.role-management')->name('role-management');
         });
-
-
-        // Inventory routes
-        // Route::prefix('inventory')->group(function () {
-
-        //     Route::get('/', function () {
-        //         return redirect()->route('admin.inventory.show');
-        //     });
-
-        //     // Categories
-        //     Route::prefix('categories')->group(function () {
-        //         Route::get('/', [InventoryController::class, 'showCategories'])->name('inventory.categories');
-        //         Route::post('/add', [InventoryCategoryController::class, 'store'])->name('inventory.category.add');
-        //         Route::post('/edit', [InventoryCategoryController::class, 'update'])->name('inventory.category.update');
-        //         Route::post('/delete', [InventoryCategoryController::class, 'destroy'])->name('inventory.category.destroy');
-        //     });
-
-        //     // Items
-        //     Route::prefix('items')->group(function () {
-        //         Route::get('/', [InventoryController::class, 'showItems'])->name('inventory.show');
-        //         Route::post('/add', [ItemController::class, 'store'])->name('inventory.item.store');
-        //         Route::post('/update', [ItemController::class, 'update'])->name('inventory.item.update');
-        //         Route::post('/delete', [ItemController::class, 'destroy'])->name('inventory.item.destroy');
-        //     });
-        // });
-
-        // // Staff Management routes
-        // Route::prefix('staffs')->group(function () {
-        //     Route::get('/', [StaffController::class, 'index'])->name('staffs.show');
-        // });
-
-        // Order Tracking
-        Route::prefix('order-tracking')->group(function () {
-            Route::get('/', [OrderTrackingController::class, 'index'])->name('orders.all');
-            Route::get('/walk-in-orders', [OrderTrackingController::class, 'showWalkInOrders'])->name('orders.walk-in');
-            Route::get('/online-orders', [OrderTrackingController::class, 'showOnlineOrders'])->name('orders.online-orders');
-        });
-
-        // User Management routes
-        Route::prefix('users')->group(function () {
-
-            Route::get('/', [UserController::class, 'showUsers'])->name('users.show');
-            Route::post('/add', [UserController::class, 'store'])->name('user.add');
-            Route::post('/edit', [UserController::class, 'update'])->name('user.update');
-            Route::post('/delete', [UserController::class, 'delete'])->name('user.delete');
-        });
-
-
-        // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        Route::view('/add-user', 'user management.add-user')->name('add.user');
-        Route::post('/add-user', [AuthController::class, 'registerUser']);
-
-        Route::view('/edit-profile', 'user management.edit-profile')->name('update.profile');
-        Route::post('/edit-profile', [ProfileController::class, 'updateProfile']);
-
-        Route::view('/success-add-user', 'user management.success-add')->name('success.add.user');
-        Route::view('/success-update-profile', 'user management.success-edit')->name('success.update.profile');
-
-        Route::view('/list-user', 'user management.list-user')->name('list.user');
-        Route::view('/role-management', 'user management.role-management')->name('role-management');
     });
 });
+
 
 // only guests can access these pages
 Route::middleware(['guest', 'preventBackHistory'])->group(function () {
