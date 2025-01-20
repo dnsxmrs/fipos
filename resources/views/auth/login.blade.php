@@ -17,7 +17,8 @@
                 id="login-form">
                 @csrf
 
-                <div class="mt-10">
+                <div class="mt-10 flex flex-col items-left justify-center">
+                    <label for="email" class="text-xs font-medium text-gray-500 mb-1">Email <span class="text-red-500">*</span></label>
                     <input type="text" id="email" name="email" value="{{ old('email') }}"
                         class="border w-80 p-3 text-xs font-normal border-gray-300 bg-gray-100 rounded-lg text-gray-500"
                         placeholder="Email" @error('email') style="border-color: red" @enderror>
@@ -26,7 +27,9 @@
                     @enderror
                     <div id="email-error" class=" text-red-500 w-80 text-xs mt-2 ml-1 block"></div>
                 </div>
-                <div class="mt-5 relative">
+                <label for="password" class="mt-5 text-xs font-medium text-gray-500 mb-1 text-left items-left w-full">Password <span class="text-red-500">*</span></label>
+                <div class="flex flex-col items-left justify-center relative">
+
                     <input type="password" id="password" name="password"
                         class="border w-80 p-3 text-xs font-normal border-gray-200 bg-gray-100 rounded-lg text-gray-500"
                         placeholder="Password" @error('password') style="border-color: red" @enderror>
