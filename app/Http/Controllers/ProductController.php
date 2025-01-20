@@ -4,6 +4,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Auth;
+use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
@@ -24,6 +26,7 @@ class ProductController extends Controller
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            dd($e);
             Log::error('Validation failed: ', $e->validator->errors()->toArray());
             throw $e; // or handle the exception as needed
         }
@@ -47,7 +50,7 @@ class ProductController extends Controller
         // Sync with OOS after product creation
         $this->syncWithOos('POST', $product);
 
-        return redirect()->back()->with('session_add', 'Product added successfully!');
+        return redirect()->back()->with('status_add', 'Product added successfully!');
     }
 
     // Update an existing product in the database
@@ -90,7 +93,7 @@ class ProductController extends Controller
             // Sync with OOS after product update
             $this->syncWithOos('PUT', $product);
 
-            return redirect()->route('admin.menu.products')->with('session_edit', 'Product updated successfully!');
+            return redirect()->route('admin.menu.products')->with('status_edit', 'Product updated successfully!');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Validation failed: ', $e->validator->errors()->toArray());
@@ -99,23 +102,54 @@ class ProductController extends Controller
     }
 
     // Delete a product from the database
-    public function delete($id)
+    public function delete(Request $request)
     {
-        // Get the product ID from the request body
-        $product = Product::findOrFail($id);
-        // Optionally delete the product image from storage
-        if ($product->image) {
-            Storage::disk('public')->delete($product->image);
+        try {
+            $request->validate([
+                'delete_product_id' => 'required|exists:products,id',
+                'password' => 'required'
+            ]);
+
+            if (Hash::check($request->password, Auth::user()->password)) {
+                $product = Product::find($request->delete_product_id);
+
+                if ($product) {
+
+
+                    $product->delete();
+                    // Sync with OOS after category deletion
+                    $this->syncWithOos('DELETE', $product);
+
+                    return redirect()->back()->with('status_deleted', 'Product deleted successfully');
+                }
+
+                return redirect()->back()->with('error', 'Failed to delete product');
+            }
+
+            return redirect()->back()->with('error', 'Password don\'t match.');
+        } catch (\Throwable $th) {
+            dd($th);
         }
-        // Delete the product
-        $product->delete();
-
-        // Sync with OOS after product deletion
-        $this->syncWithOos('DELETE', $product);
-
-        // Return a JSON response for AJAX requests
-        return response()->json(['message' => 'Product deleted successfully!'], 200);
     }
+
+    
+    // public function delete($id)
+    // {
+    //     // Get the product ID from the request body
+    //     $product = Product::findOrFail($id);
+    //     // Optionally delete the product image from storage
+    //     if ($product->image) {
+    //         Storage::disk('public')->delete($product->image);
+    //     }
+    //     // Delete the product
+    //     $product->delete();
+
+    //     // Sync with OOS after product deletion
+    //     $this->syncWithOos('DELETE', $product);
+
+    //     // Return a JSON response for AJAX requests
+    //     return response()->json(['message' => 'Product deleted successfully!'], 200);
+    // }
 
     // Sync with OOS after product operation (create, update, delete)
     protected function syncWithOos(string $method, $product)

@@ -10,10 +10,10 @@
         </div>
     </div>
 
-    <div class="bg-white shadow-sm h-auto mb-10 py-5 px-7 rounded-lg ">
+    <div class="h-auto py-5 mb-10 bg-white rounded-lg shadow-sm px-7 ">
         <div class="flex items-center justify-between">
             <input type="text" placeholder="Search products..."
-                class="p-3 h-10 w-64 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100 border border-gray-200 text-sm text-gray-500 rounded-lg"
+                class="w-64 h-10 p-3 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                 name="product_search" id="product_search" autocomplete="off" onkeyup="filterProducts()" />
 
             <!--ADD BUTTON-->
@@ -25,11 +25,11 @@
         </div>
 
         {{-- ORDERS TABLE --}}
-        <div class="flex items-start my-7  justify-center rounded-lg w-full">
+        <div class="flex items-start justify-center w-full rounded-lg my-7">
             <div class="w-full ">
 
-                <table id="products_table" class="products_table w-full shadow rounded-lg table-auto mb-5">
-                    <thead class="bg-slate-100 border-b-2 rounded-lg">
+                <table id="products_table" class="w-full mb-5 rounded-lg shadow table-auto products_table">
+                    <thead class="border-b-2 rounded-lg bg-slate-100">
                         <tr>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">No.</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Product Name</th>
@@ -40,36 +40,36 @@
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max"></th>
                         </tr>
                     </thead>
-                    <tbody class="text-center text-xs">
+                    <tbody class="text-xs text-center">
                         @foreach ($products as $index => $product)
-                            <tr class="product_row border-b hover:bg-slate-50">
-                                <td class="py-3 px-5">
+                            <tr class="border-b product_row hover:bg-slate-50">
+                                <td class="px-5 py-3">
                                     {{ ($products->currentPage() - 1) * $products->perPage() + $loop->iteration }} </td>
-                                <td class="py-3 px-5"> {{ ucfirst($product->product_name) }} </td>
-                                <td class="py-3 px-5"> {{ ucfirst($product->product_description) }} </td>
+                                <td class="px-5 py-3"> {{ ucfirst($product->product_name) }} </td>
+                                <td class="px-5 py-3"> {{ ucfirst($product->product_description) }} </td>
                                 <td class="p-3">{{ $product->category ? $product->category->category_name : 'N/A' }}</td>
-                                <td class="py-3 px-5">{{ $product->product_price }}</td>
-                                <td class="py-3 px-5">
+                                <td class="px-5 py-3">{{ $product->product_price }}</td>
+                                <td class="px-5 py-3">
                                     <span
                                         class="text-xs {{ $product->isAvailable ? 'text-green-500' : 'text-red-500' }} rounded-md px-2 py-1"
                                         style="background-color: {{ $product->isAvailable ? '#DCF8F0' : '#FFDFDF' }}">
                                         {{ $product->isAvailable ? 'Available' : 'Not Available' }}
                                     </span>
                                 </td>
-                                <td class="flex py-3 px-5 space-x-2 items-center justify-end">
+                                <td class="flex items-center justify-end px-5 py-3 space-x-2">
                                     <button onclick="showEditDialogProducts(this)"
-                                        class="flex items-center text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out"
+                                        class="flex items-center text-blue-500 transition duration-300 ease-in-out hover:text-blue-700"
                                         data-id="{{ $product->id }}" data-name="{{ $product->product_name }}"
                                         data-description="{{ $product->product_description }}"
                                         data-price="{{ $product->product_price }}"
                                         data-category="{{ $product->category_id }}"
                                         data-availability="{{ $product->isAvailable ? '1' : '0' }}"
                                         data-image="{{ $product->image }}">
-                                        <img src="{{ asset('Assets/Edit.png') }}" alt="Edit Icon" class="mr-2 ml-2">
+                                        <img src="{{ asset('Assets/Edit.png') }}" alt="Edit Icon" class="ml-2 mr-2">
                                     </button>
                                     <button onclick="showDeleteDialogProducts({{ $product->id }})"
-                                        class="flex items-center text-red-500 hover:text-red-700 ml-2 transition duration-300 ease-in-out">
-                                        <img src="{{ asset('Assets/Delete.png') }}" alt="Delete Icon" class="mr-2 ml-2">
+                                        class="flex items-center ml-2 text-red-500 transition duration-300 ease-in-out hover:text-red-700">
+                                        <img src="{{ asset('Assets/Delete.png') }}" alt="Delete Icon" class="ml-2 mr-2">
                                     </button>
                                 </td>
                             </tr>
@@ -77,7 +77,7 @@
                     </tbody>
                 </table>
                 <!-- No Products Found Message -->
-                <div id="no-products-message" class="hidden text-center text-red-500 mt-4">
+                <div id="no-products-message" class="hidden mt-4 text-center text-red-500">
                     No products found matching your search criteria.
                 </div>
 
@@ -94,9 +94,7 @@
     @include('admin.menu.modals.product.confirm-delete')
     @include('admin.menu.modals.product.delete-product')
     @include('admin.menu.modals.product.edit-product')
-    @include('admin.menu.modals.product.success-add')
-    @include('admin.menu.modals.product.success-delete')
-    @include('admin.menu.modals.product.success-edit')
+
 
 
     <script>
@@ -104,17 +102,32 @@
 
             // success add modal
             @if (session('status_add'))
-                handleSaveChangesProducts();
+                Swal.fire({
+                    title: "Success!",
+                    text: "{{ session('status_add') }}",
+                    icon: "success"
+                });
+                // handleSaveChangesProducts();
             @endif
 
 
             @if (session('status_edit'))
-                showItemUpdatedDialogProducts();
+                Swal.fire({
+                    title: "Success!",
+                    text: "{{ session('status_edit') }}",
+                    icon: "success"
+                });
+                // showItemUpdatedDialogProducts();
             @endif
 
 
             @if (session('status_deleted'))
-                showSuccessMessage();
+                Swal.fire({
+                    title: "Success!",
+                    text: "{{ session('status_deleted') }}",
+                    icon: "success"
+                });
+                // showSuccessMessage();
             @endif
 
         });

@@ -188,6 +188,7 @@ function showConfirmDeleteCategories() {
 
 // button sa confirm delete pagka input ng password - confirm
 function hideConfirmDeleteCategories() {
+    document.getElementById('password').value = "";
     document.getElementById("confirm-delete-dialog-categories").classList.add("hidden");
 }
 

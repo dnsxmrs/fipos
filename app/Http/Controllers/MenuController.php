@@ -22,7 +22,7 @@ class MenuController extends Controller
 
         // Fetch categories from the database
         $categories = Category::all();
-        $products = Product::paginate(10);
+        $products = Product::paginate(20);
 
 
         // Return the view and pass the categories

@@ -1,10 +1,10 @@
 <!-- Delete Modal -->
-<div id="delete-dialog-products" tabindex="-1"
+<div id="delete-dialog-users" tabindex="-1"
     class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 transition-opacity duration-200 z-50 overflow-y-auto overflow-x-hidden top-0 right-0 left-0 w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative w-full max-w-md max-h-full p-4">
         <div class="relative bg-white rounded-lg shadow ">
-            <button type="button" onclick="hideDeleteDialogProducts()"
-                class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
+            <button type="button" onclick="hideDeleteDialogUser()"
+                class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
                 data-modal-hide="popup-modal">
                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 14 14">
@@ -24,12 +24,12 @@
                     </svg>
                 </div>
                 <h3 class="mb-5 text-lg font-normal text-gray-500 ">Are you sure you want to delete
-                    this product?</h3>
-                <button type="button" onclick="showConfirmDeleteModalProducts()"
+                    this user?</h3>
+                <button type="button" onclick="showConfirmDeleteModalUsers()"
                     class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300  font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                     Delete
                 </button>
-                <button type="button" onclick="hideDeleteDialogProducts()"
+                <button type="button" onclick="hideDeleteDialogUser()"
                     class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 ">Cancel</button>
             </div>
         </div>

@@ -10,10 +10,10 @@
         </div>
     </div>
 
-    <div class="bg-white shadow-sm h-full mb-10 py-5 px-7 rounded-lg ">
+    <div class="h-full py-5 mb-10 bg-white rounded-lg shadow-sm px-7 ">
         <div class="flex items-center justify-between">
             <input type="text" placeholder="Search for users..."
-                class="p-3 h-10 w-64 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100 border border-gray-200 text-sm text-gray-500 rounded-lg"
+                class="w-64 h-10 p-3 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                 id="user_search" autocomplete="off" onkeyup="" />
 
             <!--ADD BUTTON-->
@@ -24,32 +24,11 @@
             </button>
         </div>
 
-
-        {{-- Success Message --}}
-        @if (session('success'))
-            <div id="success-message" class="flex items-center justify-center">
-                <div class="relative px-4 py-2 w-[500px] text-center mt-3 text-green-700 bg-green-100 border border-green-400 rounded"
-                    role="alert">
-                    <span class="block sm:inline text-sm">{{ session('success') }}</span>
-                </div>
-            </div>
-        @endif
-
-        {{-- Error Message --}}
-        @if (session('error'))
-            <div id="error-message" class="flex items-center justify-center">
-                <div class="relative px-4 py-2 w-[500px] text-center mt-3 text-red-700 bg-red-100 border border-red-400 rounded"
-                    role="alert">
-                    <span class="block sm:inline text-sm">{{ session('error') }}</span>
-                </div>
-            </div>
-        @endif
-
         {{-- USERS TABLE --}}
-        <div class="flex items-start my-7  justify-center rounded-lg w-full">
+        <div class="flex items-start justify-center w-full rounded-lg my-7">
             <div class="w-full h-auto">
-                <table id="user_table" class="user_table w-full shadow rounded-lg table-auto">
-                    <thead class="bg-slate-100 border-b-2 rounded-lg">
+                <table id="user_table" class="w-full rounded-lg shadow table-auto user_table">
+                    <thead class="border-b-2 rounded-lg bg-slate-100">
                         <tr>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">No.</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">First Name</th>
@@ -60,40 +39,41 @@
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max"></th>
                         </tr>
                     </thead>
-                    <tbody class="text-center text-xs">
+                    <tbody class="text-xs text-center">
                         @foreach ($users as $user)
-                            <tr class="user_row border-b hover:bg-slate-50">
-                                <td class="py-3 px-5">
+                            <tr class="border-b user_row hover:bg-slate-50">
+                                <td class="px-5 py-3">
                                     {{ ($users->currentPage() - 1) * $users->perPage() + $loop->iteration }} </td>
-                                <td class="py-3 px-5"> {{ ucfirst($user->first_name) }} </td>
-                                <td class="py-3 px-5">{{ ucfirst($user->last_name) }}</td>
-                                <td class="py-3 px-5">{{ $user->email }}</td>
-                                <td class="py-3 px-5">{{ ucfirst($user->role) }}</td>
-                                <td class="py-3 px-5">
+                                <td class="px-5 py-3"> {{ ucfirst($user->first_name) }} </td>
+                                <td class="px-5 py-3">{{ ucfirst($user->last_name) }}</td>
+                                <td class="px-5 py-3">{{ $user->email }}</td>
+                                <td class="px-5 py-3">{{ ucfirst($user->role) }}</td>
+                                <td class="px-5 py-3">
                                     <span
-                                        class="text-xs {{ $user->is_activated ? 'text-green-500' : 'text-red-500' }} rounded-md px-2 py-1"
-                                        style="background-color: {{ $user->is_activated ? '#DCF8F0' : '#FFDFDF' }}">
-                                        {{ $user->is_activated ? 'Active' : 'Deactivated' }}
+                                        class="text-xs {{ $user->status === 'active' ? 'text-green-500' : 'text-red-500' }} rounded-md px-2 py-1"
+                                        style="background-color: {{ $user->status === 'active' ? '#DCF8F0' : '#FFDFDF' }};">
+                                        {{ ucfirst($user->status) }}
                                     </span>
                                 </td>
-                                <td class="flex py-3 px-5 space-x-2 items-center justify-end">
+                                <td class="flex items-center justify-end px-5 py-3 space-x-2">
                                     <button onclick="showEditUserModal(this)" data-id="{{ $user->id }}"
                                         data-lastName="{{ $user->last_name }}" data-firstName="{{ $user->first_name }}"
-                                        data-email="{{ $user->email }}" data-role="{{ $user->role }}"
+                                        data-email="{{ $user->email }}" data-role="{{ $user->role }}" data-status="{{ $user->status }}"
                                         class="flex text-blue-500 transition duration-300 ease-in-out items-right hover:text-blue-700">
-                                        <img src="{{ asset('Assets/Edit.png') }}" alt="Edit Icon">
+                                        <img src="{{ asset('Assets/Edit.png') }}" alt="Edit Icon" class="h-9"> <!-- Fixed icon size -->
                                     </button>
-                                    <button onclick=""
+                                    <button onclick="showDeleteDialogUser({{ $user->id }})"
                                         class="flex ml-2 text-red-500 transition duration-300 ease-in-out items-right hover:text-red-700">
-                                        <img src="{{ asset('Assets/Delete.png') }}" alt="Delete Icon">
+                                        <img src="{{ asset('Assets/Delete.png') }}" alt="Delete Icon" class="h-9 w-9"> <!-- Fixed icon size -->
                                     </button>
                                 </td>
+
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
                 <!-- No Users Found Message -->
-                <div id="no-users-message" class="hidden text-center text-red-500 mt-4">
+                <div id="no-users-message" class="hidden mt-4 text-center text-red-500">
                     No users found matching your search criteria.
                 </div>
 
@@ -107,6 +87,61 @@
 
     <!-- INCLUDE MODALS -->
     @include('admin.users.modals.add-user')
-    @include('admin.users.modals.deactivate-user')
+    @include('admin.users.modals.delete-user')
     @include('admin.users.modals.edit-user')
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // error Message
+            @if (session('error'))
+                Swal.fire({
+                    title: "Error!",
+                    text: "{{ session('error') }}",
+                    icon: "error"
+                });
+            @endif
+
+            // success add modal
+            @if (session('status_add'))
+                Swal.fire({
+                    title: "Success!",
+                    text: "{{ session('status_add') }}",
+                    icon: "success"
+                });
+                // handleSaveChangesProducts();
+            @endif
+
+
+            @if (session('status_edit'))
+                Swal.fire({
+                    title: "Success!",
+                    text: "{{ session('status_edit') }}",
+                    icon: "success"
+                });
+                // showItemUpdatedDialogProducts();
+            @endif
+
+            @if (session('status_deactivated'))
+                Swal.fire({
+                    title: "Success!",
+                    text: "{{ session('status_deactivated') }}",
+                    icon: "success"
+                });
+                // showItemUpdatedDialogProducts();
+            @endif
+
+
+            @if (session('status_deleted'))
+                Swal.fire({
+                    title: "Success!",
+                    text: "{{ session('status_deleted') }}",
+                    icon: "success"
+                });
+                // showSuccessMessage();
+            @endif
+
+        });
+    </script>
 @endsection

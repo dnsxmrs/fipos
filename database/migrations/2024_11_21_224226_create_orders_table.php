@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('order_number')->unique();
-            $table->enum('order_type', ['dine-in', 'take-out']);
+            $table->enum('order_type', ['dine-in', 'take-out', 'online']);
             $table->decimal('total_price', 10, 2);
             $table->decimal('tax_amount', 10, 2);
             $table->enum('discount_type', ['none', 'senior citizen', 'pwd'])->default('none');

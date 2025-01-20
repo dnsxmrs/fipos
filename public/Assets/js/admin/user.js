@@ -16,12 +16,12 @@ function hideAddUserModal() {
 
 // Show edit dialog
 function showEditUserModal(button) {
-
     const id = button.getAttribute("data-id");
     const lastName = button.getAttribute("data-lastName");
     const firstName = button.getAttribute("data-firstName");
     const email = button.getAttribute("data-email");
     const role = button.getAttribute("data-role");
+    const status = button.getAttribute("data-status");
 
     // Set values to the form fields
     document.getElementById("user_id").value = id;
@@ -30,11 +30,18 @@ function showEditUserModal(button) {
     document.getElementById("edit_email").value = email;
     document.getElementById("edit_role").value = role;
 
+    // Set value to radio buttons for 'is_activated'
+    if (status === "active") {
+        document.getElementById("status_active").checked = true;
+    } else if (status === "deactivated") {
+        document.getElementById("status_deactivated").checked = true;
+    }
+
     const dialog = document.getElementById("edit-dialog-user");
     dialog.classList.remove("hidden");
     setTimeout(() => dialog.classList.remove("opacity-0"), 0); // Use a timeout for the transition
-
 }
+
 
 // Hide the edit dialog
 function hideEditUserModal() {
@@ -44,3 +51,31 @@ function hideEditUserModal() {
         dialog.classList.add("hidden");
     }, 300); // Match the transition duration
 }
+
+let userIdToDelete = null;
+
+function showDeleteDialogUser(userId) {
+    userIdToDelete = userId; // Store the ID of the user to delete
+    document.getElementById("delete-dialog-users").classList.remove("hidden");
+    document.getElementById("delete-dialog-users").classList.add("opacity-100");
+}
+
+function hideDeleteDialogUser() {
+    document.getElementById("delete-dialog-users").classList.add("hidden");
+    document.getElementById("delete-dialog-users").classList.remove("opacity-100");
+}
+
+// button sa first delete modal- confirm
+function showConfirmDeleteModalUsers() {
+    document.getElementById('delete_user_id').value = userIdToDelete;
+    hideDeleteDialogProducts();
+    document.getElementById("confirm-delete-modal-users").classList.remove("hidden");
+}
+
+
+// button  sa confirm delete pagka input ng password
+function hideConfirmDeleteModalUsers() {
+    document.getElementById('password').value = "";
+    document.getElementById("confirm-delete-modal-users").classList.add("hidden");
+}
+

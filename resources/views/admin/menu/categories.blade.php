@@ -10,10 +10,10 @@
         </div>
     </div>
 
-    <div class="bg-white shadow-sm h-auto mb-10 py-5 px-7 rounded-lg ">
+    <div class="h-auto py-5 mb-10 bg-white rounded-lg shadow-sm px-7 ">
         <div class="flex items-center justify-between">
             <input type="text" placeholder="Search for category..."
-                class="p-3 h-10 w-64 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100 border border-gray-200 text-sm text-gray-500 rounded-lg"
+                class="w-64 h-10 p-3 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                 id="category_search" autocomplete="off" onkeyup="filterCategories()" />
 
             <!--ADD BUTTON-->
@@ -29,17 +29,17 @@
             <div id="error-message" class="flex items-center justify-center">
                 <div class="relative px-4 py-2 w-[500px] text-center mt-3 text-red-700 bg-red-100 border border-red-400 rounded"
                     role="alert">
-                    <span class="block sm:inline text-sm">{{ session('error') }}</span>
+                    <span class="block text-sm sm:inline">{{ session('error') }}</span>
                 </div>
             </div>
         @endif
 
         {{-- ORDERS TABLE --}}
-        <div class="flex items-start my-7  justify-center rounded-lg w-full">
+        <div class="flex items-start justify-center w-full rounded-lg my-7">
             <div class="w-full ">
-                {{-- <table id="category_table" class="category_table w-full shadow rounded-lg table-auto"> --}}
-                <table id="category_table" class="category_table w-full shadow rounded-lg table-auto">
-                    <thead class="bg-slate-100 border-b-2 rounded-lg">
+                {{-- <table id="category_table" class="w-full rounded-lg shadow table-auto category_table"> --}}
+                <table id="category_table" class="w-full rounded-lg shadow table-auto category_table">
+                    <thead class="border-b-2 rounded-lg bg-slate-100">
                         <tr>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">No.</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Category Name</th>
@@ -50,17 +50,17 @@
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max"></th>
                         </tr>
                     </thead>
-                    <tbody class="text-center text-xs">
+                    <tbody class="text-xs text-center">
                         @foreach ($categories as $index => $category)
-                            <tr class="category_row border-b hover:bg-slate-50">
-                                <td class="py-3 px-5">
+                            <tr class="border-b category_row hover:bg-slate-50">
+                                <td class="px-5 py-3">
                                     {{ ($categories->currentPage() - 1) * $categories->perPage() + $loop->iteration }} </td>
-                                <td class="py-3 px-5"> {{ ucfirst($category->category_name) }} </td>
+                                <td class="px-5 py-3"> {{ ucfirst($category->category_name) }} </td>
                                 <td class="p-3">{{ ucfirst($category->description) }}</td>
-                                <td class="py-3 px-5">{{ ucfirst($category->type) }}</td>
-                                <td class="py-3 px-5">{{ ucfirst($category->beverage_type) }}</td>
-                                <td class="py-3 px-5">{{ $category->products_count }}</td>
-                                <td class="flex py-3 px-5 space-x-2 items-center justify-end">
+                                <td class="px-5 py-3">{{ ucfirst($category->type) }}</td>
+                                <td class="px-5 py-3">{{ ucfirst($category->beverage_type) }}</td>
+                                <td class="px-5 py-3">{{ $category->products_count }}</td>
+                                <td class="flex items-center justify-end px-5 py-3 space-x-2">
                                     <button onclick="showEditDialogCategories(this)" data-id="{{ $category->category_id }}"
                                         data-name="{{ $category->category_name }}"
                                         data-description="{{ $category->description }}" data-image="{{ $category->image }}"
@@ -79,7 +79,7 @@
                     </tbody>
                 </table>
                 <!-- No Categories Found Message -->
-                <div id="no-categories-message" class="hidden text-center text-red-500 mt-4">
+                <div id="no-categories-message" class="hidden mt-4 text-center text-red-500">
                     No categories found matching your search criteria.
                 </div>
 
@@ -96,27 +96,51 @@
     @include('admin.menu.modals.category.confirm-delete')
     @include('admin.menu.modals.category.delete-category')
     @include('admin.menu.modals.category.edit-category')
-    @include('admin.menu.modals.category.success-add')
-    @include('admin.menu.modals.category.success-delete')
-    @include('admin.menu.modals.category.success-edit')
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
             // success add modal
             @if (session('status_add'))
-                showAddedDialogCategories();
+                Swal.fire({
+                    title: "Success!",
+                    text: "{{ session('status_add') }}",
+                    icon: "success"
+                });
             @endif
 
 
             @if (session('status_edit'))
-                showEditedDialogCategories();
+                Swal.fire({
+                    title: "Success!",
+                    text: "{{ session('status_edit') }}",
+                    icon: "success"
+                });
             @endif
 
 
             @if (session('status_deleted'))
-                showDeletedDialogCategories();
+                Swal.fire({
+                    title: "Success!",
+                    text: "{{ session('status_deleted') }}",
+                    icon: "success"
+                });
             @endif
+
+            // @if (session('status_add'))
+            //     showAddedDialogCategories();
+            // @endif
+
+
+            // @if (session('status_edit'))
+            //     showEditedDialogCategories();
+            // @endif
+
+
+            // @if (session('status_deleted'))
+            //     showDeletedDialogCategories();
+            // @endif
 
         });
     </script>

@@ -15,12 +15,12 @@
     class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
     aria-label="Sidenav">
     <div
-        class="overflow-y-auto py-5 px-3 h-full border-r bg-gray-800 border-gray-700">
+        class="h-screen px-3 py-5 overflow-y-auto bg-gray-800 border-r border-gray-700">
         <!-- Caffeinated Logo -->
         <div class="flex items-center justify-center w-full mb-10">
             <img src="{{ asset('Assets/logo.png') }}" alt="Caffeinated Logo" class="h-10">
             <span class="flex items-center justify-start ml-2">
-                <p class="text-white font-medium text-base">Caffeinated</p>
+                <p class="text-base font-medium text-white">Caffeinated</p>
                 <p class="text-[#e0c2aa] font-bold ml-1 text-xl">POS</p>
             </span>
         </div>
@@ -29,7 +29,7 @@
                 <a href="{{ route('admin.dashboard') }}"
                     class="sidebar-link flex items-center p-2 text-sm font-normal rounded-lg {{ Route::is('admin.dashboard') ? 'bg-gray-700' : 'text-white hover:bg-gray-700' }} text-white hover:bg-gray-700 group">
                     <svg aria-hidden="true"
-                        class="w-6 h-6 transition duration-75 text-gray-400 group-hover:text-white"
+                        class="w-6 h-6 text-gray-400 transition duration-75 group-hover:text-white"
                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
                         <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
@@ -39,10 +39,10 @@
             </li>
             <li>
                 <button type="button" onclick="toggleDropdown()"
-                    class="flex items-center p-2 w-full text-sm font-normal rounded-lg transition duration-75 group text-white hover:bg-gray-700"
+                    class="flex items-center w-full p-2 text-sm font-normal text-white transition duration-75 rounded-lg group hover:bg-gray-700"
                     aria-controls="dropdown-pages" data-collapse-toggle="dropdown-pages">
                     <svg aria-hidden="true"
-                        class="flex-shrink-0 w-6 h-6 transition duration-75 text-gray-400 group-hover:text-white"
+                        class="flex-shrink-0 w-6 h-6 text-gray-400 transition duration-75 group-hover:text-white"
                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"
                             d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
@@ -67,13 +67,13 @@
                     </li>
                 </ul>
             </li>
-            <li>
+            {{-- <li>
                 <a href="{{ route('admin.inventory.show') }}"
                     class="sidebar-link flex items-center p-2 text-sm font-normal rounded-lg {{ Route::is('admin.inventory.show') ? 'bg-gray-700' : 'text-white hover:bg-gray-700' }} {{ Route::is('admin.inventory.categories') ? 'bg-gray-700' : 'text-white hover:bg-gray-700' }} text-white  hover:bg-gray-700 group">
                     <img src="{{ asset('Assets/inventory.png') }}" alt="Menu Icon" class="w-5 opacity-60 hover:opacity-100">
                     <span class="ml-3">Inventory</span>
                 </a>
-            </li>
+            </li> --}}
             <li>
                 <a href="{{ route('admin.orders.all') }}"
                     class="sidebar-link flex items-center p-2 text-sm font-normal  rounded-lg {{ Route::is('admin.orders.all') ? 'bg-gray-700' : 'text-white hover:bg-gray-700' }} {{ Route::is('admin.orders.walk-in') ? 'bg-gray-700' : 'text-white hover:bg-gray-700' }} {{ Route::is('admin.orders.online-orders') ? 'bg-gray-700' : 'text-white hover:bg-gray-700' }} text-white hover:bg-gray-700 group">
@@ -88,13 +88,13 @@
                     <span class="ml-3">Reports</span>
                 </a>
             </li>
-            <li>
+            {{-- <li>
                 <a href="{{ route('admin.staffs.show') }}"
                     class="sidebar-link flex items-center p-2 text-sm font-normal rounded-lg {{ Route::is('admin.staffs.show') ? 'bg-gray-700' : 'text-white hover:bg-gray-700' }} text-white hover:bg-gray-700 group">
                     <img src="{{ asset('Assets/staff-management.png') }}" alt="Order Tracking Icon" class="h-5 opacity-60 hover:opacity-100">
                     <span class="ml-3">Staff Management</span>
                 </a>
-            </li>
+            </li> --}}
 
         </ul>
         <ul class="pt-5 mt-5 space-y-2 border-t border-gray-700">
@@ -116,9 +116,9 @@
     </div>
 
     <div
-        class="hidden absolute bottom-0 left-0 justify-start p-4 w-full lg:flex bg-gray-800 z-20 border-r border-gray-700">
+        class="absolute bottom-0 left-0 z-20 justify-start hidden w-full p-4 bg-gray-800 border-r border-gray-700 lg:flex">
         <a href="{{ route('admin.settings') }}"
-            class="sidebar-link flex items-center p-2 text-sm font-normal rounded-lg text-white hover:bg-gray-700 group">
+            class="flex items-center p-2 text-sm font-normal text-white rounded-lg sidebar-link hover:bg-gray-700 group">
             <img src="{{ asset('Assets/settings.png') }}" alt="Order Tracking Icon" class="h-5 opacity-60 hover:opacity-100">
             <span class="ml-3">Settings</span>
         </a>

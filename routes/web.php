@@ -69,55 +69,62 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
                 return redirect()->route('admin.menu.categories');
             })->name('menu.categories');
 
+            // Categories Routes
+            Route::prefix('categories')->group(function () {
 
-            // Route to display the categories and products
-            Route::get('/categories', [MenuController::class, 'showCategories'])->name('categories');
-            Route::get('/products', [MenuController::class, 'showProducts'])->name('products');
+                Route::get('/', [MenuController::class, 'showCategories'])->name('categories');
+                // Route to store a new category
+                Route::post('/add', [CategoryController::class, 'store'])->name('categories.store');
+                // Route to update a category
+                Route::put('/edit', [CategoryController::class, 'update'])->name('categories.update');
+                // Route to delete a category
+                Route::post('/delete', [CategoryController::class, 'delete'])->name('categories.delete');
+            });
 
-            // Route to store a new category
-            Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
-            // Route to update a category
-            Route::put('/categories', [CategoryController::class, 'update'])->name('categories.update');
-            // Route to delete a category
-            Route::post('/delete', [CategoryController::class, 'delete'])->name('categories.delete');
 
-            // Route to store a new product
-            Route::post('/products', [ProductController::class, 'store'])->name('products.store');
-            // Route to update a product
-            Route::put('/products', [ProductController::class, 'update'])->name('products.update');
-            // Route to delete a product
-            Route::delete('/products/{id}', [ProductController::class, 'delete'])->name('products.delete');
+            // Products Routes
+            Route::prefix('products')->group(function () {
+
+                Route::get('/', [MenuController::class, 'showProducts'])->name('products');
+                // Route to store a new product
+                Route::post('/add', [ProductController::class, 'store'])->name('products.store');
+                // Route to update a product
+                Route::put('/edit', [ProductController::class, 'update'])->name('products.update');
+                // Route to delete a product
+                // Route::delete('/products/{id}', [ProductController::class, 'delete'])->name('products.delete');
+                Route::post('/delete', [ProductController::class, 'delete'])->name('products.delete');
+            });
         });
 
 
         // Inventory routes
-        Route::prefix('inventory')->group(function () {
+        // Route::prefix('inventory')->group(function () {
 
-            Route::get('/', function () {
-                return redirect()->route('admin.inventory.show');
-            });
+        //     Route::get('/', function () {
+        //         return redirect()->route('admin.inventory.show');
+        //     });
 
-            // Categories
-            Route::prefix('categories')->group(function () {
-                Route::get('/', [InventoryController::class, 'showCategories'])->name('inventory.categories');
-                Route::post('/add', [InventoryCategoryController::class, 'store'])->name('inventory.category.add');
-                Route::post('/edit', [InventoryCategoryController::class, 'update'])->name('inventory.category.update');
-                Route::post('/delete', [InventoryCategoryController::class, 'destroy'])->name('inventory.category.destroy');
-            });
+        //     // Categories
+        //     Route::prefix('categories')->group(function () {
+        //         Route::get('/', [InventoryController::class, 'showCategories'])->name('inventory.categories');
+        //         Route::post('/add', [InventoryCategoryController::class, 'store'])->name('inventory.category.add');
+        //         Route::post('/edit', [InventoryCategoryController::class, 'update'])->name('inventory.category.update');
+        //         Route::post('/delete', [InventoryCategoryController::class, 'destroy'])->name('inventory.category.destroy');
+        //     });
 
-            // Items
-            Route::prefix('items')->group(function () {
-                Route::get('/', [InventoryController::class, 'showItems'])->name('inventory.show');
-                Route::post('/add', [ItemController::class, 'store'])->name('inventory.item.store');
-                Route::post('/update', [ItemController::class, 'update'])->name('inventory.item.update');
-                Route::post('/delete', [ItemController::class, 'destroy'])->name('inventory.item.destroy');
-            });
-        });
+        //     // Items
+        //     Route::prefix('items')->group(function () {
+        //         Route::get('/', [InventoryController::class, 'showItems'])->name('inventory.show');
+        //         Route::post('/add', [ItemController::class, 'store'])->name('inventory.item.store');
+        //         Route::post('/update', [ItemController::class, 'update'])->name('inventory.item.update');
+        //         Route::post('/delete', [ItemController::class, 'destroy'])->name('inventory.item.destroy');
+        //     });
+        // });
 
-        // Staff Management routes
-        Route::prefix('staffs')->group(function () {
-            Route::get('/', [StaffController::class, 'index'])->name('staffs.show');
-        });
+        // // Staff Management routes
+        // Route::prefix('staffs')->group(function () {
+        //     Route::get('/', [StaffController::class, 'index'])->name('staffs.show');
+        // });
 
         // Order Tracking
         Route::prefix('order-tracking')->group(function () {
@@ -132,7 +139,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
             Route::get('/', [UserController::class, 'showUsers'])->name('users.show');
             Route::post('/add', [UserController::class, 'store'])->name('user.add');
             Route::post('/edit', [UserController::class, 'update'])->name('user.update');
-            Route::post('/deactivate', [UserController::class, 'deactivate'])->name('user.deactivate');
+            Route::post('/delete', [UserController::class, 'deactivate'])->name('user.delete');
         });
 
 

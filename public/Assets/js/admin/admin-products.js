@@ -157,12 +157,15 @@ function hideDeleteDialogProducts() {
 
 // button sa first delete modal- confirm
 function showConfirmDeleteModalProducts() {
+    document.getElementById('delete_product_id').value = productIdToDelete;
     hideDeleteDialogProducts();
     document.getElementById("confirm-delete-modal-products").classList.remove("hidden");
 }
 
+
 // button  sa confirm delete pagka input ng password
 function hideConfirmDeleteModalProducts() {
+    document.getElementById('password').value = "";
     document.getElementById("confirm-delete-modal-products").classList.add("hidden");
 }
 

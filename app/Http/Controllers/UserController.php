@@ -49,7 +49,7 @@ class UserController extends Controller
             if ($user) {
                 // send the credentials to the respective email
                 Mail::to($user->email)->send(new WelcomeMail($user->first_name, $user->email, $generatedPassword));
-                return redirect()->back()->with('success', 'User added successfully.');
+                return redirect()->back()->with('status_add', 'User added successfully.');
             } else {
                 return redirect()->back()->with('error', 'Creation of account failed.');
             }
@@ -65,57 +65,56 @@ class UserController extends Controller
     public function update(Request $request)
     {
         try {
-            dd('on going development');
             $request->validate([
                 'user_id' => 'required|exists:users,id',
-                'last_name' => 'required|max:255|regex:/^[A-Za-z\s.-]+$/',
-                'first_name' => 'required|string|max:255|regex:/^[A-Za-z\s.-]+$/',
-                'email' => 'required|email|max:255',
                 'role' => 'required|in:admin,staff',
+                'status' => 'required|in:active,deactivated',
             ]);
 
             $user = User::find($request->user_id);
 
             $isUpdated = $user->update([
-                'first_name' => $request->firstname,
-                'last_name' => $request->lastname,
-                'email' => $request->email,
                 'role' => $request->role,
+                'status' => $request->status,
             ]);
 
+
             if ($isUpdated) {
-                return redirect()->back()->with('success_edit', 'User details updated successfully.');
+                return redirect()->back()->with('status_edit', 'User details updated successfully.');
             } else {
                 return redirect()->back()->with('error', 'Failed to update user details.');
             }
-        } catch (ValidationException $th) {
-            dd($th);
+        } catch (ValidationException $e) {
+            // Handle validation errors
+            return redirect()->back()->with('error',  $e->getMessage());
         }
     }
 
 
     /**
-     *  Deactivate an account
+     *  Delete an account
      */
-    public function deactivate(Request $request)
+    public function delete(Request $request)
     {
         $request->validate([
-            'delete_user_id' => 'required|exists:items,id',
+            'delete_user_id' => 'required|exists:users,id',
             'password' => 'required'
         ]);
 
         if (Hash::check($request->password, Auth::user()->password)) {
-            $userToDeactivate = User::find($request->delete_user_id);
+            $userToDelete = User::find($request->delete_user_id);
 
-            if ($userToDeactivate) {
-                $userToDeactivate->delete();
-                $userToDeactivate->update([
-                    'is_activated' => 0,
+            if ($userToDelete) {
+
+                $userToDelete->update([
+                    'status' => 'deactivated',
                 ]);
-                return redirect()->back()->with('status_deleted', 'User deactivated successfully');
+                $userToDelete->delete();
+
+                return redirect()->back()->with('status_deleted', 'User deleted successfully');
             }
 
-            return redirect()->back()->with('error', 'Failed to deactivate the user');
+            return redirect()->back()->with('error', 'Failed to delete user');
         }
 
         return redirect()->back()->with('error', 'Password don\'t match.');
