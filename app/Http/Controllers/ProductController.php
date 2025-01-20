@@ -26,9 +26,10 @@ class ProductController extends Controller
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
-            dd($e);
+
             Log::error('Validation failed: ', $e->validator->errors()->toArray());
-            throw $e; // or handle the exception as needed
+           // throw $e; // or handle the exception as needed
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         if ($request->hasFile('image')) {
@@ -56,7 +57,8 @@ class ProductController extends Controller
     // Update an existing product in the database
     public function update(Request $request)
     {
-        try {
+        try
+        {
             $id = $request->input('editProductId');
 
             // Validate the request
@@ -97,7 +99,8 @@ class ProductController extends Controller
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Validation failed: ', $e->validator->errors()->toArray());
-            throw $e; // or handle the exception as needed
+           // throw $e; // or handle the exception as needed
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
@@ -129,7 +132,7 @@ class ProductController extends Controller
             return redirect()->back()->with('error', "Password dont match.");
 
         } catch (\Throwable $th) {
-            dd($th);
+            return redirect()->back()->with('error', $th->getMessage());
         }
     }
 

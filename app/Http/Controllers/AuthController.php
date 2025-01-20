@@ -55,6 +55,15 @@ class AuthController extends Controller
      */
     public function displayLoginForm()
     {
+        if (auth()->check()) {
+
+            $user = auth()->user(); // Get the authenticated user
+
+            return $user->role === 'admin'
+                ? redirect()->route('admin.dashboard') // if admin
+                : redirect()->route('menu.show');
+        }
+
         return view('auth.login');
     }
 

@@ -62,7 +62,6 @@
             <div class="w-full">
                 @yield('admin_content')
             </div>
-
         </div>
     </div>
 </body>

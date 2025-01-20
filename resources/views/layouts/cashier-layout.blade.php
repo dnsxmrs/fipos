@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@100;200;300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta lang="en">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,7 +43,7 @@
             {{-- <x-sidebar.cashier-sidebar />
         </div> --}}
 
-        <div class="flex w-full px-5 mt-20 mx-10">
+        <div class="flex w-full px-5 mx-10 mt-20">
             <!-- Scrollable Cashier Content -->
             <div class="overflow-y-auto">
                 @yield('cashier_content')

@@ -50,8 +50,8 @@
                                 <td class="px-5 py-3">{{ ucfirst($user->role) }}</td>
                                 <td class="px-5 py-3">
                                     <span
-                                        class="text-xs {{ $user->status === 'active' ? 'text-green-500' : 'text-red-500' }} rounded-md px-2 py-1"
-                                        style="background-color: {{ $user->status === 'active' ? '#DCF8F0' : '#FFDFDF' }};">
+                                        class="text-xs {{ $user->status === 'activated' ? 'text-green-500' : 'text-red-500' }} rounded-md px-2 py-1"
+                                        style="background-color: {{ $user->status === 'activated' ? '#DCF8F0' : '#FFDFDF' }};">
                                         {{ ucfirst($user->status) }}
                                     </span>
                                 </td>
