@@ -9,7 +9,9 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
-
+use Illuminate\Support\Facades\Http;
+use Ixudra\Curl\Facades\Curl;
+use Illuminate\Support\Facades\Session;
 use function Laravel\Prompts\error;
 use function Pest\Laravel\json;
 
@@ -87,11 +89,14 @@ class OrderController extends Controller
     public function showOrders()
     {
         try {
-
             // Get the dine-in and take-out orders along with their associated products
             $orders = Order::with('products.product')->paginate(10);
 
-            return view('cashier.orders.all-orders', compact('orders'));
+            Log::info($orders);
+
+            $online_orders = $this->fetchOrders();
+
+            return view('cashier.orders.all-orders', compact('orders', 'online_orders'));
 
         } catch (\Throwable $th) {
 
@@ -132,6 +137,72 @@ class OrderController extends Controller
      */
     public function showOnlineOrders()
     {
-        return view('cashier.orders.online-orders');
+        try {
+            $url = env('GET_ORDERS_FROM_WEB');
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . env('POS_API_KEY'), // Include the Authorization Bearer token
+                // 'X-CSRF-TOKEN' => $csrfToken, // Include the CSRF token if necessary
+            ])->send('GET', $url);
+
+            // Decode the JSON response into an array
+            $responseData = json_decode($response->body(), true);
+
+            if (isset($responseData['data'])) {
+                $ordersData = $responseData['data']; // Access the 'data' key
+                Log::info('Orders data:', $ordersData);
+
+                return view('cashier.orders.online-orders', compact('ordersData'));
+
+                // Return or process the orders as needed
+                // return response()->json($ordersData);
+            } else {
+                Log::warning('Data key not found in response');
+                return response()->json(['error' => 'Data key not found in response'], 500);
+            }
+
+        } catch (\Throwable $th) {
+            Log::error('Error fetching orders: ' . $th->getMessage());
+            dd($th);
+            return response()->json(['error' => 'Error fetching orders'], 500);
+        }
+    }
+
+
+    public function fetchOrders()
+    {
+        try {
+            $url = env('GET_ORDERS_PAGINATE');
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . env('POS_API_KEY'), // Include the Authorization Bearer token
+                // 'X-CSRF-TOKEN' => $csrfToken, // Include the CSRF token if necessary
+            ])->send('GET', $url);
+
+            // Decode the JSON response into an array
+            $responseData = json_decode($response->body(), true);
+
+            if (isset($responseData['data'])) {
+                $ordersData = $responseData['data']; // Access the 'data' key
+                Log::info('Orders data:', $ordersData);
+
+                // Return or process the orders as needed
+                return response()->json($ordersData);
+            } else {
+                Log::warning('Data key not found in response');
+                return response()->json(['error' => 'Data key not found in response'], 500);
+            }
+
+        } catch (\Throwable $th) {
+            Log::error('Error fetching orders: ' . $th->getMessage());
+            return response()->json(['error' => 'Error fetching orders'], 500);
+        }
+
+    }
+
+    public function getOrders()
+    {
+        $orders = Order::with('products.product')->get();
+        return response()->json($orders);
     }
 }
