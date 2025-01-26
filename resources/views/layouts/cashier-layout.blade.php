@@ -6,6 +6,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@100;200;300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
@@ -43,7 +44,7 @@
             {{-- <x-sidebar.cashier-sidebar />
         </div> --}}
 
-        <div class="flex w-full px-5 mx-10 mt-20">
+        <div class="flex w-full px-5 mx-5 mt-20">
             <!-- Scrollable Cashier Content -->
             <div class="overflow-y-auto">
                 @yield('cashier_content')

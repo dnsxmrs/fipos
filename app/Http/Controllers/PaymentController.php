@@ -71,6 +71,8 @@ class PaymentController extends Controller
                 Log::error("orderItems is missing or null in the request data.");
             }
 
+
+
             // store the order
             $storeOrder = new OrderController();
             $orderCreated = $storeOrder->storeOrder(new Request($orders));
@@ -164,7 +166,7 @@ class PaymentController extends Controller
 
         // Perform the HTTP request to push order to KDS
         try {
-            $response = Http::send('post', env('KDS_URL'), [
+            $response = Http::send('post', 'http://127.0.0.1:8002/api/orders-post', [
                 'json' => $pushOrder,
             ]);
 
@@ -404,7 +406,6 @@ class PaymentController extends Controller
             }
 
             return redirect()->route('menu.show');
-        }
-
+        } 
     }
 }

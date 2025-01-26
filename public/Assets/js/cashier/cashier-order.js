@@ -9,6 +9,7 @@ const closePaymentModalBtn = document.getElementById("closeModal");
 const closeCashModalBtn = document.getElementById("closeCashModal");
 const submitCashBtn = document.getElementById("submitCash");
 const closeSuccessModalBtn = document.getElementById("closeSuccessModal");
+const cashAmountInput = document.getElementById("cash-amount");
 
 // for computations
 let subTotal = 0.0;
@@ -18,6 +19,7 @@ const tax = 0.12;
 let discountType;
 let discountAmount = 0.0;
 let modeOfPayment = null;
+let change = 0.0;
 
 /**
  *  ADD ORDERS TO THE RIGHT PANEL
@@ -201,7 +203,6 @@ function processCashPayment() {
         // assign value to the mode of payment
         modeOfPayment = document.getElementById("openCashModal").value;
         // get the cash amount input
-        const cashAmountInput = document.getElementById("cash-amount");
         const cashAmount = parseFloat(cashAmountInput.value.trim());
         // assign value to the mode of payment
         modeOfPayment = document.getElementById("openCashModal").value;
@@ -215,7 +216,7 @@ function processCashPayment() {
 
         if (cashAmount >= payableAmount) {
             // subtract the payable to the cash amount
-            let change = cashAmount - payableAmount;
+            change = cashAmount - payableAmount;
             // document.getElementById("cash-amount-text").textContent = `₱ ${cashAmount.toFixed(2)}`;
             // document.getElementById("cash-change").textContent = `₱ ${change.toFixed(2)}`;
 
@@ -235,6 +236,140 @@ function processCashPayment() {
         return;
     }
 }
+
+function showReceipt() {
+    // hide cashmodal
+    cashModal.classList.add("hidden");
+    // populate the receipt
+    populateReceipt();
+    document.getElementById("receiptModal").classList.remove("hidden");
+}
+
+function populateReceipt() {
+    // Get the receipt container
+    const cashvalue = parseFloat(cashAmountInput.value.trim());
+    const receiptContainer = document.getElementById("receipt-container");
+    receiptContainer.innerHTML = ""; // Clear the previous receipt
+
+    // Add the receipt items
+    Object.keys(orderItems).forEach((name) => {
+        const item = orderItems[name];
+        const itemRow = `
+            <div class="flex justify-between text-sm text-gray-600 mb-2">
+                <span>${item.quantity}</span>
+                <span>${name}</span>
+                <span>₱ ${item.price.toFixed(2)}</span>
+            </div>`;
+        receiptContainer.insertAdjacentHTML("beforeend", itemRow);
+    });
+
+    // Update the subtotal, discount, and total prices
+    document.getElementById("subTotal").textContent = `₱ ${subTotal.toFixed(2)}`;
+    document.getElementById("discount").textContent = `₱ ${discountAmount.toFixed(2)}`;
+    document.getElementById("totalPrice").textContent = `₱ ${payableAmount.toFixed(2)}`;
+    document.getElementById("cash").textContent = `₱ ${cashvalue.toFixed(2)}`;
+    document.getElementById("change").textContent = `₱ ${change.toFixed(2)}`;
+}
+
+// Add event listener to the Print button
+document.getElementById("printReceipt").addEventListener("click", function () {
+    printReceipt();
+    reloadPage();
+});
+// Add event listener to the Print button
+document.getElementById("printOnlineReceipt").addEventListener("click", function () {
+    printReceipt();
+    reloadPage();
+});
+
+function printReceipt() {
+    // Select the receipt modal content
+    const receiptContent = document.getElementById("receipt-content").innerHTML;
+
+    // Open a new window for printing
+    const printWindow = window.open("", "_blank");
+    printWindow.document.open();
+
+    // Write receipt content to the new window
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Receipt</title>
+            <style>
+                body {
+                    font-family: Poppins, sans-serif;
+                    margin: 20px;
+                }
+                h2, p {
+                    text-align: center;
+                }
+
+                .receipt {
+                    border: 1px solid #ddd;
+                    padding: 10px;
+                    margin: 10px auto;
+                    max-width: 400px;
+                }
+                .flex {
+                    display: flex;
+                    justify-content: space-between;
+                }
+                .bold {
+                    font-weight: bold;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="receipt">
+                ${receiptContent}
+            </div>
+        </body>
+        </html>
+    `);
+
+    printWindow.document.close();
+    printWindow.focus();
+
+    // Trigger the print dialog
+    printWindow.print();
+
+    // Close the print window after printing
+    printWindow.onafterprint = () => printWindow.close();
+}
+
+
+function showOnlineReceipt() {
+    // hide cashmodal
+    cashModal.classList.add("hidden");
+    // populate the receipt
+    populateOnlineReceipt();
+    document.getElementById("onlineReceiptModal").classList.remove("hidden");
+}
+
+function populateOnlineReceipt() {
+    // Get the receipt container
+    const cashvalue = parseFloat(cashAmountInput.value.trim());
+    const receiptContainer = document.getElementById("online-receipt-container");
+    receiptContainer.innerHTML = ""; // Clear the previous receipt
+
+    // Add the receipt items
+    Object.keys(orderItems).forEach((name) => {
+        const item = orderItems[name];
+        const itemRow = `
+            <div class="flex justify-between text-sm text-gray-600 mb-2">
+                <span>${item.quantity}</span>
+                <span>${name}</span>
+                <span>₱ ${item.price.toFixed(2)}</span>
+            </div>`;
+        receiptContainer.insertAdjacentHTML("beforeend", itemRow);
+    });
+
+    // Update the subtotal, discount, and total prices
+    document.getElementById("onlineSubTotal").textContent = `₱ ${subTotal.toFixed(2)}`;
+    document.getElementById("onlineDiscount").textContent = `₱ ${discountAmount.toFixed(2)}`;
+    document.getElementById("onlineTotalPrice").textContent = `₱ ${payableAmount.toFixed(2)}`;
+}
+
 
 /***
  *  Filter Menu
@@ -315,13 +450,23 @@ function populateCashModal() {
  * Success Message
  */
 function success() {
+<<<<<<< HEAD
 
+=======
+    Swal.fire({
+        title: "Successful Payment!",
+        text: "Successfully processed the payment and placed the order.",
+        icon: "success"
+    }).then(() => {
+        showReceipt();
+        // reloadPage(); // Reload the page after the Swal alert
+    });
+>>>>>>> 5b1dc92d4694d914b8bbeb2eb3c15e73553726d4
 
     // cashModal.classList.add("hidden"); // Hide cash modal
     // paymentSuccessModal.classList.remove("hidden"); // Show success modal
     // reloadPage();
 }
-
 
 /**
  * Reload the page

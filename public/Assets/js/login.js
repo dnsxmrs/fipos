@@ -61,9 +61,7 @@ passwordField.addEventListener("input", () => validatePassword());
 function validateEmail() {
     const emailValue = emailField.value.trim();
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/;
-
-    console.log("Validating email:", emailValue); // Debugging log
-
+    
     const errorDisplay = document.getElementById("email-error"); // Get the error message div
 
     if (emailValue === "") {
@@ -90,8 +88,6 @@ function validateEmail() {
 
 function validatePassword() {
     const passwordValue = passwordField.value.trim();
-
-    console.log("Validating password:", passwordValue); // Debugging log
 
     const errorDisplay = document.getElementById("password-error"); // Get the error message div
 
