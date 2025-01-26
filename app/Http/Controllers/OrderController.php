@@ -138,7 +138,7 @@ class OrderController extends Controller
     public function showOnlineOrders()
     {
         try {
-            $url = env('GET_ORDERS_FROM_WEB');
+            $url = env('GET_ORDERS_PAGINATE');
 
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . env('POS_API_KEY'), // Include the Authorization Bearer token
