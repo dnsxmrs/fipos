@@ -56,10 +56,13 @@ Route::middleware(['auth', 'preventBackHistory'])->group(function () {
 
             // routes for sidebar
             Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-            Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
+            Route::get('/payments', [PaymentController::class, 'showPayments'])->name('payments');
             Route::get('/order-tracking', [AdminController::class, 'orders'])->name('order-tracking');
             Route::get('/audit-trails', [AdminController::class, 'audit'])->name('audit-trails');
             Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
+
+            // Payments
+            Route::get('/admin/payments/export', [PaymentController::class, 'export'])->name('payments.export');
 
             // Menu Management Routes
             Route::prefix('menu')->name('menu.')->group(function () {

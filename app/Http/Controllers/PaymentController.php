@@ -11,6 +11,7 @@ use Ixudra\Curl\Facades\Curl;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Response;
 
 class PaymentController extends Controller
 {
@@ -43,6 +44,54 @@ class PaymentController extends Controller
             return response()->json(['errors' => $e->errors()], 422);
         }
     }
+
+    /**
+     * Show the payments
+     */
+    public function showPayments()
+    {
+        $payments = Payment::with(['order', 'order.user'])->paginate(10); // Eager loading
+
+        return view('admin.reports.reports', compact('payments'));
+    }
+
+    /**
+     *  Export the payments as csv
+     */
+    public function export()
+    {
+        $payments = Payment::with(['order.user'])->get();
+
+        $csvFileName = 'payments_' . date('Y-m-d') . '.csv';
+        $headers = [
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=$csvFileName",
+            "Pragma" => "no-cache",
+            "Expires" => "0",
+        ];
+
+        $handle = fopen('php://output', 'w');
+
+        // Add CSV headers
+        fputcsv($handle, ['Order Number', 'Amount', 'Description', 'Issued By', 'Mode of Payment']);
+
+        foreach ($payments as $payment) {
+            fputcsv($handle, [
+                $payment->order->order_number,
+                $payment->amount,
+                $payment->description,
+                $payment->order->user->first_name . ' ' . $payment->order->user->last_name,
+                $payment->mode_of_payment,
+            ]);
+        }
+
+        fclose($handle);
+
+        return Response::stream(function () use ($handle) {
+            fclose($handle);
+        }, 200, $headers);
+    }
+
 
 
 
@@ -181,7 +230,6 @@ class PaymentController extends Controller
                     'message' => $response->body(),
                 ]);
             }
-
         } catch (\Exception $e) {
             \Log::error('Error syncing with OOS', [
                 'error' => $e->getMessage(),
@@ -402,7 +450,6 @@ class PaymentController extends Controller
                 return response()->json([
                     'message' => 'Unsuccessful to save payment'
                 ], 400);
-
             }
 
             return redirect()->route('menu.show');

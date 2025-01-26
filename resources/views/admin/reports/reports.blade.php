@@ -17,6 +17,11 @@
                     class="w-64 h-10 p-3 text-sm text-gray-500 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
                     id="category_search" onkeyup="filterCategories()" />
             </form>
+            <!-- Export Csv button -->
+            <a href="{{ route('payments.export') }}"
+                class="block text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                Export CSV
+            </a>
         </div>
 
         {{-- ORDERS TABLE --}}
@@ -26,18 +31,34 @@
                 <table id="category_table" class="w-full rounded-lg shadow table-auto category_table">
                     <thead class="border-b-2 rounded-lg bg-slate-100">
                         <tr>
-                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Reference</th>
-                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Customer</th>
-                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">User</th>
-                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Date </th>
-                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Total</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Order Number</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Amount</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Description</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Issued By</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Mode of Payment </th>
                         </tr>
                     </thead>
+                    <tbody class="bg-white">
+                        @foreach ($payments as $payment)
+                            <tr class="text-center">
+                                <td class="p-3 text-sm tracking-wide">{{ $payment->order->order_number }}</td>
+                                <td class="p-3 text-sm tracking-wide">{{ $payment->amount }}</td>
+                                <td class="p-3 text-sm tracking-wide">{{ $payment->description }}</td>
+                                <td class="p-3 text-sm tracking-wide">
+                                    {{ $payment->order->user->first_name }} {{ $payment->order->user->last_name }}
+                                </td>
+                                <td class="p-3 text-sm tracking-wide">{{ $payment->mode_of_payment }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
 
                 </table>
-                <!-- No Categories Found Message -->
-                <div id="no-categories-message" class="hidden mt-4 text-center text-red-500">
-                    No record found matching your search criteria.
+                <div id="no-products-message" class="hidden mt-4 text-center text-red-500">
+                    No payments found matching your search criteria.
+                </div>
+
+                <div class="mt-5">
+                    {{ $payments->links() }}
                 </div>
 
 
