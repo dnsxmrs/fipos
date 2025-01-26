@@ -40,7 +40,12 @@ class OrderController extends Controller
             ]);
 
             // generate random string for order number
-            $orderNumber = 'CAF' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 6));
+
+            $orderNumber = '';
+            do {
+                $orderNumber = 'CAF' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 6));
+            } while (Order::where('order_number', $orderNumber)->exists());
+
 
             // create the order record
             $createdOrder = Order::create([

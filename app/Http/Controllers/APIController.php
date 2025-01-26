@@ -33,68 +33,64 @@ class APIController extends Controller
     }
 
     public function statusUpdate(Request $request)
-{
-    // Determine the request method
-    $method = $request->method();
-
-    // Log incoming request
-    Log::info('Received status update request', [
-        'request_method' => $method,
-        'request_data' => $request->all(),
-    ]);
-
-    try {
-        // Validate the incoming request
-        $validatedData = $request->validate([
-            'order_id' => 'required|integer|exists:orders,id',
-            'order_number' => 'required|string',
-            'status' => 'required|string|in:pending,preparing,ready,completed,cancelled',
-        ]);
-
-        Log::info('Validated status update request', [
-            'validated_data' => $validatedData,
-        ]);
-
-        // Find the order in the database using order_id
-        $order = Order::find($validatedData['order_id']);
-
-        // Update the order status
-        $order->status = $validatedData['status'];
-        $order->save();
-
-        // Log the successful update
-        Log::info('Order status updated successfully', [
-            'order_id' => $order->id,
-            'order_number' => $order->order_number,
-            'new_status' => $order->status,
-        ]);
-
-        // Return a success response
-        return response()->json([
-            'message' => 'Order status updated successfully',
-            'order_id' => $order->id,
-            'order_number' => $order->order_number,
-            'new_status' => $order->status,
-        ], 200);
-        // return response()->json([
-        //     'message' => 'Order status updated successfully',
-        //     'order_id' => $validatedData['order_id'],
-        //     'order_number' => $validatedData['order_number'],
-        //     'new_status' => $validatedData['status'],
-        // ], 200);
-    } catch (\Exception $e) {
-        // Log the error
-        Log::error('Failed to update order status', [
-            'error_message' => $e->getMessage(),
+    {
+        // Log incoming request
+        Log::info('Received status update request', [
+            'request_method' => $request->method,
             'request_data' => $request->all(),
         ]);
 
-        // Return an error response
-        return response()->json([
-            'message' => 'Failed to update order status',
-            'error' => $e->getMessage(),
-        ], 500);
-    }
-}
+        try {
+            // Validate the incoming request
+            $validatedData = $request->validate([
+                'order_id' => 'required|integer|exists:orders,id',
+                'order_number' => 'required|string',
+                'status' => 'required|string|in:pending,preparing,ready,completed,cancelled',
+            ]);
 
+            Log::info('Validated status update request', [
+                'validated_data' => $validatedData,
+            ]);
+
+            // Find the order in the database using order_id
+            $order = Order::where('order_number', $validatedData['order_number'])->first();
+
+            // Update the order status
+            $order->status = $validatedData['status'];
+            $order->save();
+
+            // Log the successful update
+            Log::info('Order status updated successfully', [
+                'order_id' => $order->id,
+                'order_number' => $order->order_number,
+                'new_status' => $order->status,
+            ]);
+
+            // Return a success response
+            return response()->json([
+                'message' => 'Order status updated successfully',
+                'order_id' => $order->id,
+                'order_number' => $order->order_number,
+                'new_status' => $order->status,
+            ], 200);
+            // return response()->json([
+            //     'message' => 'Order status updated successfully',
+            //     'order_id' => $validatedData['order_id'],
+            //     'order_number' => $validatedData['order_number'],
+            //     'new_status' => $validatedData['status'],
+            // ], 200);
+        } catch (\Exception $e) {
+            // Log the error
+            Log::error('Failed to update order status', [
+                'error_message' => $e->getMessage(),
+                'request_data' => $request->all(),
+            ]);
+
+            // Return an error response
+            return response()->json([
+                'message' => 'Failed to update order status',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }
