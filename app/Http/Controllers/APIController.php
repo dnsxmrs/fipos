@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class APIController extends Controller
@@ -14,7 +14,7 @@ class APIController extends Controller
         $method = $request->method();
 
         // log incoming request
-        \Log::info('Received upOrder request', [
+        Log::info('Received upOrder request', [
             'request_method' => $method,
             'request_data' => $request->all()
         ]);

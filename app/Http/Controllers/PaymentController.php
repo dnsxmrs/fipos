@@ -15,6 +15,23 @@ use Illuminate\Support\Facades\Response;
 
 class PaymentController extends Controller
 {
+    // declare a private variable that can store objects
+    private $cashlessOrders;
+    private $tempOrders;
+    private $cashlessExtractedOrder;
+    private $tempExtractedOrder;
+    private $paymentType;
+
+    // Constructor to initialize the variables if needed
+    public function __construct()
+    {
+        // Optionally initialize the variables here, or leave them uninitialized to be set later
+        // $this->cashlessOrders = null; // or any initial value, such as an empty array or object
+        // $this->tempOrders = null;
+        // $this->cashlessExtractedOrder = null;
+        // $this->tempExtractedOrder = null;
+        // $this->paymentType = null;
+    }
 
     /**
      * Validate the request
@@ -101,20 +118,21 @@ class PaymentController extends Controller
     public function payCash(Request $request)
     {
         try {
+            $this->paymentType = 'cash'; // Set the payment type to 'cash'
+
             // Validate the request and get orders data
             $orders = $this->validateRequest($request);
 
-
             Log::info(json_encode($orders));
             // Ensure 'orders' and 'orderItems' exist in the structure
-            if (isset($orders['orders']['orderItems']) && is_array($orders['orders']['orderItems']) && !empty($orders['orders']['orderItems'])) {
+            if (isset($orders['orderItems']) && is_array($orders['orderItems']) && !empty($orders['orderItems'])) {
                 // Loop through each item in 'orderItems' and append 'has_customization'
-                foreach ($orders['orders']['orderItems'] as &$orderItem) {
-                    $orderItem['has_customization'] = false;  // Example logic to append 'has_customization'
+                foreach ($orders['orderItems'] as &$orderItem) {
+                    // $orderItem['has_customization'] = false;  // Example logic to append 'has_customization'
                 }
-
+                Log::info('Updated Order Items: ', $orders);
                 // Log the updated order items to check if 'has_customization' was added
-                Log::info('Updated Order Items: ', $orders['orders']['orderItems']);
+                Log::info('lalala Updated Order Items: ', $orders['orderItems']);
             } else {
                 // Handle the case where 'orderItems' is missing or null
                 Log::error("orderItems is missing or null in the request data.");
@@ -166,7 +184,12 @@ class PaymentController extends Controller
                     ], 200);
                 }
 
+                Log::info('Pushing order to KDS', [
+                    'extractedOrder' => $extractedOrder,
+                    'orders' => $orders,
+                ]);
                 $this->pushOrder($extractedOrder, $orders);
+
 
                 return response()->json([
 
@@ -178,60 +201,120 @@ class PaymentController extends Controller
                 ], 200);
             }
         } catch (\Throwable $th) {
-            Log::error('Error occurred:', ['error' => $th->getMessage()]);
+            Log::error('An error occurred:', [
+                'message' => $th->getMessage(),
+                'file' => $th->getFile(),
+                'line' => $th->getLine(),
+                'stack_trace' => $th->getTraceAsString(),
+            ]);
         }
     }
 
-    public function pushOrder($extractedOrder, $orders)
+    public function pushOrder($extractedOrder, $orders = null)
     {
-        //get the order id
-        $order = Order::find($extractedOrder->id);
+        if ($this->paymentType == 'cashless') {
+            Log::info('inside cashless payment');
+            Log::info('Payment type', [
+                'type' => $this->paymentType,
+                // 'orders' => $orders,
+            ]);
+            Log::info('Pushing order to KDS push order', [
+                'extractedOrder' => $extractedOrder,
+                'orders' => $orders,
+            ]);
 
-        // get the order status
-        $order_status = $order->status;
+            $order = Order::find($extractedOrder);
 
-        // dd($orders); // Dump and die to inspect the structure of $orders
+            if (!$order) {
+                throw new \Exception('Order not found.');
+            }
 
+            $order_status = $order->status;
+            $order_number = $order->order_number;
+            $order_date = $order->created_at;
+            $order_time = $order->created_at;
 
-        $pushOrder = [
-            'order_id' => $extractedOrder->id,
-            'order_status' => $order_status,
-            'order_number' => $extractedOrder->order_number,
-            'order_date' => $extractedOrder->created_at,
-            'order_time' => $extractedOrder->created_at,
-            'order_items' => $orders['orderItems'],
-            'notes' => 'none',
-        ];
+            // get order items of order
+            $orderProducts = OrderProduct::where('order_id', $extractedOrder)
+                ->with('product')
+                ->get();
 
-        \Log::error('Pushing order to KDS', [
-            'order_id' => $extractedOrder->id,
-            'order_status' => $order_status,
-            'order_number' => $extractedOrder->order_number,
-            'order_date' => $extractedOrder->created_at,
-            'order_time' => $extractedOrder->created_at,
-            'order_items' => $orders['orderItems'],
+            $orderItems = [];
+            foreach ($orderProducts as $orderProduct) {
+                if ($orderProduct->product && $orderProduct->product->product_name) {
+                    $orderItems[] = [
+                        'name' => $orderProduct->product->product_name,
+                        'quantity' => (int) $orderProduct->quantity,
+                        'price' => (float) $orderProduct->price/$orderProduct->quantity
+                    ];
+                }
+            }
+
+            $pushOrder = [
+                'order_id' => $extractedOrder,
+                'order_status' => $order_status,
+                'order_number' => $order_number,
+                'order_date' => $order_date,
+                'order_time' => $order_time,
+                'order_items' => $orderItems,
+                'notes' => 'none',
+            ];
+        }
+        else {
+            Log::info('inside cash payment');
+            // Find the order in the databasase
+            $order = Order::find($extractedOrder->id);
+
+            if (!$order) {
+                Log::error('Order not found in the database.', ['order_id' => $extractedOrder->id]);
+                return response()->json(['error' => 'Order not found.'], 404);
+            }
+
+            // get the order status
+            $order_status = $order->status;
+            // dd($orders); // Dump and die to inspect the structure of $orders
+
+            $pushOrder = [
+                'order_id' => $extractedOrder->id,
+                'order_status' => $order_status,
+                'order_number' => $extractedOrder->order_number,
+                'order_date' => $extractedOrder->created_at,
+                'order_time' => $extractedOrder->created_at,
+                'order_items' => $orders['orderItems'],
+                'notes' => 'none',
+            ];
+        }
+
+        Log::info('Pushing order rrr to KDS', [
+            'pushorDER' => $pushOrder,
         ]);
-
 
         // Perform the HTTP request to push order to KDS
         try {
-            $response = Http::send('post', 'http://127.0.0.1:8002/api/orders-post', [
-                'json' => $pushOrder,
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . env('POS_API_KEY'), // Include the Authorization Bearer token
+                // 'X-CSRF-TOKEN' => $csrfToken, // Include the CSRF token if necessary
+            ])->send('post', env('KDS_URL'), [
+                'json' => $pushOrder, // Send data as JSON
             ]);
 
             if ($response->failed()) {
-                \Log::error('Failed to sync with OOS', [
+                Log::error('Failed to sync with OOS', [
                     'status' => $response->status(),
                     'message' => $response->body(),
+                    'headers' => $response->headers(),
+                    'request_payload' => $pushOrder, // Log the payload you sent
+                    'request_url' => env('KDS_URL'), // Log the target URL
                 ]);
             } else {
-                \Log::info('Successfully synced with OOS', [
+                Log::info('Successfully synced with OOS', [
                     'status' => $response->status(),
                     'message' => $response->body(),
+                    'headers' => $response->headers(),
                 ]);
             }
         } catch (\Exception $e) {
-            \Log::error('Error syncing with OOS', [
+            Log::error('Error syncing with OOS', [
                 'error' => $e->getMessage(),
             ]);
         }
@@ -246,6 +329,7 @@ class PaymentController extends Controller
     public function payCashless(Request $request)
     {
         try {
+            $this->paymentType = 'cashless'; // Set the payment type to 'cashless'
             // Validate and process request data
             $orders = $this->validateRequest($request);
 
@@ -355,6 +439,16 @@ class PaymentController extends Controller
 
                 $checkOutUrl = $response->data->attributes->checkout_url;
 
+                $this->tempOrders = $orders;
+                $this->tempExtractedOrder = $extractedOrder;
+
+                // log the stored orders
+                Log::info('Stored orders:', [
+                    'type' => $this->paymentType,
+                    'orders' => $this->tempOrders,
+                    'extractedOrder' => $this->tempExtractedOrder,
+                ]);
+
                 // Return with checkout url for redirection
                 return response()->json([
                     'success' => true,
@@ -374,7 +468,6 @@ class PaymentController extends Controller
         }
     }
 
-
     /**
      * Store payment to the database
      */
@@ -387,7 +480,6 @@ class PaymentController extends Controller
             'mode_of_payment' => 'required|in:cash,card,gcash,paymaya',
         ]);
 
-
         // create payment record
         $recordedPayment = Payment::create([
             'order_id' => $payment['order_id'],
@@ -396,8 +488,6 @@ class PaymentController extends Controller
             'mode_of_payment' => $payment['mode_of_payment'],
             'status' => 'paid'
         ]);
-
-
 
         return response()->json([
 
@@ -408,13 +498,13 @@ class PaymentController extends Controller
         ], 200);
     }
 
-
     /**
      * Handles successful payments
      */
     public function success()
     {
-
+        //
+        Log::info('Payment success callback');
         $sessionId = Session::get('session_id');
 
         $response = Curl::to('https://api.paymongo.com/v1/checkout_sessions/' . $sessionId)
@@ -451,6 +541,9 @@ class PaymentController extends Controller
                     'message' => 'Unsuccessful to save payment'
                 ], 400);
             }
+
+            $this->paymentType = 'cashless';
+            $this->pushOrder($orderId);
 
             return redirect()->route('menu.show');
         }
