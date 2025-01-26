@@ -406,6 +406,6 @@ class PaymentController extends Controller
             }
 
             return redirect()->route('menu.show');
-        } 
+        }
     }
 }

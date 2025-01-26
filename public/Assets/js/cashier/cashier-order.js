@@ -450,9 +450,6 @@ function populateCashModal() {
  * Success Message
  */
 function success() {
-<<<<<<< HEAD
-
-=======
     Swal.fire({
         title: "Successful Payment!",
         text: "Successfully processed the payment and placed the order.",
@@ -461,7 +458,6 @@ function success() {
         showReceipt();
         // reloadPage(); // Reload the page after the Swal alert
     });
->>>>>>> 5b1dc92d4694d914b8bbeb2eb3c15e73553726d4
 
     // cashModal.classList.add("hidden"); // Hide cash modal
     // paymentSuccessModal.classList.remove("hidden"); // Show success modal
