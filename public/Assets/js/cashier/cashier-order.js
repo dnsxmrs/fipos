@@ -231,7 +231,7 @@ function processCashPayment() {
     } catch (error) {
         alert("Please enter a valid number");
         console.log(error);
-        cashAmountInput.focus();
+        // cashAmountInput.focus();
         return;
     }
 }
@@ -315,13 +315,7 @@ function populateCashModal() {
  * Success Message
  */
 function success() {
-    Swal.fire({
-        title: "Successful Payment!",
-        text: "Successfully processed the payment and placed the order.",
-        icon: "success"
-    }).then(() => {
-        reloadPage(); // Reload the page after the Swal alert
-    });
+
 
     // cashModal.classList.add("hidden"); // Hide cash modal
     // paymentSuccessModal.classList.remove("hidden"); // Show success modal

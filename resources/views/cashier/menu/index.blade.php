@@ -100,17 +100,7 @@
                 </div>
             </div>
 
-            <div class="flex justify-between mt-8 ml-6 mr-8 text-sm">
-                <p>Add a Discount: </p>
-                <select
-                    class="w-50 h-[40px] text-center font-regular text-green-500 bg-white border border-green-500 hover:bg-gray-100 px-4 py-2 rounded-lg focus:outline-none focus:ring-0 focus:ring-green-500"
-                    id="discount-dropdown">
-                    <option value="none" selected>None</option>
-                    <option value="senior citizen">Senior Citizen</option>
-                    <option value="pwd">PWD</option>
-                </select>
-            </div>
-
+        
             <div class="flex justify-between mt-8 ml-6 mr-8 text-sm text-gray-200">
                 <button id="openModal"
                     class="w-full px-4 py-2 mb-5 text-center text-white bg-green-900 rounded-full font-regular hover:bg-green-600">
@@ -264,7 +254,8 @@
                 .then(data => {
                     console.log('Order submitted successfully:', data);
 
-                    success();
+
+                    // success();
 
                     setTimeout(() => {
                         // Redirect to menu page
