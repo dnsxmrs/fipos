@@ -59,7 +59,7 @@
         </div>
 
         <div class="mt-5">
-            {{ $ordersData['links'] }}
+            {{-- {{ $ordersData['links'] }} --}}
         </div>
     </div>
 @endsection
