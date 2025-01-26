@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Http;
 
 class PaymentController extends Controller
 {
+    // declare a private variable that can store objects
+    private $cashlessOrders;
+    private $cashlessExtractedOrder;
 
     /**
      * Validate the request
@@ -23,9 +26,9 @@ class PaymentController extends Controller
         try {
             $validatedRequest = $request->validate([
                 'orderType' => 'required|in:dine-in,take-out',
-                'discountType' => 'nullable|in:none,senior citizen,pwd',
-                'discountAmount' => 'nullable|numeric|min:0',
-                'taxAmount' => 'required|numeric|min:0',
+                // 'discountType' => 'nullable|in:none,senior citizen,pwd',
+                // 'discountAmount' => 'nullable|numeric|min:0',
+                'taxAmount' => 'nullable|numeric|min:0',
                 'payableAmount' => 'required|numeric|min:0',
                 'subTotal' => 'required|numeric|min:0',
                 'modeOfPayment' => 'required|in:cash,cashless',
@@ -43,8 +46,6 @@ class PaymentController extends Controller
             return response()->json(['errors' => $e->errors()], 422);
         }
     }
-
-
 
     /**
      * Process cash payment
@@ -82,15 +83,15 @@ class PaymentController extends Controller
                 // extract the data from the response
                 $extractedOrder = $orderCreated->getData()->data;
 
-                \Log::error('', [
+                Log::error('', [
                     'extractedOrder' => $extractedOrder,
                 ]);
 
-                \Log::error('', [
+                Log::error('', [
                     'order_extract' => $order_extract,
                 ]);
 
-                \Log::error('', [
+                Log::error('', [
                     'orders' => $orders,
                 ]);
 
@@ -127,14 +128,31 @@ class PaymentController extends Controller
                 ], 200);
             }
         } catch (\Throwable $th) {
-            Log::error('Error occurred:', ['error' => $th->getMessage()]);
+            Log::error('An error occurred:', [
+                'message' => $th->getMessage(),
+                'file' => $th->getFile(),
+                'line' => $th->getLine(),
+                'stack_trace' => $th->getTraceAsString(),
+            ]);
         }
     }
 
     public function pushOrder($extractedOrder, $orders)
     {
-        //get the order id
+        // Ensure extractedOrder has a valid ID
+        if (!isset($extractedOrder->id)) {
+            Log::error('Order ID not found in extractedOrder.', ['extractedOrder' => $extractedOrder]);
+            return response()->json(['error' => 'Invalid order data.'], 400);
+        }
+
+        // Find the order in the database
         $order = Order::find($extractedOrder->id);
+
+        if (!$order) {
+            Log::error('Order not found in the database.', ['order_id' => $extractedOrder->id]);
+            return response()->json(['error' => 'Order not found.'], 404);
+        }
+
 
         // get the order status
         $order_status = $order->status;
@@ -152,7 +170,7 @@ class PaymentController extends Controller
             'notes' => 'none',
         ];
 
-        \Log::error('Pushing order to KDS', [
+        Log::error('Pushing order to KDS', [
             'order_id' => $extractedOrder->id,
             'order_status' => $order_status,
             'order_number' => $extractedOrder->order_number,
@@ -164,24 +182,31 @@ class PaymentController extends Controller
 
         // Perform the HTTP request to push order to KDS
         try {
-            $response = Http::send('post', env('KDS_URL'), [
-                'json' => $pushOrder,
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . env('POS_API_KEY'), // Include the Authorization Bearer token
+                // 'X-CSRF-TOKEN' => $csrfToken, // Include the CSRF token if necessary
+            ])->send('post', env('KDS_URL'), [
+                'json' => $pushOrder, // Send data as JSON
             ]);
 
             if ($response->failed()) {
-                \Log::error('Failed to sync with OOS', [
+                Log::error('Failed to sync with OOS', [
                     'status' => $response->status(),
                     'message' => $response->body(),
+                    'headers' => $response->headers(),
+                    'request_payload' => $pushOrder, // Log the payload you sent
+                    'request_url' => env('KDS_URL'), // Log the target URL
                 ]);
             } else {
-                \Log::info('Successfully synced with OOS', [
+                Log::info('Successfully synced with OOS', [
                     'status' => $response->status(),
                     'message' => $response->body(),
+                    'headers' => $response->headers(),
                 ]);
             }
 
         } catch (\Exception $e) {
-            \Log::error('Error syncing with OOS', [
+            Log::error('Error syncing with OOS', [
                 'error' => $e->getMessage(),
             ]);
         }
@@ -199,12 +224,12 @@ class PaymentController extends Controller
             // Validate and process request data
             $orders = $this->validateRequest($request);
 
-            // get the subtotal, tax and discount if any for inclusion in paymongo request
-            $taxAmount = $orders['taxAmount'];
-            $discountAmount = $orders['discountAmount'];
+            // // get the subtotal, tax and discount if any for inclusion in paymongo request
+            // $taxAmount = $orders['taxAmount'];
+            // $discountAmount = $orders['discountAmount'];
 
-            Log::info('Calculated tax amount:', ['taxAmount' => $taxAmount]);
-            Log::info('Calculated discount amount:', ['discountAmount' => $discountAmount]);
+            // Log::info('Calculated tax amount:', ['taxAmount' => $taxAmount]);
+            // Log::info('Calculated discount amount:', ['discountAmount' => $discountAmount]);
 
             // Store the order
             $storeOrder = new OrderController();
@@ -233,26 +258,26 @@ class PaymentController extends Controller
                 }
 
                 // Add taxes as a line item
-                $items[] = [
-                    'name' => 'Tax (12%)',
-                    'quantity' => 1,
-                    'amount' => intval($taxAmount * 100), // Convert to PHP cents
-                    'currency' => 'PHP',
-                    'description' => 'VAT Tax',
-                ];
+                // $items[] = [
+                //     'name' => 'Tax (12%)',
+                //     'quantity' => 1,
+                //     'amount' => intval($taxAmount * 100), // Convert to PHP cents
+                //     'currency' => 'PHP',
+                //     'description' => 'VAT Tax',
+                // ];
 
-                if ($discountAmount != 0) {
-                    Log::info('Adding discount line item:', ['discountAmount' => $discountAmount]);
+                // if ($discountAmount != 0) {
+                //     Log::info('Adding discount line item:', ['discountAmount' => $discountAmount]);
 
-                    // Add discount as a negative line item
-                    $items[] = [
-                        'name' => 'Discount (20%)',
-                        'quantity' => 1,
-                        'amount' => -intval($discountAmount * 100), // Convert to PHP cents
-                        'currency' => 'PHP',
-                        'description' => 'Applied Discount',
-                    ];
-                }
+                //     // Add discount as a negative line item
+                //     $items[] = [
+                //         'name' => 'Discount (20%)',
+                //         'quantity' => 1,
+                //         'amount' => -intval($discountAmount * 100), // Convert to PHP cents
+                //         'currency' => 'PHP',
+                //         'description' => 'Applied Discount',
+                //     ];
+                // }
 
                 // Log final items payload
                 Log::info('Final mapped line items sent to PayMongo:', ['line_items' => $items]);
@@ -305,6 +330,9 @@ class PaymentController extends Controller
 
                 $checkOutUrl = $response->data->attributes->checkout_url;
 
+                $this->cashlessOrders = $orders;
+                $this->cashlessExtractedOrder = $extractedOrder;
+
                 // Return with checkout url for redirection
                 return response()->json([
                     'success' => true,
@@ -348,6 +376,7 @@ class PaymentController extends Controller
         ]);
 
 
+        $this->pushOrder($this->cashlessExtractedOrder, $this->cashlessOrders);
 
         return response()->json([
 
