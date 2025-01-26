@@ -17,6 +17,8 @@ Route::middleware([CheckKdsSource::class])->group(function () {
         // get method for fetching orders in ordercontroller
         Route::get('/get-orders', [OrderController::class, 'getOrders']);
 
+        Route::post('/status-update', [APIController::class, 'statusUpdate']);
+
         // Route::match(['post', 'put', 'delete'], '/order-update', [APIController::class, 'updateOrder']);
     });
 });
