@@ -75,39 +75,39 @@ class PaymentController extends Controller
     /**
      *  Export the payments as csv
      */
-    public function export()
-    {
-        $payments = Payment::with(['order.user'])->get();
+    // public function export()
+    // {
+    //     $payments = Payment::with(['order.user'])->get();
 
-        $csvFileName = 'payments_' . date('Y-m-d') . '.csv';
-        $headers = [
-            "Content-type" => "text/csv",
-            "Content-Disposition" => "attachment; filename=$csvFileName",
-            "Pragma" => "no-cache",
-            "Expires" => "0",
-        ];
+    //     $csvFileName = 'payments_' . date('Y-m-d') . '.csv';
+    //     $headers = [
+    //         "Content-type" => "text/csv",
+    //         "Content-Disposition" => "attachment; filename=$csvFileName",
+    //         "Pragma" => "no-cache",
+    //         "Expires" => "0",
+    //     ];
 
-        $handle = fopen('php://output', 'w');
+    //     $handle = fopen('php://output', 'w');
 
-        // Add CSV headers
-        fputcsv($handle, ['Order Number', 'Amount', 'Description', 'Issued By', 'Mode of Payment']);
+    //     // Add CSV headers
+    //     fputcsv($handle, ['Order Number', 'Amount', 'Description', 'Issued By', 'Mode of Payment']);
 
-        foreach ($payments as $payment) {
-            fputcsv($handle, [
-                $payment->order->order_number,
-                $payment->amount,
-                $payment->description,
-                $payment->order->user->first_name . ' ' . $payment->order->user->last_name,
-                $payment->mode_of_payment,
-            ]);
-        }
+    //     foreach ($payments as $payment) {
+    //         fputcsv($handle, [
+    //             $payment->order->order_number,
+    //             $payment->amount,
+    //             $payment->description,
+    //             $payment->order->user->first_name . ' ' . $payment->order->user->last_name,
+    //             $payment->mode_of_payment,
+    //         ]);
+    //     }
 
-        fclose($handle);
+    //     fclose($handle);
 
-        return Response::stream(function () use ($handle) {
-            fclose($handle);
-        }, 200, $headers);
-    }
+    //     return Response::stream(function () use ($handle) {
+    //         fclose($handle);
+    //     }, 200, $headers);
+    // }
 
 
 
