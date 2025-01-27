@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Http;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
@@ -136,7 +137,6 @@ class CategoryController extends Controller
             }
 
             return redirect()->back()->with('error', "Password dont match.");
-
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', $th->getMessage());
         }
@@ -203,5 +203,45 @@ class CategoryController extends Controller
                 'url' => $url,
             ]);
         }
+    }
+
+    public function exportCategories()
+    {
+        // Fetch all categories from the database
+        $categories = Category::withCount('products')->get();
+
+        // Define CSV file name
+        $csvFileName = 'categories_' . date('Y-m-d') . '.csv';
+
+        // Set the response headers for CSV download
+        $headers = [
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=$csvFileName",
+            "Pragma" => "no-cache",
+            "Expires" => "0",
+        ];
+
+        return response()->stream(function () use ($categories) {
+            // Create and output the CSV content
+            $handle = fopen('php://output', 'w');
+
+            // Add CSV headers
+            fputcsv($handle, ['No.', 'Category Name', 'Description', 'Type', 'Beverage Type', 'Total Products']);
+
+            // Add data rows for each category
+            foreach ($categories as $index => $category) {
+                fputcsv($handle, [
+                    $index + 1,  // No.
+                    $category->category_name,
+                    $category->description,
+                    $category->type,
+                    $category->beverage_type,
+                    $category->products_count,
+                ]);
+            }
+
+            // Close the file handle
+            fclose($handle);
+        }, Response::HTTP_OK, $headers);
     }
 }

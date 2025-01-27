@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -13,6 +14,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -25,7 +29,7 @@
     <script defer src="{{ asset('Assets/js/inventory/inventory-items.js') }}"></script>
     <script defer src="{{ asset('Assets/js/password-toggle.js') }}"></script>
 
-{{--
+    {{--
     <script defer src="https://fipos-production.up.railway.app/Assets/js/cashier/cashier-header.js"> </script>
     <script defer src="https://fipos-production.up.railway.app/Assets/js/admin/admin-sidebar.js"> </script>
     <script defer src="https://fipos-production.up.railway.app/Assets/js/admin/admin-categories.js"> </script>
@@ -65,5 +69,6 @@
         </div>
     </div>
 </body>
+
 
 </html>

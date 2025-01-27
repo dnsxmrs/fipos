@@ -9,6 +9,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 use Ixudra\Curl\Facades\Curl;
 use Illuminate\Support\Facades\Session;
@@ -80,7 +81,6 @@ class OrderController extends Controller
                 'message' => 'Order Created',
                 'data' => $createdOrder,
             ], 201);
-
         } catch (ValidationException $e) {
             Log::error('Validation Errors:', $e->errors());
             return response()->json(['errors' => $e->errors()], 422);
@@ -102,7 +102,6 @@ class OrderController extends Controller
             $online_orders = $this->fetchOrders();
 
             return view('cashier.orders.all-orders', compact('orders', 'online_orders'));
-
         } catch (\Throwable $th) {
 
             // Log the exception
@@ -114,7 +113,8 @@ class OrderController extends Controller
     /**
      *  Show dine-in orders
      */
-    public function showDineInOrders() {
+    public function showDineInOrders()
+    {
 
         $dineInOrders = Order::where('order_type', 'dine-in')
             ->with('products.product')
@@ -127,7 +127,8 @@ class OrderController extends Controller
     /**
      *  Show take-out orders
      */
-    public function showTakeOutOrders() {
+    public function showTakeOutOrders()
+    {
 
         $takeOutOrders = Order::where('order_type', 'take-out')
             ->with('products.product')
@@ -165,7 +166,6 @@ class OrderController extends Controller
                 Log::warning('Data key not found in response');
                 return response()->json(['error' => 'Data key not found in response'], 500);
             }
-
         } catch (\Throwable $th) {
             Log::error('Error fetching orders: ' . $th->getMessage());
             dd($th);
@@ -197,17 +197,69 @@ class OrderController extends Controller
                 Log::warning('Data key not found in response');
                 return response()->json(['error' => 'Data key not found in response'], 500);
             }
-
         } catch (\Throwable $th) {
             Log::error('Error fetching orders: ' . $th->getMessage());
             return response()->json(['error' => 'Error fetching orders'], 500);
         }
-
     }
 
     public function getOrders()
     {
         $orders = Order::with('products.product')->get();
         return response()->json($orders);
+    }
+
+    public function exportAllOrders() {
+        $allOrders = Order::with('products.product')->get();
+        return $this->export($allOrders);
+    }
+
+    public function exportWalkinInOrders() {
+        $walkInOrders = Order::with('products.product')->get();
+        return $this->export($walkInOrders);
+    }
+
+    public function export($orders)
+    {
+        // Define CSV file name
+        $csvFileName = 'orders_' . date('Y-m-d') . '.csv';
+
+        // Set the response headers for CSV download
+        $headers = [
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=$csvFileName",
+            "Pragma" => "no-cache",
+            "Expires" => "0",
+        ];
+
+        // Create and output the CSV content
+        $handle = fopen('php://output', 'w');
+
+        // Add CSV headers
+        fputcsv($handle, ['No.', 'Order Number', 'Items Ordered', 'Order Type', 'Total Amount', 'Status']);
+
+        // Add data rows for each order
+        foreach ($orders as $index => $order) {
+            // Concatenate product names for the order
+            $productNames = $order->products
+                ->map(function ($orderProduct) {
+                    return $orderProduct->product->product_name;
+                })
+                ->implode(', ');
+
+            fputcsv($handle, [
+                $index + 1,  // No.
+                $order->order_number,
+                $productNames,
+                ucfirst($order->order_type),
+                'PHP ' . number_format($order->total_price, 2),
+                ucfirst($order->status),
+            ]);
+        }
+
+        return response()->stream(function () use ($handle) {
+            // Close the file handle
+            fclose($handle);
+        }, Response::HTTP_OK, $headers);
     }
 }

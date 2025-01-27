@@ -75,40 +75,38 @@ class PaymentController extends Controller
     /**
      *  Export the payments as csv
      */
-    // public function export()
-    // {
-    //     $payments = Payment::with(['order.user'])->get();
+    public function export()
+    {
+        $payments = Payment::with(['order.user'])->get();
 
-    //     $csvFileName = 'payments_' . date('Y-m-d') . '.csv';
-    //     $headers = [
-    //         "Content-type" => "text/csv",
-    //         "Content-Disposition" => "attachment; filename=$csvFileName",
-    //         "Pragma" => "no-cache",
-    //         "Expires" => "0",
-    //     ];
+        $csvFileName = 'payments_' . date('Y-m-d') . '.csv';
+        $headers = [
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=$csvFileName",
+            "Pragma" => "no-cache",
+            "Expires" => "0",
+        ];
 
-    //     $handle = fopen('php://output', 'w');
+        return Response::stream(function () use ($payments) {
+            $handle = fopen('php://output', 'w');
 
-    //     // Add CSV headers
-    //     fputcsv($handle, ['Order Number', 'Amount', 'Description', 'Issued By', 'Mode of Payment']);
+            // Add CSV headers
+            fputcsv($handle, ['Order Number', 'Amount', 'Description', 'Issued By', 'Mode of Payment']);
 
-    //     foreach ($payments as $payment) {
-    //         fputcsv($handle, [
-    //             $payment->order->order_number,
-    //             $payment->amount,
-    //             $payment->description,
-    //             $payment->order->user->first_name . ' ' . $payment->order->user->last_name,
-    //             $payment->mode_of_payment,
-    //         ]);
-    //     }
+            // Add data rows
+            foreach ($payments as $payment) {
+                fputcsv($handle, [
+                    $payment->order->order_number,
+                    $payment->amount,
+                    $payment->description,
+                    $payment->order->user->first_name . ' ' . $payment->order->user->last_name,
+                    $payment->mode_of_payment,
+                ]);
+            }
 
-    //     fclose($handle);
-
-    //     return Response::stream(function () use ($handle) {
-    //         fclose($handle);
-    //     }, 200, $headers);
-    // }
-
+            fclose($handle);
+        }, 200, $headers);
+    }
 
 
 
@@ -188,7 +186,7 @@ class PaymentController extends Controller
                     'extractedOrder' => $extractedOrder,
                     'orders' => $orders,
                 ]);
-                
+
                 $this->pushOrder($extractedOrder, $orders);
 
 
@@ -246,7 +244,7 @@ class PaymentController extends Controller
                     $orderItems[] = [
                         'name' => $orderProduct->product->product_name,
                         'quantity' => (int) $orderProduct->quantity,
-                        'price' => (float) $orderProduct->price/$orderProduct->quantity
+                        'price' => (float) $orderProduct->price / $orderProduct->quantity
                     ];
                 }
             }
@@ -260,8 +258,7 @@ class PaymentController extends Controller
                 'order_items' => $orderItems,
                 'notes' => 'none',
             ];
-        }
-        else {
+        } else {
             Log::info('inside cash payment');
             // Find the order in the databasase
             $order = Order::find($extractedOrder->id);
