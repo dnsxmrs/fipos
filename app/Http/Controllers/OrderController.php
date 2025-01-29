@@ -274,40 +274,37 @@ class OrderController extends Controller
 
         // Set the response headers for CSV download
         $headers = [
-            "Content-type" => "text/csv",
-            "Content-Disposition" => "attachment; filename=$csvFileName",
+            "Content-Type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=\"$csvFileName\"",
             "Pragma" => "no-cache",
             "Expires" => "0",
         ];
 
-        // Create and output the CSV content
-        $handle = fopen('php://output', 'w');
+        return response()->stream(function () use ($orders) {
+            $handle = fopen('php://output', 'w');
 
-        // Add CSV headers
-        fputcsv($handle, ['No.', 'Order Number', 'Items Ordered', 'Order Type', 'Total Amount', 'Status']);
+            // Add CSV headers
+            fputcsv($handle, ['No.', 'Order Number', 'Items Ordered', 'Order Type', 'Total Amount', 'Status']);
 
-        // Add data rows for each order
-        foreach ($orders as $index => $order) {
-            // Concatenate product names for the order
-            $productNames = $order->products
-                ->map(function ($orderProduct) {
-                    return $orderProduct->product->product_name;
-                })
-                ->implode(', ');
+            // Add data rows for each order
+            foreach ($orders as $index => $order) {
+                // Concatenate product names for the order
+                $productNames = $order->products
+                    ->map(fn($orderProduct) => $orderProduct->product->product_name)
+                    ->implode(', ');
 
-            fputcsv($handle, [
-                $index + 1,  // No.
-                $order->order_number,
-                $productNames,
-                ucfirst($order->order_type),
-                'PHP ' . number_format($order->total_price, 2),
-                ucfirst($order->status),
-            ]);
-        }
+                fputcsv($handle, [
+                    $index + 1,  // No.
+                    $order->order_number,
+                    $productNames,
+                    ucfirst($order->order_type),
+                    'PHP ' . number_format($order->total_price, 2),
+                    ucfirst($order->status),
+                ]);
+            }
 
-        return response()->stream(function () use ($handle) {
-            // Close the file handle
             fclose($handle);
-        }, Response::HTTP_OK, $headers);
+        }, 200, $headers);
     }
+
 }
