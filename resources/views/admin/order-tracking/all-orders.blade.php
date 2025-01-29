@@ -6,7 +6,7 @@
             class="p-3 h-10 w-64 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100 border border-gray-200 text-sm text-gray-500 rounded-lg">
 
         <!-- Export Csv button -->
-        <a href="{{ route('admin.orders.export.all') }}"
+        <a href="{{ route('admin.orders.export') }}"
             class="block text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
             <i class="fa-solid fa-download mr-2"></i>
             Export CSV

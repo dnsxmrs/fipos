@@ -141,8 +141,8 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/', [OrderTrackingController::class, 'index'])->name('orders.all');
                 Route::get('/walk-in-orders', [OrderTrackingController::class, 'showWalkInOrders'])->name('orders.walk-in');
                 Route::get('/online-orders', [OrderTrackingController::class, 'showOnlineOrders'])->name('orders.online-orders');
-                Route::get('/orders/export', [OrderController::class, 'exportAllOrders'])->name('orders.export.all');
-                Route::get('/orders/dine-in/export', [OrderController::class, 'exportWalkinInOrders'])->name('orders.export.walk-in');
+                Route::get('/orders/export', [OrderController::class, 'exportOrders'])->name('orders.export');
+                // Route::get('/orders/dine-in/export', [OrderController::class, 'exportWalkinInOrders'])->name('orders.export.walk-in');
             });
 
             // User Management routes

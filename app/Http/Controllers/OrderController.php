@@ -264,18 +264,11 @@ class OrderController extends Controller
         return response()->json($orders);
     }
 
-    public function exportAllOrders() {
-        $allOrders = Order::with('products.product')->get();
-        return $this->export($allOrders);
-    }
-
-    public function exportWalkinInOrders() {
-        $walkInOrders = Order::with('products.product')->get();
-        return $this->export($walkInOrders);
-    }
-
-    public function export($orders)
+    public function exportOrders()
     {
+        // Get all orders with their associated products
+        $orders = Order::with('products.product')->get();
+
         // Define CSV file name
         $csvFileName = 'orders_' . date('Y-m-d') . '.csv';
 
