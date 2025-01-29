@@ -22,12 +22,12 @@
                     <p class="text-sm text-[#555]">PHP 10,243.00</p>
                 </div>
 
-
                 <div
                     class="p-5 text-center bg-white border-2 border-transparent rounded-lg shadow-md">
                     <h3 class="font-medium mb-2.5 text-base">Total Dishes Ordered</h3>
                     <p class="text-sm text-[#555]">23,456</p>
                 </div>
+                
                 <div
                     class="p-5 text-center bg-white border-2 border-transparent rounded-lg shadow-md">
                     <h3 class="font-medium mb-2.5 text-base">Total Customers</h3>
