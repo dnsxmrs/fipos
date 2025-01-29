@@ -15,6 +15,9 @@ use Ixudra\Curl\Facades\Curl;
 use Illuminate\Support\Facades\Session;
 use function Laravel\Prompts\error;
 use function Pest\Laravel\json;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
+use App\Models\InventoryCategory;
 
 class OrderController extends Controller
 {
@@ -145,23 +148,75 @@ class OrderController extends Controller
     {
         try {
             $url = env('GET_ORDERS_PAGINATE');
+            $url2 = env('GET_ORDERS');
 
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . env('POS_API_KEY'), // Include the Authorization Bearer token
                 // 'X-CSRF-TOKEN' => $csrfToken, // Include the CSRF token if necessary
-            ])->send('GET', $url);
+            ])->send('GET', $url2);
 
-            // Decode the JSON response into an array
+            // Decode JSON response
             $responseData = json_decode($response->body(), true);
 
             if (isset($responseData['data'])) {
-                $ordersData = $responseData['data']; // Access the 'data' key
-                Log::info('Orders data:', $ordersData);
+                // $ordersData = $responseData['data']; // Orders array
 
-                return view('cashier.orders.online-orders', compact('ordersData'));
+                // // Get pagination details
+                // $currentPage = request()->get('page', 1);
+                // $perPage = $responseData['per_page'] ?? 15;
+                // $total = $responseData['total'] ?? count($ordersData);
 
-                // Return or process the orders as needed
-                // return response()->json($ordersData);
+                // // Convert array to Laravel paginator
+                // $ordersPaginated = new LengthAwarePaginator(
+                //     collect($ordersData), // Convert array to collection
+                //     $total, // Total items
+                //     $perPage, // Items per page
+                //     $currentPage, // Current page
+                //     ['path' => request()->url()] // Pagination links
+                // );
+                // return view('cashier.orders.online-orders', compact('ordersData'));
+
+
+                // $ordersData = $responseData['data']; // Store orders array
+
+                // // Log the received data for debugging
+                // Log::info('Orders data retrieved successfully', ['count' => count($ordersData)]);
+
+
+                // Ensure 'data' is available and not empty
+                if (isset($responseData['data']) && !empty($responseData['data'])) {
+                    // Convert raw array to Laravel Collection
+                    $ordersCollection = collect($responseData['data']); // Create collection of all orders
+
+                    // Pagination logic
+                    $perPage = 15; // Items per page
+                    $currentPage = request()->get('page', 1); // Get current page from query params
+                    $currentItems = $ordersCollection->slice(($currentPage - 1) * $perPage, $perPage)->all(); // Slice data for current page
+
+                    // Create LengthAwarePaginator
+                    $ordersPaginated = new LengthAwarePaginator(
+                        $currentItems, // Items for the current page
+                        $ordersCollection->count(), // Total items in all pages
+                        $perPage, // Items per page
+                        $currentPage, // Current page
+                        ['path' => request()->url()] // Pagination links
+                    );
+                } else {
+                    // Handle case where there is no data
+                    $ordersPaginated = collect(); // Return empty collection
+                }
+
+                // Log ordersPaginated as an array
+                Log::info('Orders data:', (array) $ordersPaginated);
+
+                // Log the type of ordersPaginated
+                Log::info('Type of ordersPaginated:', ['type' => gettype($ordersPaginated)]);
+
+
+
+                // Return to view with ordersPaginated
+                return view('cashier.orders.online-orders', compact('ordersPaginated'));
+
             } else {
                 Log::warning('Data key not found in response');
                 return response()->json(['error' => 'Data key not found in response'], 500);

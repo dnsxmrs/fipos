@@ -18,6 +18,7 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrderTrackingController;
+use App\Models\Order;
 
 // only authenticated users can access these pages
 Route::middleware(['auth'])->group(function () {
@@ -43,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/orders/dine-in', [OrderController::class, 'showDineInOrders'])->name('orders.dine-in');
         Route::get('/orders/take-out', [OrderController::class, 'showTakeOutOrders'])->name('orders.take-out');
         Route::get('/orders-online', [OrderController::class, 'showOnlineOrders'])->name('online.orders.show');
+
     });
 
     // Admin Routes
@@ -139,6 +141,8 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/', [OrderTrackingController::class, 'index'])->name('orders.all');
                 Route::get('/walk-in-orders', [OrderTrackingController::class, 'showWalkInOrders'])->name('orders.walk-in');
                 Route::get('/online-orders', [OrderTrackingController::class, 'showOnlineOrders'])->name('orders.online-orders');
+                Route::get('/orders/export', [OrderController::class, 'exportAllOrders'])->name('orders.export.all');
+                Route::get('/orders/dine-in/export', [OrderController::class, 'exportWalkinInOrders'])->name('orders.export.walk-in');
             });
 
             // User Management routes

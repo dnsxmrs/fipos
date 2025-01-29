@@ -1,16 +1,134 @@
 @extends('admin.order-tracking.index')
 
 @section('order_table')
-    <div class="flex justify-between items-center mb-3">
-        <input type="text" placeholder="Search for orders..."
-            class="p-3 h-10 w-64 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100 border border-gray-200 text-sm text-gray-500 rounded-lg">
+    <!-- Header -->
+    <div class="my-5">
+        <p class="text-xl font-medium text-gray-700">Online Orders</p>
+        <p class="text-sm text-gray-500">List of online orders from website.</p>
+    </div>
 
-        <!-- Export Csv button -->
-        <a href="{{ route('admin.menu.categories.export') }}"
-            class="block text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-            <i class="fa-solid fa-download mr-2"></i>
-            Export CSV
-        </a>
+    {{-- ORDERS TABLE --}}
+    <div class="flex items-start justify-center p-5 h-screen bg-white rounded-lg w-full">
+        <div class="w-full mb-2">
+            <table class="w-full shadow rounded-lg table-fixed">
+                <thead class="bg-slate-100 border-b-2 rounded-lg">
+                    <tr>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-center w-[10%] min-w-max">No.</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-center w-[10%] min-w-max">Order Number</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-center w-[50%] min-w-max">Items Ordered</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-center w-[10%] min-w-max">Order Type</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-center w-[10%] min-w-max">Total Amount</th>
+                        <th class="p-3 text-sm font-semibold tracking-wide text-center w-[10%] min-w-max">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center text-xs">
+                    @if ($ordersPaginated && $ordersPaginated->isNotEmpty())
+                        @foreach ($ordersPaginated as $onlineOrder)
+                            <tr class="border-b hover:bg-slate-50">
+                                <td class="py-3 px-5"> {{ $loop->iteration }} </td>
+                                <td class="p-3">{{ $onlineOrder['order_number'] }}</td>
+                                <td class="py-3 px-5">
+                                    @php
+                                        $productNames = collect($onlineOrder['order_products'])->map(function($product) {
+                                            return $product['product_id']; // Replace with 'product_name' if available
+                                        })->implode(', ');
+                                    @endphp
+                                    {{ $productNames }}
+                                </td>
+                                <td class="py-3 px-5">{{ ucfirst($onlineOrder['order_type']) }}</td>
+                                <td class="py-3 px-5">₱{{ number_format($onlineOrder['total'], 2) }}</td>
+                                <td class="py-3 px-5">
+                                    @if ($onlineOrder['status'] == 'pending')
+                                        <span class="text-yellow-500">{{ ucfirst($onlineOrder['status']) }}</span>
+                                    @elseif ($onlineOrder['status'] == 'completed')
+                                        <span class="text-green-500">{{ ucfirst($onlineOrder['status']) }}</span>
+                                    @else
+                                        <span class="text-red-500">{{ ucfirst($onlineOrder['status']) }}</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td class="py-3 px-5 text-center" colspan="6">No online orders found.</td>
+                        </tr>
+                    @endif
+                    {{-- @if (!empty($ordersData) && count($ordersData) > 0)
+                        @foreach ($ordersData as $onlineOrder)
+                            <tr class="border-b hover:bg-slate-50">
+                                <td class="py-3 px-5"> {{ $loop->iteration }} </td>
+                                <td class="p-3">{{ $onlineOrder['order_number'] }}</td>
+                                <td class="py-3 px-5">
+                                    @php
+                                        $productNames = collect($onlineOrder['order_products'])->map(function($product) {
+                                            return $product['product_id']; // Replace with 'product_name' if available
+                                        })->implode(', ');
+                                    @endphp
+                                    {{ $productNames }}
+                                </td>
+                                <td class="py-3 px-5">{{ ucfirst($onlineOrder['order_type']) }}</td>
+                                <td class="py-3 px-5">₱{{ number_format($onlineOrder['total'], 2) }}</td>
+                                <td class="py-3 px-5">
+                                    @if ($onlineOrder['status'] == 'pending')
+                                        <span class="text-yellow-500">{{ ucfirst($onlineOrder['status']) }}</span>
+                                    @elseif ($onlineOrder['status'] == 'completed')
+                                        <span class="text-green-500">{{ ucfirst($onlineOrder['status']) }}</span>
+                                    @else
+                                        <span class="text-red-500">{{ ucfirst($onlineOrder['status']) }}</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <!-- No Online Orders Found Message -->
+                        <tr>
+                            <td class="py-3 px-5 text-center" colspan="6">No online orders found.</td>
+                        </tr>
+                    @endif --}}
+                    {{-- @foreach ($ordersPaginated['data'] as $onlineOrder)
+                        <tr class="border-b hover:bg-slate-50">
+                            <td class="py-3 px-5"> {{ $loop->iteration }} </td>
+                            <td class="p-3">{{ $onlineOrder['order_number'] }}</td>
+                            <td class="py-3 px-5">
+                                @php
+                                    $productNames = collect($onlineOrder['order_products'])->map(function($product) {
+                                        return $product['product_id']; // Replace 'product_id' with 'product_name' if available
+                                    })->implode(', ');
+                                @endphp
+                                {{ $productNames }}
+                            </td>
+                            <td class="py-3 px-5">{{ ucfirst($onlineOrder['order_type']) }}</td>
+                            <td class="py-3 px-5">₱{{ number_format($onlineOrder['total'], 2) }}</td>
+                            <td class="py-3 px-5">
+                                @if ($onlineOrder['status'] == 'pending')
+                                    <span class="text-yellow-500">{{ ucfirst($onlineOrder['status']) }}</span>
+                                @elseif ($onlineOrder['status'] == 'completed')
+                                    <span class="text-green-500">{{ ucfirst($onlineOrder['status']) }}</span>
+                                @else
+                                    <span class="text-red-500">{{ ucfirst($onlineOrder['status']) }}</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+
+                    <!-- No Online Orders Found Message -->
+                    @if (count($ordersPaginated['data']) == 0)
+                        <tr>
+                            <td class="py-3 px-5" colspan="6">No online orders found.</td>
+                        </tr>
+                    @endif --}}
+                </tbody>
+            </table>
+                {{-- PAGINATION --}}
+            <div >
+                @if ($ordersPaginated->isNotEmpty())
+                    <div class="mt-5">
+                        {{ $ordersPaginated->links() }}
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
 
     </div>
     <table class="w-full shadow rounded-lg table-fixed">
