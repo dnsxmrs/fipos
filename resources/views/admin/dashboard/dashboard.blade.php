@@ -12,31 +12,30 @@
         </div>
 
         <!-- Main Dashboard Content -->
-        <div class="flex flex-col flex-1 gap-8 p-5 overflow-auto lg:flex-row">
+        <div class="flex flex-1 gap-8 p-5 overflow-auto lg:flex-row">
 
             <!-- Left Side: Statistics -->
-            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 ">
-
-                <div class="p-5 text-center bg-white border-2 border-solid rounded-lg shadow-md">
-                    <h3 class="font-medium mb-2.5 text-base">Total Revenue</h3>
-                    <p class="text-sm text-[#555]">PHP 10,243.00</p>
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+                <div class="w-40 h-40 p-4 text-center bg-white border-2 border-solid rounded-lg shadow-md ">
+                    <h3 class="mb-2 text-sm font-medium">Total Revenue</h3>
+                    <p class="text-xs text-[#555]">PHP 10,243.00</p>
                 </div>
 
-
-                <div
-                    class="p-5 text-center bg-white border-2 border-transparent rounded-lg shadow-md">
-                    <h3 class="font-medium mb-2.5 text-base">Total Dishes Ordered</h3>
-                    <p class="text-sm text-[#555]">23,456</p>
+                <div class="w-40 h-40 p-4 text-center bg-white border-2 border-solid rounded-lg shadow-md ">
+                    <h3 class="mb-2 text-sm font-medium">Total Dishes Ordered</h3>
+                    <p class="text-xs text-[#555]">23,456</p>
                 </div>
-                <div
-                    class="p-5 text-center bg-white border-2 border-transparent rounded-lg shadow-md">
-                    <h3 class="font-medium mb-2.5 text-base">Total Customers</h3>
-                    <p class="text-sm text-[#555]">1,234</p>
+
+                <div class="w-40 h-40 p-4 text-center bg-white border-2 border-solid rounded-lg shadow-md ">
+                    <h3 class="mb-2 text-sm font-medium">Total Customers</h3>
+                    <p class="text-xs text-[#555]">1,234</p>
                 </div>
             </div>
 
+
+
             <!-- Sales Summary Chart -->
-            <div class="p-5 bg-white rounded-lg shadow-md">
+            <div class="p-5 bg-white rounded-lg shadow-md >
                 <h2 class="mb-5 text-lg font-semibold">Sales Summary</h2>
                 <canvas id="salesChart" class="w-full h-[300px] lg:h-[400px]"></canvas>
                 <script>
