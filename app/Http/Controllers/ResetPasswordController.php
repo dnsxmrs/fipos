@@ -50,6 +50,9 @@ class ResetPasswordController extends Controller
             $request->only('email')
         );
 
+        // log the activity
+        activity('User Forgot Password')->causedBy(Auth::user())->log('Forgot password');
+
         return $status === Password::RESET_LINK_SENT
                     ? back()->with(['status' => __($status)])
                     : back()->withErrors(['email' => __($status)]);
@@ -88,6 +91,9 @@ class ResetPasswordController extends Controller
                 event(new PasswordReset($user));
             }
         );
+
+        // log the activity
+        activity('User Reset Password')->causedBy(Auth::user())->log('Reset password');
 
         return $status === Password::PASSWORD_RESET
                     ? redirect()->route('login')->with('status', __($status))

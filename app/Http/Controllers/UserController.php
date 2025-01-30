@@ -12,6 +12,8 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Throwable;
 
+use function Pest\Laravel\json;
+
 class UserController extends Controller
 {
     // method to display user
@@ -37,7 +39,8 @@ class UserController extends Controller
             ]);
 
             // Generate a random string for password
-            $generatedPassword = Str::random(12);
+            $generatedPassword = Str::random(8) . rand(100, 999) . Str::random(1) . '!@#'; // 12-character password
+            $generatedPassword = str_shuffle($generatedPassword); // Shuffle to ensure randomness
 
             // hash the generated password
             $user['password'] = Hash::make($generatedPassword);
@@ -49,14 +52,36 @@ class UserController extends Controller
             if ($user) {
                 // send the credentials to the respective email
                 Mail::to($user->email)->send(new WelcomeMail($user->first_name, $user->email, $generatedPassword));
+
+                // log the activity
+                activity('User Register')->causedBy(Auth::user())->log('Register a new user ' . ucfirst($user->first_name));
+
                 return redirect()->back()->with('status_add', 'User added successfully.');
             } else {
+
+                // log the activity
+                activity('User Register')->causedBy(Auth::user())->log('Failed to register a new user');
+
                 return redirect()->back()->with('error', 'Creation of account failed.');
             }
         } catch (Throwable $th) {
             return redirect()->back()->with('error',  $th->getMessage());
         }
     }
+
+    public function confirmAddUser(Request $request)
+    {
+        $request->validate([
+            'password' => 'required'
+        ]);
+
+        if (Hash::check($request->password, Auth::user()->password)) {
+            return response()->json(['success' => true, 'message' => 'Password verified.']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Invalid password. Please try again.'], 401);
+    }
+
 
 
     /**
@@ -68,7 +93,7 @@ class UserController extends Controller
             $request->validate([
                 'user_id' => 'required|exists:users,id',
                 'role' => 'required|in:admin,staff',
-                'status' => 'required|in:active,deactivated',
+                'status' => 'required|in:activated,deactivated',
             ]);
 
             $user = User::find($request->user_id);
@@ -80,8 +105,16 @@ class UserController extends Controller
 
 
             if ($isUpdated) {
+
+                // log the activity
+                activity('Update User')->causedBy(Auth::user())->log('Updated user details ' . ucfirst($user->first_name));
+
                 return redirect()->back()->with('status_edit', 'User details updated successfully.');
             } else {
+
+                // log the activity
+                activity('Update User')->causedBy(Auth::user())->log('Failed to update user details');
+
                 return redirect()->back()->with('error', 'Failed to update user details.');
             }
         } catch (ValidationException $e) {
@@ -111,13 +144,18 @@ class UserController extends Controller
                 ]);
                 $userToDelete->delete();
 
+                // log the activity
+                activity('Deactivate User')->causedBy(Auth::user())->log('Deactivate user ' . $userToDelete->first_name);
+
                 return redirect()->back()->with('status_deleted', 'User deleted successfully');
             }
+
+            // log the activity
+            activity('Deactivate User')->causedBy(Auth::user())->log('Failed to deactivate user');
 
             return redirect()->back()->with('error', 'Failed to delete user');
         }
 
         return redirect()->back()->with('error', "Password dont match.");
-
     }
 }

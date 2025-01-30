@@ -17,7 +17,7 @@
                 id="user_search" autocomplete="off" onkeyup="" />
 
             <!--ADD BUTTON-->
-            <button onclick="showAddUserModal()"
+            <button onclick="showConfirmAddModalUsers()"
                 class="block text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 type="button">
                 + Add User
@@ -35,6 +35,7 @@
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Last Name</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Email</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Role</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Is Activated</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Status</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max"></th>
                         </tr>
@@ -48,6 +49,12 @@
                                 <td class="px-5 py-3">{{ ucfirst($user->last_name) }}</td>
                                 <td class="px-5 py-3">{{ $user->email }}</td>
                                 <td class="px-5 py-3">{{ ucfirst($user->role) }}</td>
+                                <td class="px-5 py-3">
+                                    <span
+                                        class="text-xs {{ $user->is_activated === 1 ? 'text-green-500' : 'text-red-500' }} rounded-md px-2 py-1"
+                                        style="background-color: {{ $user->is_activated === 1 ? '#DCF8F0' : '#FFDFDF' }};">
+                                        {{ $user->is_activated === 1 ? 'Yes' : 'No' }}
+                                    </span>
                                 <td class="px-5 py-3">
                                     <span
                                         class="text-xs {{ $user->status === 'activated' ? 'text-green-500' : 'text-red-500' }} rounded-md px-2 py-1"
@@ -90,6 +97,7 @@
     @include('admin.users.modals.delete-user')
     @include('admin.users.modals.edit-user')
     @include('admin.users.modals.confirm-delete')
+    @include('admin.users.modals.confirm-add')
 
 
     <script>
@@ -144,5 +152,6 @@
             @endif
 
         });
+
     </script>
 @endsection

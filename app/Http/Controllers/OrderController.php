@@ -79,6 +79,9 @@ class OrderController extends Controller
                 ]);
             }
 
+            // log the activity
+            activity('Order Created')->causedBy(Auth::user())->log('Created order ' . $orderNumber);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Order Created',
@@ -211,8 +214,6 @@ class OrderController extends Controller
 
                 // Log the type of ordersPaginated
                 Log::info('Type of ordersPaginated:', ['type' => gettype($ordersPaginated)]);
-
-
 
                 // Return to view with ordersPaginated
                 return view('cashier.orders.online-orders', compact('ordersPaginated'));

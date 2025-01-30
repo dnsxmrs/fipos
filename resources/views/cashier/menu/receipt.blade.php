@@ -47,6 +47,10 @@
                         <span id="subTotal">₱0.00</span>
                     </div>
                     <div class="flex justify-between">
+                        <span>TAX:</span>
+                        <span id="taxReceipt">₱0.00</span>
+                    </div>
+                    <div class="flex justify-between">
                         <span>DISCOUNT:</span>
                         <span id="discount">₱0.00</span>
                     </div>

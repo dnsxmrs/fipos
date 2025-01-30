@@ -155,7 +155,63 @@ class APIController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
-
     }
 
+    public function statusUpdateWeb(Request $request)
+    {
+        // Log incoming request
+        Log::info('Received status update request for web order', [
+            'request_method' => $request->method,
+            'request_data' => $request->all(),
+        ]);
+
+        try {
+            // Validate the incoming request
+            $validatedData = $request->validate([
+                'order_id' => 'required',
+                'order_number' => 'required|string',
+                'status' => 'required|string|in:pending,preparing,ready,completed,cancelled',
+            ]);
+
+            Log::info('Validated status update request', [
+                'validated_data' => $validatedData,
+            ]);
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . env('POS_API_KEY'), // Include the Authorization Bearer token
+                // 'X-CSRF-TOKEN' => $csrfToken, // Include the CSRF token if necessary
+            ])->send('post', env('KDS_TO_WEB'), [
+                'json' => $validatedData, // Send data as JSON
+            ]);
+            if ($response->failed()) {
+                Log::error('Failed to sync with OOS', [
+                    'status' => $response->status(),
+                    'message' => $response->body(),
+                    'headers' => $response->headers(),
+                    'request_payload' => $validatedData, // Log the payload you sent
+                    'request_url' => env('KDS_URL'), // Log the target URL
+                ]);
+            } else {
+                Log::info('Successfully synced with OOS', [
+                    'status' => $response->status(),
+                    'message' => $response->body(),
+                    'headers' => $response->headers(),
+                ]);
+            }
+
+
+        } catch (Exception $e) {
+            // Log the error
+            Log::error('Failed to create order', [
+                'error_message' => $e->getMessage(),
+                'request_data' => $request->all(),
+            ]);
+
+            // Return an error response
+            return response()->json([
+                'message' => 'Failed to create order',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

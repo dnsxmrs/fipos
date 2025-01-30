@@ -56,8 +56,8 @@
                         @enderror
                     </div>
                     <div class="col-span-2 sm:col-span-1">
-                        <label for="editProductPrice" class="block mb-2 text-sm font-medium text-gray-900">Price <span
-                                class="text-red-500">*</span></label>
+                        <label for="editProductPrice" class="block mb-2 text-sm font-medium text-gray-900">Item Price <span
+                            class="text-red-500">*</span></label>
                         <input type="number" name="editProductPrice" id="editProductPrice"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                             placeholder="Type product price" value="" required="">

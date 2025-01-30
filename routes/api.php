@@ -13,6 +13,8 @@ Route::middleware([CheckKdsSource::class])->group(function () {
         Route::get('/get-orders', [OrderController::class, 'getOrders']);
         // used for updating status from kds to pos (pos orders)
         Route::post('/status-update', [APIController::class, 'statusUpdate']);
+        // used for updating status from kds to web (web orders)
+        Route::post('/status-update-web', [APIController::class, 'statusUpdateWeb']);
 
         // Route::match(['post', 'put', 'delete'], '/order-update', [APIController::class, 'updateOrder']);
     });

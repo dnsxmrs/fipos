@@ -31,7 +31,7 @@ function showEditUserModal(button) {
     document.getElementById("edit_role").value = role;
 
     // Set value to radio buttons for 'is_activated'
-    if (status === "active") {
+    if (status === "activated") {
         document.getElementById("status_active").checked = true;
     } else if (status === "deactivated") {
         document.getElementById("status_deactivated").checked = true;
@@ -82,3 +82,13 @@ function hideConfirmDeleteModalUsers() {
     document.getElementById('password').value = "";
     document.getElementById("confirm-delete-modal-user").classList.add("hidden");
 }
+
+function showConfirmAddModalUsers() {
+    document.getElementById("confirm-add-modal-user").classList.remove("hidden");
+}
+
+function hideConfirmAddModalUsers() {
+    document.getElementById('password').value = "";
+    document.getElementById("confirm-add-modal-user").classList.add("hidden");
+}
+

@@ -47,6 +47,11 @@ class ChangePasswordController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
+        // Log the activity
+        activity('User Change Password')
+        ->causedBy($user)
+        ->log('Changed the password for ' . ucfirst( $user->first_name));
+
         // Redirect to a success page
         return redirect()->back()->with('status', 'Password successfully changed!');
     }
