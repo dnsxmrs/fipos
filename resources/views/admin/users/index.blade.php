@@ -17,7 +17,7 @@
                 id="user_search" autocomplete="off" onkeyup="" />
 
             <!--ADD BUTTON-->
-            <button onclick="showAddUserModal()"
+            <button onclick="showConfirmAddModalUsers()"
                 class="block text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 type="button">
                 + Add User
@@ -90,6 +90,7 @@
     @include('admin.users.modals.delete-user')
     @include('admin.users.modals.edit-user')
     @include('admin.users.modals.confirm-delete')
+    @include('admin.users.modals.confirm-add')
 
 
     <script>
@@ -144,5 +145,6 @@
             @endif
 
         });
+
     </script>
 @endsection

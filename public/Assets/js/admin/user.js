@@ -82,3 +82,13 @@ function hideConfirmDeleteModalUsers() {
     document.getElementById('password').value = "";
     document.getElementById("confirm-delete-modal-user").classList.add("hidden");
 }
+
+function showConfirmAddModalUsers() {
+    document.getElementById("confirm-add-modal-user").classList.remove("hidden");
+}
+
+function hideConfirmAddModalUsers() {
+    document.getElementById('password').value = "";
+    document.getElementById("confirm-add-modal-user").classList.add("hidden");
+}
+

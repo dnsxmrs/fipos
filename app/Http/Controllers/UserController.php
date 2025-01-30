@@ -12,6 +12,8 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Throwable;
 
+use function Pest\Laravel\json;
+
 class UserController extends Controller
 {
     // method to display user
@@ -57,6 +59,19 @@ class UserController extends Controller
             return redirect()->back()->with('error',  $th->getMessage());
         }
     }
+
+    public function confirmAddUser(Request $request) {
+        $request->validate([
+            'password' => 'required'
+        ]);
+
+        if (Hash::check($request->password, Auth::user()->password)) {
+            return response()->json(['success' => true, 'message' => 'Password verified.']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Invalid password. Please try again.'], 401);
+    }
+
 
 
     /**

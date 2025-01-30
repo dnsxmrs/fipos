@@ -152,6 +152,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/add', [UserController::class, 'store'])->name('user.add');
                 Route::post('/edit', [UserController::class, 'update'])->name('user.update');
                 Route::post('/delete', [UserController::class, 'delete'])->name('user.delete');
+                Route::post('/confirm-add', [UserController::class, 'confirmAddUser'])->name('user.confirm-add');
             });
 
 
