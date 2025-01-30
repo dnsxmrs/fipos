@@ -215,8 +215,6 @@ class OrderController extends Controller
                 // Log the type of ordersPaginated
                 Log::info('Type of ordersPaginated:', ['type' => gettype($ordersPaginated)]);
 
-
-
                 // Return to view with ordersPaginated
                 return view('cashier.orders.online-orders', compact('ordersPaginated'));
 
