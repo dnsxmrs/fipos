@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\APIController;
@@ -24,6 +25,9 @@ Route::middleware([CheckWebSource::class])->group(function () {
     Route::prefix('v1')->group(function () {
         Route::post('/push-order', [APIController::class, 'ordersFromWeb']);
 
+        Route::post('/cancel-order', [APIController::class, 'cancelOrder']);
     });
 });
 
+
+Route::get('/sales-data', [AdminController::class, 'getSalesData']);

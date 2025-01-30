@@ -185,3 +185,7 @@ Route::middleware(['isGuest', 'preventBackHistory'])->group(function () {
     Route::get('/reset-password/{token}', [ResetPasswordController::class, 'resetPasswordView'])->name('password.reset');
     Route::post('/reset-password', [ResetPasswordController::class, 'passwordUpdate'])->name('password.update');
 });
+
+Route::get('/dashboard/most-ordered', [AdminController::class, 'getMostOrdered'])->name('dashboard.mostOrdered');
+Route::get('/dashboard/most-order-types', [AdminController::class, 'getMostOrderTypes'])->name('dashboard.mostOrderTypes');
+
