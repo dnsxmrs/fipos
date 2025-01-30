@@ -30,7 +30,7 @@
                                 <td class="py-3 px-5">
                                     @php
                                         $productNames = collect($onlineOrder['order_products'])->map(function($product) {
-                                            return $product['product_id']; // Replace with 'product_name' if available
+                                            return $product['product']['name']; // Replace with 'product_name' if available
                                         })->implode(', ');
                                     @endphp
                                     {{ $productNames }}

@@ -162,30 +162,6 @@ class OrderController extends Controller
             $responseData = json_decode($response->body(), true);
 
             if (isset($responseData['data'])) {
-                // $ordersData = $responseData['data']; // Orders array
-
-                // // Get pagination details
-                // $currentPage = request()->get('page', 1);
-                // $perPage = $responseData['per_page'] ?? 15;
-                // $total = $responseData['total'] ?? count($ordersData);
-
-                // // Convert array to Laravel paginator
-                // $ordersPaginated = new LengthAwarePaginator(
-                //     collect($ordersData), // Convert array to collection
-                //     $total, // Total items
-                //     $perPage, // Items per page
-                //     $currentPage, // Current page
-                //     ['path' => request()->url()] // Pagination links
-                // );
-                // return view('cashier.orders.online-orders', compact('ordersData'));
-
-
-                // $ordersData = $responseData['data']; // Store orders array
-
-                // // Log the received data for debugging
-                // Log::info('Orders data retrieved successfully', ['count' => count($ordersData)]);
-
-
                 // Ensure 'data' is available and not empty
                 if (isset($responseData['data']) && !empty($responseData['data'])) {
                     // Convert raw array to Laravel Collection

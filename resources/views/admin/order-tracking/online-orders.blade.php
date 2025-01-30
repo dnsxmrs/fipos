@@ -1,10 +1,17 @@
 @extends('admin.order-tracking.index')
 
 @section('order_table')
-    <!-- Header -->
-    <div class="my-5">
-        <p class="text-xl font-medium text-gray-700">Online Orders</p>
-        <p class="text-sm text-gray-500">List of online orders from website.</p>
+    <div class="flex justify-between items-center mb-3">
+        <input type="text" placeholder="Search for orders..."
+            class="p-3 h-10 w-64 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100 border border-gray-200 text-sm text-gray-500 rounded-lg">
+
+        <!-- Export Csv button -->
+        {{-- <a href="{{ route('admin.orders.export') }}"
+            class="block text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+            <i class="fa-solid fa-download mr-2"></i>
+            Export CSV
+        </a> --}}
+
     </div>
 
     {{-- ORDERS TABLE --}}
@@ -30,7 +37,7 @@
                                 <td class="py-3 px-5">
                                     @php
                                         $productNames = collect($onlineOrder['order_products'])->map(function($product) {
-                                            return $product['product_id']; // Replace with 'product_name' if available
+                                            return $product['product']['name']; // Replace with 'product_name' if available
                                         })->implode(', ');
                                     @endphp
                                     {{ $productNames }}
