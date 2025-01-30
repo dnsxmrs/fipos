@@ -61,6 +61,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/payments', [PaymentController::class, 'showPayments'])->name('payments');
             Route::get('/order-tracking', [AdminController::class, 'orders'])->name('order-tracking');
             Route::get('/audit-trails', [AdminController::class, 'audit'])->name('audit-trails');
+            Route::get('/audit-trails/export', [AdminController::class, 'exportCsv'])->name('audit-trails.export');
+
             Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
 
             // Payments

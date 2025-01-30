@@ -15,8 +15,15 @@
             <form autocomplete="off">
                 <input type="text" placeholder="Search for category..."
                     class="p-3 h-10 w-64 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100 border border-gray-200 text-sm text-gray-500 rounded-lg"
-                    id="category_search" onkeyup="filterCategories()" />
+                    id="category_search" />
             </form>
+
+            <!-- Export Csv button -->
+            <a href="{{ route('admin.audit-trails.export') }}"
+                class="block text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                <i class="fa-solid fa-download mr-2"></i>
+                Export CSV
+            </a>
         </div>
 
         {{-- ORDERS TABLE --}}
@@ -27,19 +34,31 @@
                     <thead class="bg-slate-100 border-b-2 rounded-lg">
                         <tr>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Log date</th>
-                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Generated</th>
-                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">User Role</th>
-                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Activity Scope</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Log Name</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Action</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Performed by</th>
                         </tr>
                     </thead>
+                    <tbody class="bg-white">
+                        @foreach ($audit_trails as $audit_trail)
+                            <tr class="text-center border-b border-gray-200">
+                                <td class="p-3 text-sm">{{ $audit_trail->created_at->format('Y-m-d H:i:s') }}</td>
+                                <td class="p-3 text-sm">{{ $audit_trail->log_name }}</td>
+                                <td class="p-3 text-sm">{{ $audit_trail->description }}</td>
+                                <td class="p-3 text-sm">{{ $audit_trail->user_name }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
 
                 </table>
                 <!-- No Categories Found Message -->
-                <div id="no-categories-message" class="hidden text-center text-red-500 mt-4">
+                <div id="no-audit-message" class="hidden text-center text-red-500 mt-4">
                     No record found matching your search criteria.
                 </div>
 
-
+                <div class="mt-5">
+                    {{ $audit_trails->links() }}
+                </div>
             </div>
         </div>
     </div>

@@ -51,8 +51,16 @@ class UserController extends Controller
             if ($user) {
                 // send the credentials to the respective email
                 Mail::to($user->email)->send(new WelcomeMail($user->first_name, $user->email, $generatedPassword));
+
+                // log the activity
+                activity('User Register')->causedBy(Auth::user())->log('Register a new user ' . ucfirst($user->first_name));
+
                 return redirect()->back()->with('status_add', 'User added successfully.');
             } else {
+
+                // log the activity
+                activity('User Register')->causedBy(Auth::user())->log('Failed to register a new user');
+
                 return redirect()->back()->with('error', 'Creation of account failed.');
             }
         } catch (Throwable $th) {
@@ -95,8 +103,16 @@ class UserController extends Controller
 
 
             if ($isUpdated) {
+
+                // log the activity
+                activity('Update User')->causedBy(Auth::user())->log('Updated user details ' . ucfirst($user->first_name));
+
                 return redirect()->back()->with('status_edit', 'User details updated successfully.');
             } else {
+
+                // log the activity
+                activity('Update User')->causedBy(Auth::user())->log('Failed to update user details');
+
                 return redirect()->back()->with('error', 'Failed to update user details.');
             }
         } catch (ValidationException $e) {
@@ -126,8 +142,14 @@ class UserController extends Controller
                 ]);
                 $userToDelete->delete();
 
+                // log the activity
+                activity('Deactivate User')->causedBy(Auth::user())->log('Deactivate user ' . $userToDelete->first_name);
+
                 return redirect()->back()->with('status_deleted', 'User deleted successfully');
             }
+
+            // log the activity
+            activity('Deactivate User')->causedBy(Auth::user())->log('Failed to deactivate user');
 
             return redirect()->back()->with('error', 'Failed to delete user');
         }

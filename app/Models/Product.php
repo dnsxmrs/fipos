@@ -5,13 +5,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
 
 class Product extends Model
 {
 
-    use LogsActivity, SoftDeletes;
+    use SoftDeletes;
 
     protected $fillable = [
         'product_name',
@@ -33,26 +31,5 @@ class Product extends Model
     public function orderProducts()
     {
         return $this->hasMany(OrderProduct::class);
-    }
-
-
-
-    /** Activity that will be log if changed or created */
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->logOnly([
-
-                'product_name',
-                'product_description',
-                'product_price',
-                'isAvailable',
-                'has_customization',
-                'image',
-                'category_id',
-
-            ])
-            ->useLogName('product_activity') // Customize log name
-            ->logOnlyDirty(); // Log only changes, not all attributes
     }
 }

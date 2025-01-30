@@ -58,6 +58,9 @@ class CategoryController extends Controller
             // Sync with OOS after category creation
             $this->syncWithOos('POST', $category);
 
+            // log the activity
+            activity('Create category')->causedBy(Auth::user())->log('Created new category');
+
             // Redirect back with success message
             return redirect()->back()->with('status_add', 'Category added successfully!');
         } catch (\Throwable $th) {
@@ -104,6 +107,9 @@ class CategoryController extends Controller
         // Sync with OOS after category update
         $this->syncWithOos('PUT', $category);
 
+        // log the activity
+        activity('Update category')->causedBy(Auth::user())->log('Updated details of' . $category->category_name);
+
         return redirect()->back()->with('status_edit', 'Category updated successfully!');
     }
 
@@ -129,6 +135,9 @@ class CategoryController extends Controller
                     $category->delete();
                     // Sync with OOS after category deletion
                     $this->syncWithOos('DELETE', $category);
+
+                    // log the activity
+                    activity('Delete category')->causedBy(Auth::user())->log('Deleted category ' . $category->category_name);
 
                     return redirect()->back()->with('status_deleted', 'Category deleted successfully');
                 }
@@ -239,6 +248,9 @@ class CategoryController extends Controller
                     $category->products_count,
                 ]);
             }
+
+            // log the activity
+            activity('Export categories')->causedBy(Auth::user())->log('Exported categories to CSV');
 
             // Close the file handle
             fclose($handle);

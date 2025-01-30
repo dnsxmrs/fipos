@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 class ProductController extends Controller
 {
@@ -48,6 +49,9 @@ class ProductController extends Controller
             'has_customization' => false, // Set default value for has_customization
             'image' => $path,
         ]);
+
+        // log the activity
+        activity('Product Create')->causedBy(FacadesAuth::user())->log('Created a new product' . $product->product_name);
 
         // Sync with OOS after product creation
         $this->syncWithOos('POST', $product);
@@ -95,6 +99,9 @@ class ProductController extends Controller
             // Sync with OOS after product update
             $this->syncWithOos('PUT', $product);
 
+            // log the activity
+            activity('Product Update')->causedBy(FacadesAuth::user())->log('Updated a product' . $product->product_name);
+
             return redirect()->route('admin.menu.products')->with('status_edit', 'Product updated successfully!');
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Validation failed: ', $e->validator->errors()->toArray());
@@ -121,6 +128,9 @@ class ProductController extends Controller
                     $product->delete();
                     // Sync with OOS after category deletion
                     $this->syncWithOos('DELETE', $product);
+
+                    // log the activity
+                    activity('Delete product')->causedBy(Auth::user())->log('Deleted product ' . $product->product_name);
 
                     return redirect()->back()->with('status_deleted', 'Product deleted successfully');
                 }
@@ -169,6 +179,9 @@ class ProductController extends Controller
                     $product->isAvailable ? 'Available' : 'Not Available',
                 ]);
             }
+
+            // log the activity
+            activity('Export products')->causedBy(Auth::user())->log('Exported products to CSV');
 
             // Close the file handle
             fclose($handle);

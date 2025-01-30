@@ -2,7 +2,7 @@
 
 @section('admin_content')
     <!-- Main Content -->
-    <div class="flex flex-col min-h-screen ">
+    <div class="flex flex-col min-h-screen">
 
         <!-- Top Header -->
         <div class="flex items-center justify-between">
@@ -11,35 +11,32 @@
             </div>
         </div>
 
-        <!-- Main Dashboard Content -->
-        <div class="flex flex-1 gap-8 p-5 overflow-auto lg:flex-row">
+        <!-- Main Dashboard Content (Column layout with 3 rows) -->
+        <div class="flex flex-1 flex-col gap-8 p-5 overflow-auto">
 
-            <!-- Left Side: Statistics -->
-            <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
-                <div class="w-40 h-40 p-4 text-center bg-white border-2 border-solid rounded-lg shadow-md ">
+            <!-- Row 1: Statistics (4 boxes) -->
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full">
+                <div class="w-full p-4 text-center bg-white border-2 border-solid rounded-lg shadow-md">
                     <h3 class="mb-2 text-sm font-medium">Total Revenue</h3>
-                    <p class="text-xs text-[#555]">PHP 10,243.00</p>
+                    <p class="text-xs text-[#555]">PHP 0.00</p>
                 </div>
 
-                <div class="w-40 h-40 p-4 text-center bg-white border-2 border-solid rounded-lg shadow-md ">
+                <div class="w-full p-4 text-center bg-white border-2 border-solid rounded-lg shadow-md">
                     <h3 class="mb-2 text-sm font-medium">Total Dishes Ordered</h3>
-                    <p class="text-xs text-[#555]">23,456</p>
+                    <p class="text-xs text-[#555]">0</p>
                 </div>
 
-                <div class="w-40 h-40 p-4 text-center bg-white border-2 border-solid rounded-lg shadow-md ">
+                <div class="w-full p-4 text-center bg-white border-2 border-solid rounded-lg shadow-md">
                     <h3 class="mb-2 text-sm font-medium">Total Customers</h3>
-                    <p class="text-xs text-[#555]">1,234</p>
+                    <p class="text-xs text-[#555]">0</p>
                 </div>
             </div>
 
-
-
-            <!-- Sales Summary Chart -->
-            <div class="p-5 bg-white rounded-lg shadow-md >
+            <!-- Row 2: Sales Summary Chart -->
+            <div class="w-full p-5 bg-white rounded-lg shadow-md">
                 <h2 class="mb-5 text-lg font-semibold">Sales Summary</h2>
                 <canvas id="salesChart" class="w-full h-[300px] lg:h-[400px]"></canvas>
                 <script>
-                    // Sales Chart
                     const ctx = document.getElementById('salesChart').getContext('2d');
                     const salesChart = new Chart(ctx, {
                         type: 'line',
@@ -54,7 +51,7 @@
                             }]
                         },
                         options: {
-                            responsive: false,
+                            responsive: true,
                             maintainAspectRatio: true,
                             scales: {
                                 x: {
@@ -65,12 +62,10 @@
                     });
                 </script>
             </div>
-        </div>
 
-        <!-- Right Side: Most Ordered & Order Type -->
-        <div class="w-full space-y-5">
+            <!-- Row 3: Most Ordered & Most Type of Order -->
+            <div class="flex flex-col lg:flex-row gap-8 w-full">
 
-            <div class="flex flex-col gap-5 lg:flex-row">
                 <!-- Most Ordered Section -->
                 <div class="flex-1 p-5 bg-white rounded-lg shadow-md">
                     <div class="flex items-center justify-between mb-5">
@@ -135,42 +130,6 @@
                 </div>
             </div>
 
-
-            <script>
-                const orderTypeData = {
-                    'today': [200, 122, 264],
-                    'week': [1400, 980, 1848],
-                    'month': [6000, 4500, 5500],
-                };
-
-                const ctxOrderType = document.getElementById('orderTypeChart').getContext('2d');
-                let orderTypeChart = new Chart(ctxOrderType, {
-                    type: 'pie',
-                    data: {
-                        labels: ['Dine In', 'To Go', 'Delivery'],
-                        datasets: [{
-                            data: orderTypeData['today'],
-                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                            },
-                        }
-                    }
-                });
-
-                document.getElementById('orderTypeFilter').addEventListener('change', function() {
-                    const selectedPeriod = this.value;
-                    const data = orderTypeData[selectedPeriod];
-                    orderTypeChart.data.datasets[0].data = data;
-                    orderTypeChart.update();
-                });
-            </script>
         </div>
     </div>
 

@@ -79,6 +79,9 @@ class OrderController extends Controller
                 ]);
             }
 
+            // log the activity
+            activity('Order Created')->causedBy(Auth::user())->log('Created order ' . $orderNumber);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Order Created',

@@ -265,6 +265,7 @@ function populateReceipt() {
 
     // Update the subtotal, discount, and total prices
     document.getElementById("subTotal").textContent = `₱ ${subTotal.toFixed(2)}`;
+    document.getElementById("taxReceipt").textContent = `₱ ${taxAmount.toFixed(2)}`;
     document.getElementById("discount").textContent = `₱ ${discountAmount.toFixed(2)}`;
     document.getElementById("totalPrice").textContent = `₱ ${payableAmount.toFixed(2)}`;
     document.getElementById("cash").textContent = `₱ ${cashvalue.toFixed(2)}`;

@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Ixudra\Curl\Facades\Curl;
 use Illuminate\Validation\ValidationException;
@@ -103,6 +104,9 @@ class PaymentController extends Controller
                     $payment->mode_of_payment,
                 ]);
             }
+
+            // log the activity
+            activity('Export payments')->causedBy(Auth::user())->log('Exported payments to CSV');
 
             fclose($handle);
         }, 200, $headers);
@@ -486,6 +490,9 @@ class PaymentController extends Controller
             'mode_of_payment' => $payment['mode_of_payment'],
             'status' => 'paid'
         ]);
+
+        // log the activity
+        activity('Payment')->causedBy(Auth::user())->log('Recorded payment of amount ' . $payment['amount']);
 
         return response()->json([
 

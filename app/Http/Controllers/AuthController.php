@@ -42,6 +42,9 @@ class AuthController extends Controller
             // send the credentials to the respective email
             Mail::to($user->email)->send(new WelcomeMail($user->first_name, $user->email, $generatedPassword));
 
+            // log the activity
+            activity('User Register')->causedBy(Auth::user())->log('Register a new user');
+
             // prompt success message
             return redirect()->route('admin.success.add.user');
         } else {
@@ -99,7 +102,7 @@ class AuthController extends Controller
             }
 
             // Log the login activity for audit trailing purposes
-            activity('user_login')->log('user login');
+            activity('Login')->causedBy(Auth::user())->log('Login to the system');
 
             // Check user role and redirect accordingly
             return $user->role === 'admin'
@@ -108,7 +111,7 @@ class AuthController extends Controller
         }
 
         // log the user attempt to login
-        activity('attempt_login')->log('attempt to login');
+        activity('Login attempt')->causedBy(Auth::user())->log('Failed to login');
 
         // Redirect back with an error message for invalid credentials
         return redirect()->back()->withErrors(['failed' => 'Invalid Credentials']);
@@ -122,6 +125,9 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        // Log the logout activity
+        activity('Logout')->causedBy(Auth::user())->log('Logout from the system');
 
         // redirect to login page
         return redirect()->route('login');

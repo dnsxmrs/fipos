@@ -26,6 +26,9 @@ class ProfileController extends Controller
         // update the user profile
         $user->update($request->all());
 
+        // log the activity
+        activity('Update Profile')->causedBy(Auth::user())->log('Updated profile ' . ucfirst($user->first_name));
+
         // prompt the user that the profile has been updated
         return redirect()->route('admin.success.update.profile');
     }
