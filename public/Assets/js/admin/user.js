@@ -31,7 +31,7 @@ function showEditUserModal(button) {
     document.getElementById("edit_role").value = role;
 
     // Set value to radio buttons for 'is_activated'
-    if (status === "active") {
+    if (status === "activated") {
         document.getElementById("status_active").checked = true;
     } else if (status === "deactivated") {
         document.getElementById("status_deactivated").checked = true;

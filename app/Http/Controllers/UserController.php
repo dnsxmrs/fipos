@@ -39,7 +39,8 @@ class UserController extends Controller
             ]);
 
             // Generate a random string for password
-            $generatedPassword = Str::random(12);
+            $generatedPassword = Str::random(8) . rand(100, 999) . Str::random(1) . '!@#'; // 12-character password
+            $generatedPassword = str_shuffle($generatedPassword); // Shuffle to ensure randomness
 
             // hash the generated password
             $user['password'] = Hash::make($generatedPassword);
@@ -68,7 +69,8 @@ class UserController extends Controller
         }
     }
 
-    public function confirmAddUser(Request $request) {
+    public function confirmAddUser(Request $request)
+    {
         $request->validate([
             'password' => 'required'
         ]);
@@ -91,7 +93,7 @@ class UserController extends Controller
             $request->validate([
                 'user_id' => 'required|exists:users,id',
                 'role' => 'required|in:admin,staff',
-                'status' => 'required|in:active,deactivated',
+                'status' => 'required|in:activated,deactivated',
             ]);
 
             $user = User::find($request->user_id);
@@ -155,6 +157,5 @@ class UserController extends Controller
         }
 
         return redirect()->back()->with('error', "Password dont match.");
-
     }
 }

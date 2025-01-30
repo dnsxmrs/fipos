@@ -35,6 +35,7 @@
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Last Name</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Email</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Role</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Is Activated</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max">Status</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-center min-w-max"></th>
                         </tr>
@@ -48,6 +49,12 @@
                                 <td class="px-5 py-3">{{ ucfirst($user->last_name) }}</td>
                                 <td class="px-5 py-3">{{ $user->email }}</td>
                                 <td class="px-5 py-3">{{ ucfirst($user->role) }}</td>
+                                <td class="px-5 py-3">
+                                    <span
+                                        class="text-xs {{ $user->is_activated === 1 ? 'text-green-500' : 'text-red-500' }} rounded-md px-2 py-1"
+                                        style="background-color: {{ $user->is_activated === 1 ? '#DCF8F0' : '#FFDFDF' }};">
+                                        {{ $user->is_activated === 1 ? 'Yes' : 'No' }}
+                                    </span>
                                 <td class="px-5 py-3">
                                     <span
                                         class="text-xs {{ $user->status === 'activated' ? 'text-green-500' : 'text-red-500' }} rounded-md px-2 py-1"

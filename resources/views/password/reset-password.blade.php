@@ -16,7 +16,7 @@
 </head>
 
 <body class="flex items-center justify-center min-h-screen bg-white">
-    <div class="bg-[#F3F3F3] p-8 rounded-md w-[595px] h-[495px] shadow-lg flex flex-col justify-center items-center">
+    <div class="bg-white p-8 rounded-md w-[595px] h-[495px] shadow-lg flex flex-col justify-center items-center">
         <h1 class="text-2xl font-bold mb-4 text-center">Reset Password</h1>
         <p class="mb-6 text-gray-600 text-center">Enter your new password.</p>
         <form action="{{ route('password.update') }}" method="POST" class="w-full" id="passwordForm">
@@ -41,17 +41,10 @@
                 <input type="password" id="password" name="password"
                     class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-200"
                     placeholder="Enter password" @error('password') style="border-color: red" @enderror>
-                <span class="absolute inset-y-0 right-3 flex items-center cursor-pointer" id="toggle-password">
-                    <!-- Hidden Eye Slash icon (for password hidden) -->
-                    <div id="eye-slash-icon" style="display: block;" class="w-5 h-5">
-                        <img src="{{ asset('Assets/hide_password.png') }}" alt="hide password icon"
-                            class="filter grayscale">
-                    </div>
-                    <!-- Show Eye icon (for password visible) -->
-                    <div id="eye-show-icon" style="display: none;" class="w-5 h-5">
-                        <img src="{{ asset('Assets/show_password.png') }}" alt="show password icon"
-                            class="filter grayscale">
-                    </div>
+                    <span class="absolute inset-y-0 flex items-center cursor-pointer right-3" id="toggle-password">
+                        <img src="{{ asset('Assets/password_hide.png') }}" id="eye-slash-icon" class="w-5 h-5 filter grayscale opacity-50">
+                        <img src="{{ asset('Assets/password_show.png') }}" id="eye-show-icon" class="w-5 h-5 filter grayscale opacity-50 hidden">
+                    </span>
                 </span>
             </div>
 
@@ -61,18 +54,10 @@
                 <input type="password" id="password_confirmation" name="password_confirmation"
                     class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-200"
                     placeholder="Confirm password" @error('password') style="border-color: red" @enderror>
-                <span class="absolute inset-y-0 right-3 flex items-center cursor-pointer" id="toggle-confirm-password">
-                    <!-- Hidden Eye Slash icon (for confirm password hidden) -->
-                    <div id="eye-slash-icon-confirm" style="display: block;" class="w-5 h-5">
-                        <img src="{{ asset('Assets/hide_password.png') }}" alt="hide password icon"
-                            class="filter grayscale">
-                    </div>
-                    <!-- Show Eye icon (for confirm password visible) -->
-                    <div id="eye-show-icon-confirm" style="display: none;" class="w-5 h-5">
-                        <img src="{{ asset('Assets/show_password.png') }}" alt="show password icon"
-                            class="filter grayscale">
-                    </div>
-                </span>
+                    <span class="absolute inset-y-0 flex items-center cursor-pointer right-3" id="toggle-confirm-password">
+                        <img src="{{ asset('Assets/password_hide.png') }}" id="eye-slash-icon-confirm" class="w-5 h-5 filter grayscale opacity-50">
+                        <img src="{{ asset('Assets/password_show.png') }}" id="eye-show-icon-confirm" class="w-5 h-5 filter grayscale opacity-50 hidden">
+                    </span>
 
                 @error('password')
                     <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -86,7 +71,7 @@
             <!-- Submit Button -->
             <div class="mt-8 flex justify-center">
                 <button type="submit"
-                    class="mt-5 w-64 py-2 bg-[#451a03] text-white font-semibold rounded hover:bg-[#78350f]">Change
+                    class="mt-5 w-64 py-2 bg-green-700 text-white font-medium text-sm rounded-full hover:bg-green-800">Change
                     Password</button>
             </div>
         </form>
