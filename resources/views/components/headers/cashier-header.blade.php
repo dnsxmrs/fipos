@@ -1,13 +1,13 @@
-{{-- <nav class="flex items-center justify-between w-full px-5 py-3 bg-white shadow fixed top-0 min-h-16">
+{{-- <nav class="fixed top-0 flex items-center justify-between w-full px-5 py-3 bg-white shadow min-h-16">
 
     {{-- SEARCH BAR --}}
 {{-- <div class="flex items-center justify-center">
-        <span class="flex w-72 h-9 bg-gray-100 px-3 py-2 rounded-sm ml-24 items-center justify-center">
+        <span class="flex items-center justify-center px-3 py-2 ml-24 bg-gray-100 rounded-sm w-72 h-9">
             <img class="h-4 opacity-50" src="{{ asset('images/search.png') }}" alt="search icon">
             <input type="text" placeholder="Search..."
-                class=" border-none focus:ring-0 focus:outline-none text-gray-500 text-xs bg-transparent w-full ">
+                class="w-full text-xs text-gray-500 bg-transparent border-none  focus:ring-0 focus:outline-none">
         </span>
-        <button class="px-3 bg-green-500 hover:bg-green-600 h-9 text-white text-xs font-normal rounded-e-sm">
+        <button class="px-3 text-xs font-normal text-white bg-green-500 hover:bg-green-600 h-9 rounded-e-sm">
             Search
         </button>
     </div> --}}
@@ -26,12 +26,12 @@
 
 
 <nav class="fixed top-0 z-50 w-full bg-white shadow">
-    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div class="relative flex h-16 items-center justify-between">
+    <div class="px-2 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div class="relative flex items-center justify-between h-16">
             <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 <!-- Mobile menu button-->
                 <button type="button"
-                    class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                    class="relative inline-flex items-center justify-center p-2 text-gray-400 rounded-md hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                     aria-controls="mobile-menu" aria-expanded="false">
                     <span class="absolute -inset-0.5"></span>
                     <span class="sr-only">Open main menu</span>
@@ -56,20 +56,20 @@
                     </svg>
                 </button>
             </div>
-            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div class="flex shrink-0 items-center">
-                    <img class="h-10 w-auto mr-3" src="{{ asset('Assets/Caffeinated Logo 1.png') }}" alt="Caffeinated">
+            <div class="flex items-center justify-center flex-1 sm:items-stretch sm:justify-start">
+                <div class="flex items-center shrink-0">
+                    <img class="w-auto h-10 mr-3" src="{{ asset('Assets/Caffeinated Logo 1.png') }}" alt="Caffeinated">
                     <div class="flex flex-col items-start justify-center">
-                        <h3 class="font-bold text-xl">
+                        <h3 class="text-xl font-bold">
                             CAFFEINATED
                         </h3>
-                        <p class="font-normal text-sm text-gray-500">
+                        <p class="text-sm font-normal text-gray-500">
                             Point of Sale System
                         </p>
                     </div>
                 </div>
                 <div class="hidden sm:ml-6 sm:block">
-                    <div class="flex space-x-4 h-full items-center justify-start ml-4">
+                    <div class="flex items-center justify-start h-full ml-4 space-x-4">
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                         <a href="{{ route('menu.show') }}"
                             class="px-3 py-2 text-sm font-bold {{ Route::is('menu.show') ? 'border-b-2 border-green-600 text-green-600' : 'text-gray-500 hover:border-b-2 hover:border-green-600 hover:text-green-600' }}"
@@ -86,7 +86,7 @@
 
 
                 <div class="relative hidden md:block">
-                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <div class="absolute inset-y-0 flex items-center pointer-events-none start-0 ps-3">
                         <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -95,33 +95,26 @@
                         <span class="sr-only">Search icon</span>
                     </div>
                     <input type="text" id="search-navbar"
-                        class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                        class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Search...">
                 </div>
-
-                <img class="rounded-full cursor-pointer mr-3 ml-3 h-9 object-cover hover:bg-gray-100 p-2"
-                    src="{{ asset('Assets/notification.png') }}" alt="notification">
-
                 <!-- Profile dropdown -->
                 <div class="relative">
                     <div>
                         <button type="button" onclick="showDropdown()"
-                            class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-green-400"
+                            class="relative flex text-sm bg-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-green-400"
                             id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                             <span class="absolute -inset-1.5"></span>
                             <span class="sr-only">Open user menu</span>
-                            <img class="size-8 rounded-full" src="{{ asset('Assets/avatar.png') }}" alt="profile icon">
+                            <img class="rounded-full size-8" src="{{ asset('Assets/avatar.png') }}" alt="profile icon">
                         </button>
                     </div>
 
                     <div id="profile-dropdown"
-                        class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none"
+                        class="absolute right-0 z-10 hidden w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black/5 focus:outline-none"
                         role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                         <!-- Active: "bg-gray-100 outline-none", Not Active: "" -->
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
+
                         <a onclick="showLogoutModal()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
                     </div>
@@ -132,10 +125,10 @@
 
     <!-- Mobile menu, show/hide based on menu state. -->
     <div class="sm:hidden" id="mobile-menu">
-        <div class="space-y-1 px-2 pb-3 pt-2">
+        <div class="px-2 pt-2 pb-3 space-y-1">
             {{-- Search Bar --}}
             <div class="relative mt-3 mb-2">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <div class="absolute inset-y-0 flex items-center pointer-events-none start-0 ps-3">
                     <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                         fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -144,7 +137,7 @@
                     <span class="sr-only">Search icon</span>
                 </div>
                 <input type="text" id="search-navbar"
-                    class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                    class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg ps-10 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Search...">
             </div>
 
@@ -165,8 +158,8 @@
 
 
 {{-- LOGOUT MODAL --}}
-<div id="logout-modal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-    <div class="relative p-4 w-full max-w-md max-h-full">
+<div id="logout-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-gray-800 bg-opacity-50">
+    <div class="relative w-full max-w-md max-h-full p-4">
         <div class="relative bg-white rounded-lg shadow">
             <button type="button" onclick="hideLogoutModal()"
                 class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
@@ -177,8 +170,8 @@
                 </svg>
                 <span class="sr-only">Logout modal</span>
             </button>
-            <div class="p-4 md:p-5 text-center">
-                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12" aria-hidden="true"
+            <div class="p-4 text-center md:p-5">
+                <svg class="w-12 h-12 mx-auto mb-4 text-gray-400" aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
