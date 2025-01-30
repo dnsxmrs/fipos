@@ -84,10 +84,10 @@
 
 
             <li>
-                <a href="{{ route('admin.reports') }}"
+                <a href="{{ route('admin.payments') }}"
                     class="sidebar-link flex items-center p-2 text-sm font-normal rounded-lg {{ Route::is('admin.reports') ? 'bg-gray-700' : 'text-white hover:bg-gray-700' }} text-white hover:bg-gray-700 group">
                     <img src="{{ asset('Assets/report.png') }}" alt="Order Tracking Icon" class="h-5 opacity-60 hover:opacity-100">
-                    <span class="ml-3">Invoice</span>
+                    <span class="ml-3">Payments</span>
                 </a>
             </li>
             {{-- <li>

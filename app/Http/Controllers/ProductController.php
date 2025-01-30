@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Http\Response;
 
 class ProductController extends Controller
 {
@@ -28,7 +29,7 @@ class ProductController extends Controller
         } catch (\Illuminate\Validation\ValidationException $e) {
 
             Log::error('Validation failed: ', $e->validator->errors()->toArray());
-           // throw $e; // or handle the exception as needed
+            // throw $e; // or handle the exception as needed
             return redirect()->back()->with('error', $e->getMessage());
         }
 
@@ -57,8 +58,7 @@ class ProductController extends Controller
     // Update an existing product in the database
     public function update(Request $request)
     {
-        try
-        {
+        try {
             $id = $request->input('editProductId');
 
             // Validate the request
@@ -96,10 +96,9 @@ class ProductController extends Controller
             $this->syncWithOos('PUT', $product);
 
             return redirect()->route('admin.menu.products')->with('status_edit', 'Product updated successfully!');
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Validation failed: ', $e->validator->errors()->toArray());
-           // throw $e; // or handle the exception as needed
+            // throw $e; // or handle the exception as needed
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
@@ -130,12 +129,51 @@ class ProductController extends Controller
             }
 
             return redirect()->back()->with('error', "Password dont match.");
-
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', $th->getMessage());
         }
     }
 
+
+    public function exportProducts()
+    {
+        // Fetch all products from the database
+        $products = Product::with('category')->get();
+
+        // Define CSV file name
+        $csvFileName = 'products_' . date('Y-m-d') . '.csv';
+
+        // Set the response headers for CSV download
+        $headers = [
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=$csvFileName",
+            "Pragma" => "no-cache",
+            "Expires" => "0",
+        ];
+
+        return response()->stream(function () use ($products) {
+            // Create and output the CSV content
+            $handle = fopen('php://output', 'w');
+
+            // Add CSV headers
+            fputcsv($handle, ['No.', 'Product Name', 'Description', 'Category', 'Price', 'Status']);
+
+            // Add data rows for each product
+            foreach ($products as $index => $product) {
+                fputcsv($handle, [
+                    $index + 1,  // No.
+                    $product->product_name,
+                    $product->product_description,
+                    $product->category ? $product->category->category_name : 'N/A',
+                    $product->product_price,
+                    $product->isAvailable ? 'Available' : 'Not Available',
+                ]);
+            }
+
+            // Close the file handle
+            fclose($handle);
+        }, Response::HTTP_OK, $headers);
+    }
 
     // public function delete($id)
     // {
@@ -216,7 +254,6 @@ class ProductController extends Controller
                     'message' => $response->body(),
                 ]);
             }
-
         } catch (\Exception $e) {
             Log::error('Error syncing with OOS', [
                 'error' => $e->getMessage(),

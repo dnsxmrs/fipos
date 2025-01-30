@@ -18,9 +18,16 @@
     <script defer src="{{ asset('Assets/js/cashier/orders.js') }}"></script>
     <script defer src="{{ asset('Assets/js/cashier/cashier-header.js') }}"></script>
 
+    {{-- upstream --}}
     {{-- <script defer src="https://fipos-production.up.railway.app/Assets/js/cashier/cashier-order.js"> </script>
     <script defer src="https://fipos-production.up.railway.app/Assets/js/cashier/orders.js"> </script>
     <script defer src="https://fipos-production.up.railway.app/Assets/js/cashier/cashier-header.js"> </script> --}}
+
+
+
+    {{-- <script src="https://fipos-production.up.railway.app/js/cashier/cashier-order.js"> </script>
+    <script src="https://fipos-production.up.railway.app/js/cashier/orders.js"> </script>
+    <script src="https://fipos-production.up.railway.app/js/cashier/cashier-header.js"> </script> --}}
 
     <script src="https://cdn.tailwindcss.com"></script>
 

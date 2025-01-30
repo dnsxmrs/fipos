@@ -20,7 +20,8 @@
 
             <!-- Category Buttons -->
             @foreach ($categories as $category)
-                <span id="category-{{ $category->category_name }}" onclick="filterItems('{{ $category->category_name }}', event)"
+                <span id="category-{{ $category->category_name }}"
+                    onclick="filterItems('{{ $category->category_name }}', event)"
                     class="category-button flex items-center justify-center border p-4 text-green-800 px-5 rounded-lg shadow-md h-[55px] text-center cursor-pointer hover:bg-green-100 active:bg-green-200 bg-white ">
                     <img class="rounded-lg h-11 inline object-cover mr-3 p-1" src="{{ asset($category->image) }}"
                         alt="{{ $category->category_name }}">
@@ -99,11 +100,6 @@
                     <span class="text-center" id="payable-amount">₱ 0.00</span>
                 </div>
             </div>
-
-<<<<<<< HEAD
-        
-            <div class="flex justify-between mt-8 ml-6 mr-8 text-sm text-gray-200">
-=======
             <div class="flex justify-between text-sm ml-6 mr-8 mt-8">
                 <p>Add a Discount: </p>
                 <select
@@ -116,7 +112,6 @@
             </div>
 
             <div class="flex justify-between text-sm text-gray-200 ml-6 mr-8 mt-8">
->>>>>>> 5b1dc92d4694d914b8bbeb2eb3c15e73553726d4
                 <button id="openModal"
                     class="text-center w-full font-regular text-white bg-green-900 hover:bg-green-600 px-4 py-2 mb-5 rounded-full">
                     Continue to Payment
@@ -124,9 +119,6 @@
             </div>
         </div>
     </div>
-
-    </div>
-
 
     <!-- PAYMENT MODE MODAL -->
     <div id="paymentModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
@@ -273,7 +265,7 @@
                     console.log('Order submitted successfully:', data);
 
 
-                    // success();
+                    success();
 
                     // showReceipt();
 

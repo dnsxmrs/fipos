@@ -31,9 +31,29 @@
                     <td class="py-3 px-5">{{ ucfirst($order->order_type) }}</td>
                     <td class="py-3 px-5">PHP {{ $order->total_price }}</td>
                     <td class="py-3 px-5">
-                        <span class="px-2 py-1 text-xs font-normal text-orange-900 bg-orange-100 rounded-md">
-                            {{ ucfirst($order->status) }}
-                        </span>
+
+                        @if ($order['status'] == 'pending')
+                            <span class="px-2 py-1 text-xs font-normal text-orange-900 bg-orange-100 rounded-md">
+                                {{ ucfirst($order['status']) }}
+                            </span>
+                        @elseif ($order['status'] == 'preparing')
+                            <span class="px-2 py-1 text-xs font-normal text-yellow-900 bg-yellow-100 rounded-md">
+                                {{ ucfirst($order['status']) }}
+                            </span>
+                        @elseif ($order['status'] == 'ready')
+                            <span class="px-2 py-1 text-xs font-normal text-blue-900 bg-blue-100 rounded-md">
+                                {{ ucfirst($order['status']) }}
+                            </span>
+                        @elseif ($order['status'] == 'completed')
+                            <span class="px-2 py-1 text-xs font-normal text-green-900 bg-green-100 rounded-md">
+                                {{ ucfirst($order['status']) }}
+                            </span>
+                        @else
+                            <span class="px-2 py-1 text-xs font-normal text-gray-500 bg-gray-100 rounded-md">
+                                {{ ucfirst($order['status']) }}
+                            </span>
+                        @endif
+
                     </td>
                 </tr>
             @endforeach

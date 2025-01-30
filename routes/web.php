@@ -18,9 +18,10 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrderTrackingController;
+use App\Models\Order;
 
 // only authenticated users can access these pages
-Route::middleware(['auth', 'preventBackHistory'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/notice-change-password', [ResetPasswordController::class, 'noticeToChangePassword'])->name('notice.change.password');
     Route::get('/notice-change-password/skip', [ResetPasswordController::class, 'skipChangePassword'])->name('password.skip');
@@ -43,6 +44,7 @@ Route::middleware(['auth', 'preventBackHistory'])->group(function () {
         Route::get('/orders/dine-in', [OrderController::class, 'showDineInOrders'])->name('orders.dine-in');
         Route::get('/orders/take-out', [OrderController::class, 'showTakeOutOrders'])->name('orders.take-out');
         Route::get('/orders-online', [OrderController::class, 'showOnlineOrders'])->name('online.orders.show');
+
     });
 
     // Admin Routes
@@ -56,10 +58,17 @@ Route::middleware(['auth', 'preventBackHistory'])->group(function () {
 
             // routes for sidebar
             Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-            Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
+            Route::get('/payments', [PaymentController::class, 'showPayments'])->name('payments');
             Route::get('/order-tracking', [AdminController::class, 'orders'])->name('order-tracking');
             Route::get('/audit-trails', [AdminController::class, 'audit'])->name('audit-trails');
             Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
+
+            // Payments
+            Route::prefix('payments')->group(function () {
+                Route::get('/', [PaymentController::class, 'showPayments'])->name('payments');
+                Route::get('/export', [PaymentController::class, 'export'])->name('payments.export');
+            });
+
 
             // Menu Management Routes
             Route::prefix('menu')->name('menu.')->group(function () {
@@ -78,6 +87,7 @@ Route::middleware(['auth', 'preventBackHistory'])->group(function () {
                     Route::put('/edit', [CategoryController::class, 'update'])->name('categories.update');
                     // Route to delete a category
                     Route::post('/delete', [CategoryController::class, 'delete'])->name('categories.delete');
+                    Route::get('/export', [CategoryController::class, 'exportCategories'])->name('categories.export');
                 });
 
 
@@ -92,6 +102,7 @@ Route::middleware(['auth', 'preventBackHistory'])->group(function () {
                     // Route to delete a product
                     // Route::delete('/products/{id}', [ProductController::class, 'delete'])->name('products.delete');
                     Route::post('/delete', [ProductController::class, 'delete'])->name('products.delete');
+                    Route::get('/export', [ProductController::class, 'exportProducts'])->name('products.export');
                 });
             });
 
@@ -130,6 +141,8 @@ Route::middleware(['auth', 'preventBackHistory'])->group(function () {
                 Route::get('/', [OrderTrackingController::class, 'index'])->name('orders.all');
                 Route::get('/walk-in-orders', [OrderTrackingController::class, 'showWalkInOrders'])->name('orders.walk-in');
                 Route::get('/online-orders', [OrderTrackingController::class, 'showOnlineOrders'])->name('orders.online-orders');
+                Route::get('/orders/export', [OrderController::class, 'exportOrders'])->name('orders.export');
+                // Route::get('/orders/dine-in/export', [OrderController::class, 'exportWalkinInOrders'])->name('orders.export.walk-in');
             });
 
             // User Management routes
@@ -160,7 +173,7 @@ Route::middleware(['auth', 'preventBackHistory'])->group(function () {
 
 
 // only guests can access these pages
-Route::middleware(['guest', 'preventBackHistory'])->group(function () {
+Route::middleware(['isGuest', 'preventBackHistory'])->group(function () {
     Route::get('/', [AuthController::class, 'displayLoginForm'])->name('login');
     Route::post('/', [AuthController::class, 'login']);
     // routes for password

@@ -1,9 +1,18 @@
 @extends('admin.order-tracking.index')
 
 @section('order_table')
-    <input type="text" placeholder="Search for orders..."
-        class="p-3 mb-3 h-10 w-64 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100 border border-gray-200 text-sm text-gray-500 rounded-lg">
+    <div class="flex justify-between items-center mb-3">
+        <input type="text" placeholder="Search for orders..."
+            class="p-3 h-10 w-64 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100 border border-gray-200 text-sm text-gray-500 rounded-lg">
 
+        <!-- Export Csv button -->
+        <a href="{{ route('admin.orders.export') }}"
+            class="block text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+            <i class="fa-solid fa-download mr-2"></i>
+            Export CSV
+        </a>
+
+    </div>
     <table class="w-full shadow rounded-lg table-fixed">
         <thead class="bg-slate-100 border-b-2 rounded-lg">
             <tr>
