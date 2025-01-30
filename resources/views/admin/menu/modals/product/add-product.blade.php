@@ -49,13 +49,13 @@
                         @enderror
                     </div>
 
-                    <div class="relative w-[350px] mb-4">
+                    <div class="col-span-2 sm:col-span-1">
+                        <label for="itemPrice" class="block mb-2 text-sm font-medium text-gray-900">Item Price <span
+                            class="text-red-500">*</span></label>
                         <input id="itemPrice"
                             class="mb-2 peer w-full h-[42px] border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-70 placeholder-transparent"
                             type="text" placeholder="Item price" name="product_price" required
                             oninput="this.value = this.value.replace(/[^0-9.]/g, '')">
-                        <label class="text-sm absolute left-2 -top-4 scale-75 text-gray-500 origin-left"
-                            for="itemPrice">Item Price</label>
                         @error('product_price')
                             <div class="text-red-600 text-xs mt-1">{{ $message }}</div>
                         @enderror

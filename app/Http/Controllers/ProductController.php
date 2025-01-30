@@ -19,10 +19,11 @@ class ProductController extends Controller
     // Store a new product in the database
     public function store(Request $request)
     {
+
         try {
             $request->validate([
                 'product_name' => 'required|string|max:255',
-                'product_description' => 'required|string',
+                'product_description' => 'nullable|string',
                 'product_price' => 'required|numeric|min:0',
                 'category_id' => 'required|exists:categories,category_id',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -39,6 +40,8 @@ class ProductController extends Controller
         } else {
             $path = null;
         }
+
+
 
         $product = Product::create([
             'product_name' => $request->input('product_name'),
