@@ -4,20 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderProduct;
-use App\Models\Payment;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
-use Ixudra\Curl\Facades\Curl;
-use Illuminate\Support\Facades\Session;
-use function Laravel\Prompts\error;
-use function Pest\Laravel\json;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
-use App\Models\InventoryCategory;
+use Exception;
+
 
 class OrderController extends Controller
 {
@@ -284,4 +279,120 @@ class OrderController extends Controller
         }, 200, $headers);
     }
 
+    public function updateOrderStatus($orderId)
+    {
+        Log::info('Updating order status for order ID: ' . $orderId);
+
+        try {
+            $result = $this->updateToWeb($orderId);
+
+            $result2 = $this->updateToKds($orderId);
+
+            if ($result && $result2) {
+                return redirect()->route('admin.orders.online-orders')->with('success', 'Order status updated successfully');
+            } else {
+                return redirect()->route('admin.orders.online-orders')->with('failed', 'Failed to update order status');
+            }
+
+        }
+        catch (\Throwable $th) {
+            Log::error('Error updating order status: ' . $th->getMessage());
+            return redirect()->route('admin.orders.online-orders')->with('failed', 'Failed to update order status');
+        }
+    }
+
+    public function updateToWeb($orderId)
+    {
+        try {
+            $payload = [
+                'orderId' => $orderId,
+                'status' => 'completed',
+            ];
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . env('POS_API_KEY'), // Include the Authorization Bearer token
+                // 'X-CSRF-TOKEN' => $csrfToken, // Include the CSRF token if necessary
+            ])->send('post', env('ORDER_COMPLET_WEB'), [
+                'json' => $payload, // Send data as JSON
+            ]);
+            if ($response->failed()) {
+                Log::error('Failed to update order status', [
+                    'status' => $response->status(),
+                    'message' => $response->body(),
+                    'headers' => $response->headers(),
+                    'request_payload' => $payload, // Log the payload you sent
+                    'request_url' => env('ORDER_COMPLET_WEB'), // Log the target URL
+                ]);
+
+                return false;
+
+            } else {
+                Log::info('Order status updated successfully', [
+                    'status' => $response->status(),
+                    'message' => $response->body(),
+                    'headers' => $response->headers(),
+                    'request_payload' => $payload, // Log the payload you sent
+                    'request_url' => env('ORDER_COMPLET_WEB'), // Log the target URL
+                ]);
+
+            return true;
+
+            }
+
+        } catch (Exception $e) {
+            Log::error('Failed to update order status', [
+                'error' => $e->getMessage(),
+            ]);
+            // Return an error response
+            return false;
+        }
+    }
+
+
+    public function updateToKds($orderId)
+    {
+        try {
+            $payload = [
+                'orderId' => $orderId,
+                'status' => 'completed',
+            ];
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . env('POS_API_KEY'), // Include the Authorization Bearer token
+                // 'X-CSRF-TOKEN' => $csrfToken, // Include the CSRF token if necessary
+            ])->send('post', env('ORDER_COMPLET_KDS'), [
+                'json' => $payload, // Send data as JSON
+            ]);
+            if ($response->failed()) {
+                Log::error('Failed to update order status', [
+                    'status' => $response->status(),
+                    'message' => $response->body(),
+                    'headers' => $response->headers(),
+                    'request_payload' => $payload, // Log the payload you sent
+                    'request_url' => env('ORDER_COMPLET_KDS'), // Log the target URL
+                ]);
+
+                return false;
+
+            } else {
+                Log::info('Order status updated successfully', [
+                    'status' => $response->status(),
+                    'message' => $response->body(),
+                    'headers' => $response->headers(),
+                    'request_payload' => $payload, // Log the payload you sent
+                    'request_url' => env('ORDER_COMPLET_KDS'), // Log the target URL
+                ]);
+
+            return true;
+
+            }
+
+        } catch (Exception $e) {
+            Log::error('Failed to update order status', [
+                'error' => $e->getMessage(),
+            ]);
+            // Return an error response
+            return false;
+        }
+    }
 }

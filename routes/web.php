@@ -139,11 +139,15 @@ Route::middleware(['auth'])->group(function () {
             // });
 
             // Order Tracking
+
             Route::prefix('order-tracking')->group(function () {
                 Route::get('/', [OrderTrackingController::class, 'index'])->name('orders.all');
                 Route::get('/walk-in-orders', [OrderTrackingController::class, 'showWalkInOrders'])->name('orders.walk-in');
                 Route::get('/online-orders', [OrderTrackingController::class, 'showOnlineOrders'])->name('orders.online-orders');
                 Route::get('/orders/export', [OrderController::class, 'exportOrders'])->name('orders.export');
+                // Route::post('/orders/update-status/{orderId}', [OrderController::class, 'updateOrderStatus'])->name('orders.update-status');
+                Route::post('/update-status/{orderId}', [OrderController::class, 'updateOrderStatus'])->name('orders.update-status');
+
                 // Route::get('/orders/dine-in/export', [OrderController::class, 'exportWalkinInOrders'])->name('orders.export.walk-in');
             });
 

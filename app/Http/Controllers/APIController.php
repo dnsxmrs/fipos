@@ -49,7 +49,7 @@ class APIController extends Controller
             $validatedData = $request->validate([
                 'order_id' => 'required|integer|exists:orders,id',
                 'order_number' => 'required|string',
-                'status' => 'required|string|in:pending,preparing,ready,completed,cancelled',
+                'status' => 'required|string|in:pending,preparing,ready,delivery,completed,cancelled',
             ]);
 
             Log::info('Validated status update request', [
@@ -170,7 +170,7 @@ class APIController extends Controller
             $validatedData = $request->validate([
                 'order_id' => 'required',
                 'order_number' => 'required|string',
-                'status' => 'required|string|in:pending,preparing,ready,completed,cancelled',
+                'status' => 'required|string|in:pending,preparing,ready,delivery,completed,cancelled',
             ]);
 
             Log::info('Validated status update request', [
