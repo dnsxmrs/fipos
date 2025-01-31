@@ -312,7 +312,7 @@ class OrderController extends Controller
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . env('POS_API_KEY'), // Include the Authorization Bearer token
                 // 'X-CSRF-TOKEN' => $csrfToken, // Include the CSRF token if necessary
-            ])->send('post', env('ORDER_COMPLET_WEB'), [
+            ])->send('post', env('ORDER_COMPLETE_WEB'), [
                 'json' => $payload, // Send data as JSON
             ]);
             if ($response->failed()) {
@@ -321,7 +321,7 @@ class OrderController extends Controller
                     'message' => $response->body(),
                     'headers' => $response->headers(),
                     'request_payload' => $payload, // Log the payload you sent
-                    'request_url' => env('ORDER_COMPLET_WEB'), // Log the target URL
+                    'request_url' => env('ORDER_COMPLETE_WEB'), // Log the target URL
                 ]);
 
                 return false;
@@ -332,7 +332,7 @@ class OrderController extends Controller
                     'message' => $response->body(),
                     'headers' => $response->headers(),
                     'request_payload' => $payload, // Log the payload you sent
-                    'request_url' => env('ORDER_COMPLET_WEB'), // Log the target URL
+                    'request_url' => env('ORDER_COMPLETE_WEB'), // Log the target URL
                 ]);
 
             return true;
@@ -360,7 +360,7 @@ class OrderController extends Controller
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . env('POS_API_KEY'), // Include the Authorization Bearer token
                 // 'X-CSRF-TOKEN' => $csrfToken, // Include the CSRF token if necessary
-            ])->send('post', env('ORDER_COMPLET_KDS'), [
+            ])->send('post', env('ORDER_COMPLETE_KDS'), [
                 'json' => $payload, // Send data as JSON
             ]);
             if ($response->failed()) {
@@ -369,7 +369,7 @@ class OrderController extends Controller
                     'message' => $response->body(),
                     'headers' => $response->headers(),
                     'request_payload' => $payload, // Log the payload you sent
-                    'request_url' => env('ORDER_COMPLET_KDS'), // Log the target URL
+                    'request_url' => env('ORDER_COMPLETE_KDS'), // Log the target URL
                 ]);
 
                 return false;
@@ -380,7 +380,7 @@ class OrderController extends Controller
                     'message' => $response->body(),
                     'headers' => $response->headers(),
                     'request_payload' => $payload, // Log the payload you sent
-                    'request_url' => env('ORDER_COMPLET_KDS'), // Log the target URL
+                    'request_url' => env('ORDER_COMPLETE_KDS'), // Log the target URL
                 ]);
 
             return true;
